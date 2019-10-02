@@ -162,7 +162,7 @@ class RegisterController extends Controller
             /**
              * Simplest way to validate ReCaptcha
              */
-            'g-recaptcha-response' => 'required|string|min:1',
+            #'g-recaptcha-response' => 'required|string|min:1',
 
             /**
              * Ensuring radio buttons are required fields
