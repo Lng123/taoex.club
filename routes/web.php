@@ -36,7 +36,7 @@ Route::get('/home/userRank', 'UserRankController@index');
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
 Route::post('applyClub', 'ClubController@applyClub');
-Route::get('/home/newclub', 'ClubController@showNewClubForm')->middleware('auth');
+Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
 Route::get('/home/{club_id}/editClubProfile', 'ClubController@showUpdateClubeForm')->name('editClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
@@ -50,13 +50,13 @@ Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
 
 //league
-Route::get('/home/league', 'LeagueController@index')->middleware('auth');
+Route::get('/home/league', 'LeagueController@index')->name('league')->middleware('auth');
 
 //Match
 Route::post('applyMatch', 'ApplyMatchController@apply');
 Route::post('home/club/recordMatch', 'ApplyMatchController@record');
-Route::get('/home/applyNewMatch', 'ApplyMatchController@index')->middleware('auth');
-Route::get('/home/matchHistory', 'MatchController@index')->middleware('auth');
+Route::get('/home/applyNewMatch', 'ApplyMatchController@index')->name('applyNewMatch')->middleware('auth');
+Route::get('/home/matchHistory', 'MatchController@index')->name('matchHistory')->middleware('auth');
 Route::post('/home/filterMatch', 'MatchController@filter');
 Route::get('/home/allMatch', 'MatchController@all');
 
