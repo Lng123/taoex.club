@@ -109,7 +109,7 @@ body {
         <div class="collapse navbar-collapse justify-content-md-center" id="navbarCollapse">
           <ul class="navbar-nav  ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
+              <a class="nav-link" href="{{ route('login') }}">Login</a>
             </li>
           </ul>
         </div>
