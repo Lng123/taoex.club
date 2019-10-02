@@ -32,7 +32,7 @@
                             <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;" >{{ isset($club) ? $club->name : 'None' }} 
                             <a class="btn btn-outline-success" style="display:@if (Auth::user()->club_id == null) '' @else none @endif; width:5rem" 	
-                            href="/home/newclub">Create</a></span></li>
+                            href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             

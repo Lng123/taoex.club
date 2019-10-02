@@ -70,19 +70,19 @@ $(document).ready(function() {
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                        <a class="nav-link" href="/home">
+                        <a class="nav-link" href="{{ route('home') }}">
                             <i class="fa fa-fw fa-dashboard"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-                        <a class="nav-link" href="/home/club">
+                        <a class="nav-link" href="{{ route('club') }}">
                             <i class="fa fa-fw fa-area-chart"></i>
                             <span class="nav-link-text">Club</span>
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-                        <a class="nav-link" href="/home/league">
+                        <a class="nav-link" href="{{ route('league') }}">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">League</span>
                         </a>
@@ -94,10 +94,10 @@ $(document).ready(function() {
                         </a>
                         <ul class="sidenav-second-level collapse" id="collapseComponents">
                             <li>
-                                <a href="/home/matchHistory">Match history</a>
+                                <a href="{{ route('matchHistory') }}">Match history</a>
                             </li>
                             <li>
-                                <a href="/home/applyNewMatch">Apply for a new match</a>
+                                <a href="{{ route('applyNewMatch') }}">Apply for a new match</a>
                             </li>
                         </ul>
                     </li>
