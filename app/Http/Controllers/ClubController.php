@@ -202,7 +202,7 @@ class ClubController extends Controller
     }
     public function applyClub(Request $request)
     {
-        $ranking = 99;
+        $ranking = 99; // To be fixed
         $club = new Club;
         $user_table = new User;
         $uid = Auth::user()->id;
