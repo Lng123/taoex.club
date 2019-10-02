@@ -1,0 +1,82 @@
+/* CSS Document */
+
+/* header in login page*/
+.h1.header.login {
+	text-align: center;
+    color: purple;
+    font-size: 60px;
+}
+.h3.header.login {
+	text-align: center;
+	color: darkgray;
+	padding: 2%;
+}
+.container.login {
+	/*background-color: grey;*/
+    margin-top: 2rem;
+	padding: 1rem;
+}
+
+.container.login .btn.btn-primary.btn-block.login-btn {
+	color: #fff;
+    background: purple;
+    border-color: purple;
+}
+
+/* table in records page*/
+#changeMonth {
+	cursor:pointer;
+}
+
+#calendar{ 
+	background:#000; 
+	color:#FFF; 
+	font-size:0.8em;
+} 
+#tittle{ 
+font-size:1.4em; 
+padding:4px 0.55em;
+text-align: center;
+} 
+#days th { 
+font-weight:bold; 
+text-align:center; 
+padding:4px 0.55em; 
+} 
+#calendar td{ 
+text-align:center; 
+padding:4px 0.55em; 
+} 
+#today{ 
+color:#F00; 
+font-weight:bold; 
+}
+/* float to right */
+.rightSide.club {
+	float:right;
+}
+.output.records {
+    text-align: left;
+    padding: 15%;
+    margin: 5% 0% 0% 0%;
+    border: 6px double;
+}
+
+/* register page starts */
+.register .h1.title {
+	text-align: center;
+    color: purple;
+    font-size: 60px;
+}
+
+.register .h3.sub-title {
+	text-align: center;
+	color: darkgray;
+	padding: 2%;
+}
+
+.register .register-btn {
+	background-color: purple;
+	border-color: purple;
+}
+/* register page ends */

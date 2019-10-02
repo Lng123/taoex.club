@@ -1,0 +1,25 @@
+.pull-right {
+	float: right; !important
+}
+
+/* match history starts*/
+.match-history .card-body {
+
+}
+
+.match-history .match-history-label {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.justify-content-end.row {
+    margin-right: 0px;
+}
+
+/* match history ends */
+
+/* club page starts */
+.club-page .h1#club-name {
+	text-align: center;
+}
+/* club page ends */
