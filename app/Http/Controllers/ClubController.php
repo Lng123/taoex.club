@@ -216,23 +216,29 @@ class ClubController extends Controller
         $club->province = $request->province;
         $club->city = $request->city;
         $checkResult = DB::table('Club')->where('owner_id', $uid)->get();
-        if (Auth::user()->club_id !== null) {
-            return view('home', array('message'=>'You can only own one club', 'color'=>'alert-danger','club'=>$club, 'ranking'=>$ranking, 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
-        }
+        
         $club->owner_id = $uid;
         $club->save();
-
+        
         $newClub = new Club;
         $club_id = $newClub->where('owner_id', $uid)->value('id');
-
+        
         $status = Auth::user()->approved_status;
         
 
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         //User::updateUserToClubOwner($uid, $club_id);
-        $user_table->where('id', $uid)->update(['type'=>1, 'approved_status'=>1, 'club_id'=>$club_id, 'club_owner'=>1]);
+        $user_table->where('id', $uid)->update(['type'=>1, 'approved_status'=>1, 'club_id'=>$club->id, 'club_owner'=>1]);
+        
+        $club_list = DB::table('Club')->where('owner_id', $uid)->get();
         //$user_table->save();
-        return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'status'=>Auth::user()->approved_status));
+        
+        $match_table = new Match();
+        $result_table = new MatchResult;
+        $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
+    	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+        
+        return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
     }
 
     public function invite(Request $request)

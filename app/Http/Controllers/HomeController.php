@@ -80,6 +80,8 @@ class HomeController extends Controller
         //Session::put('totalScore', $totalScore);
         $club = $club_table->where('id', $club_id)->first();
         
+        $club_list = DB::table('Club')->where('owner_id', $uid)->get();
+        
         $userClubID = Auth::user()->club_id;
 
         $userClubName = DB::table('Club')
@@ -99,7 +101,7 @@ class HomeController extends Controller
         //$club = $club_table->where('id', $clubuser->club_id)->first();
         	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         
-        return view('home', array('club'=>$club, 'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
+        return view('home', array('club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
     }
     
     
