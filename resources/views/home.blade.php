@@ -187,6 +187,7 @@
                             <tr data-toggle="collapse" data-target=".contents">
                                 <th>Club ID</th>
                                 <th>Club Name</th>
+                                <th>Select</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -195,6 +196,13 @@
                             <tr>
                                 <td>{{ $cl->id }}</td>
                                 <td>{{ $cl->name }}</td>
+                                @if($club_id == $cl->id)
+                                <td><a class="btn btn-outline-success" style="width:5rem" 	
+                                   disabled>Selected</a></td>
+                                @else
+                                <td><a class="btn btn-outline-success" style="width:5rem" 	
+                            href="changeActiveClub({{$cl->id}})">Select</a></td>
+                                @endif
                             </tr>
                             @endforeach
                             @endif

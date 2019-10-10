@@ -33,6 +33,7 @@ Route::post('/home/admin/editResult', 'HomeController@editMatch');
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
 
+
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
 Route::post('/home', 'ClubController@applyClub');
