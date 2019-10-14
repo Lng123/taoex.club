@@ -32,7 +32,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="firstName" type="text" class="form-control" name="firstName" maxlength="255"value="{{ old('firstName') }}" required autofocus>
+                                <input id="firstName" type="text" class="form-control" name="firstName" maxlength="254"value="{{ old('firstName') }}" required autofocus>
 
 
 
@@ -60,7 +60,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="lastName" type="text" class="form-control" name="lastName" maxlength="255" value="{{ old('lastName') }}" required autofocus>
+                                <input id="lastName" type="text" class="form-control" name="lastName" maxlength="254" value="{{ old('lastName') }}" required autofocus>
 
 
 
@@ -88,7 +88,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="address" type="address" class="form-control" name="address" maxlength="255" value="{{ old('address') }}" required>
+                                <input id="address" type="address" class="form-control" name="address" maxlength="254" value="{{ old('address') }}" required>
 
 
 
@@ -144,7 +144,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="email" type="email" class="form-control" name="email" maxlength="255" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" maxlength="254" value="{{ old('email') }}" required>
 
 
 
@@ -210,7 +210,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="city" type="text" class="form-control" name="city" maxlength="255" value="{{ old('city') }}" required>
+                                <input id="city" type="text" class="form-control" name="city" maxlength="254" value="{{ old('city') }}" required>
 
 
 
@@ -238,7 +238,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="password" type="password" class="form-control" name="password" maxlength="255" required>
+                                <input id="password" type="password" class="form-control" name="password" maxlength="254" required>
 
 
 
@@ -266,7 +266,7 @@
 
                             <div class="col-md-6">
 
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  maxlength="255"required>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation"  maxlength="254"required>
 
                             </div>
 
