@@ -33,6 +33,8 @@ Route::post('/home/admin/editResult', 'HomeController@editMatch');
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
 
+//Change Active Club
+Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('changeClub');
 
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');

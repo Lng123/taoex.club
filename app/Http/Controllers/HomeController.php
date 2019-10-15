@@ -103,7 +103,7 @@ class HomeController extends Controller
         
         return view('home', array('club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
     }
-    public function changeActiveClub(Request $club_id)
+    public function changeActiveClub($club_id)
     {
         $match_table = new Match;
         $result_table = new MatchResult;
@@ -112,12 +112,20 @@ class HomeController extends Controller
         $club_table = new Club;
         $clubuser_table = new Clubuser;
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        $user_table->where('id', $uid)->update(['club_id'=>$club->id]);
+        $user_table->where('id', $uid)->update(['club_id'=>$club_id]);
         $club = $club_table->where('id', $club_id)->first();
         $status = Auth::user()->approved_status;
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $total_score = $result_table->where('player_id', $uid)->sum('total');
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
+        $userClubID = Auth::user()->club_id;
+
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
+        
+        $test = (String) $userClubName;
         $userMessages = DB::table('messages')
                             ->select('message', 'message_id')
                             ->where('club_name', $test)
@@ -125,7 +133,7 @@ class HomeController extends Controller
 	$clubMembers = $user_table->get();
         	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         
-        return view('/home', array('club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
+        return redirect('/home');
     }
     
     

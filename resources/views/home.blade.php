@@ -201,7 +201,7 @@
                                    disabled>Selected</a></td>
                                 @else
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
-                            href="changeActiveClub({{$cl->id}})">Select</a></td>
+                            href="{{ route('changeClub', [$cl->id]) }}">Select</a></td>
                                 @endif
                             </tr>
                             @endforeach
