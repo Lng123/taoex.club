@@ -33,6 +33,7 @@
                               <th>Total Games</th>
                               <th>Won</td>
                               <th>Score</td>
+                              <th></td>
                             </tr>
                           </thead>
                           <tbody>
@@ -41,12 +42,11 @@
                             <tr>
                             <td>{{ $memberDatum['rank'] }}</td>
                               <td>{{ $memberDatum['name'] }}</td>
-                              
                               <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
                               <td>{{ $memberDatum['games'] }}</td>
                               <td>{{ $memberDatum['won'] }}</td>
                               <td>{{ $memberDatum['score'] }}</td>
-
+                              <td>@if ($memberDatum['role'] != 1)<input type="submit" class="btn btn-primary" value="Kick"/>@endif</td>
                             </tr>
                             @endforeach
                           </tbody>
