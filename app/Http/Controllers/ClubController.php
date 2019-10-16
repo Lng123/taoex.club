@@ -216,7 +216,6 @@ class ClubController extends Controller
         $club->province = $request->province;
         $club->city = $request->city;
         $checkResult = DB::table('Club')->where('owner_id', $uid)->get();
-        
         $club->owner_id = $uid;
         $club->save();
         
@@ -264,7 +263,21 @@ class ClubController extends Controller
         $status = Auth::user()->approved_status;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>1]);
-        return view('/home', array('color'=>'alert-success', 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
+        $ranking = 0;
+        $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $userClubID = Auth::user()->club_id;
+
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
+
+        $test = (String) $userClubName;
+        $messages = DB::table('messages')
+        ->select('message', 'message_id')
+        ->where('club_name', $test)
+        ->get();
+        return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
     }
 
     public function declineInvitation(Request $request)
@@ -284,22 +297,37 @@ class ClubController extends Controller
 
         $uid = Auth::user()->id;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-        //Finding the club id associated to current club owner THIS QUERY IS FUCKED
-        $club_name = DB::table('Club')
-                                ->select(DB::raw('name'))
-                                ->where('owner_id', $uid)
-                                ->get();
+        //Finding the club id associated to current club owner THIS QUERY IS MESSED
+        #$club_name = DB::table('Club')
+        #                        ->select(DB::raw('name'))
+        #                        ->where('owner_id', $uid)
+        #                        ->get();
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->get();
+        #$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $message = $request->input('message');
+        $ranking = 0;
+        $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $userClubID = Auth::user()->club_id;
 
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
 
-        $data = array(
-            'club_name'=> $club_name,
-            'message'=> $message,
-        );
-        DB::table('messages')->insert($data);
-        
-        return view('/yes', array('color'=>'alert-success', 'message'=>'Your message was sent', 'totalScore'=>$totalScore));
+        $test = (String) $userClubName;
+        $messages = DB::table('messages')
+        ->select('message', 'message_id')
+        ->where('club_name', $test)
+        ->get();
 
+        #$data = array(
+        #    'club_name'=> $club_name->name,
+        #    'message'=> $message,
+        #);
+        DB::table('messages')->insert(['club_name' => $club_name,'message'=>$message]);
+        $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
+        #return view('/yes', array('color'=>'alert-success', 'message'=>'Your message was sent', 'totalScore'=>$totalScore));
+        return view ('/home',array('totalScore'=>$totalScore,'ranking'=>$ranking,'messages'=>$messages));
     }
 
 }

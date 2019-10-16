@@ -50,8 +50,8 @@ class HomeController extends Controller
         
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-    	
-    	
+    	$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+    	$all_clubs = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->distinct()->get();
     	
        
 	//$clubusers = $clubuser_table->get();
