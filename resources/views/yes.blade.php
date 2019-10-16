@@ -1,4 +1,4 @@
 Message sent!
 <script>
-        window.location.replace("/home/");
+        //window.location.replace("taoex/home/");
 </script>

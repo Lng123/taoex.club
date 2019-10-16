@@ -33,9 +33,12 @@ Route::post('/home/admin/editResult', 'HomeController@editMatch');
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
 
+//Change Active Club
+Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('changeClub');
+
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
-Route::post('applyClub', 'ClubController@applyClub');
+Route::post('/home', 'ClubController@applyClub');
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
 Route::get('/home/{club_id}/editClubProfile', 'ClubController@showUpdateClubeForm')->name('editClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
@@ -43,6 +46,7 @@ Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
 Route::post('/home/Club', 'ClubController@sendMessage');
+Route::get('/home/{club_id}/playersearch', 'ClubController@playersearch');
 
 //invitation
 Route::post('invitePlayer', 'ClubController@invite');
