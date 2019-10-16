@@ -146,7 +146,7 @@
     </div>
   </div>
 
-            @if (isset($club_id) && Auth::user()->approved_status == 2)
+            @if (isset($club_id))
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header h4">Invitation</div>
