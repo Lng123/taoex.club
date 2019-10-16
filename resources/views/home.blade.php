@@ -31,13 +31,16 @@
                         <ul class="list-group" style="color:gray">
                             <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;" >{{ isset($club) ? $club->name : 'None' }} 
+                            @if(isset($club_list))
+                            @foreach ($club_list as $cloob)
+                            <li>{{$cloob->name}}</li>
+                               @endforeach
+                              @endif
                             <a class="btn btn-outline-success" style="display:@if (Auth::user()->club_id == null) '' @else none @endif; width:5rem" 	
                             href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
-                            
                             <a href="/home/ranking">{{ $ranking }}</a></span></li>
-
                             <li class="list-group-item" style="font-weight: bold;">
                                 <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('editUser',Auth::user()->id) }}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-outline-secondary" style="width:5rem; text-align:center" href="{{ route('deleteUser',Auth::user()->id) }}">Delete</a>
@@ -73,6 +76,11 @@
                                 <th>Messages</th>
                                 <th>Time</th>
                                 <th><a href="#">Click here to view messages</a></th>
+                                @if(isset($messages))
+                                @foreach ($messages as $message)
+                            <li>{{$message->message}}</li>
+                               @endforeach
+                               @endif
                             </tr>
                         </thead>
                         <tbody>                          
