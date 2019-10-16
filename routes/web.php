@@ -40,7 +40,7 @@ Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('ch
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
 Route::post('/home', 'ClubController@applyClub');
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
-Route::get('/home/{club_id}/editClubProfile', 'ClubController@showUpdateClubeForm')->name('editClub');
+Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');

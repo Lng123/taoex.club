@@ -148,9 +148,8 @@ class ClubController extends Controller
      * Click on "edit' link will route to this method
      * Show the view of "editClubProfile"
      */
-    public function showUpdateClubeForm($club_id)
+    public function showManageClub()
     {
-        $club = Club::findOrFail($club_id);
         $date = date('Y');
 
         //User Table
@@ -166,6 +165,7 @@ class ClubController extends Controller
         $uid = Auth::user()->id;
         //Obtain club id
         $club_id = Auth::user()->club_id;
+        $club = Club::findOrFail($club_id);
         //Obtain status
         $approved_status = Auth::user()->approved_status;
         $type = Auth::user()->type;
@@ -206,7 +206,7 @@ class ClubController extends Controller
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
         }
 
-        return view('taoex.editClubProfile', compact('club'), array('memberData'=>$memberData));
+        return view('taoex.manageClub', compact('club'), array('memberData'=>$memberData));
     }
 
     /*
