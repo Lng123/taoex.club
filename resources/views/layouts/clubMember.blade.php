@@ -15,7 +15,7 @@
                                     <small><b>Rankings for the Year of:</b></small>
                                    
  					<input type="number" id="year" name="year"
-                                        min="2010" max="2018" value="2018" value="" />
+                                        min="2010" max="2019" value="2019" value="" />
                                     <span class="validity"></span>   
                                      <input type="submit" class="btn btn-primary">
                             </div> 
