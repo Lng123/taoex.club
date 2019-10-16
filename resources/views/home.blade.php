@@ -36,7 +36,9 @@
                             href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
-                            <a href="/home/ranking">{{ $ranking }}</a></span></li>
+                            
+                            <a href="{{url('home/ranking')}}">{{ $ranking }}</a></span></li>
+
                             <li class="list-group-item" style="font-weight: bold;">
                                 <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('editUser',Auth::user()->id) }}">Edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                                 <a class="btn btn-outline-secondary" style="width:5rem; text-align:center" href="{{ route('deleteUser',Auth::user()->id) }}">Delete</a>
