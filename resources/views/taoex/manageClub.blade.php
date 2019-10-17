@@ -1,5 +1,12 @@
 @extends('layouts.header')
 @section('content')
+<script>
+   $(document).ready(function() {
+        $('#member').DataTable()( {
+            aaSorting: [[0, 'asc']]
+        });
+    } );
+</script>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
@@ -13,8 +20,7 @@
         <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Manage Club</div>
-
+                <div class="h3">Edit Club Information</div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('updateClub') }}">
                         {{ csrf_field() }}
@@ -92,12 +98,46 @@
         </div>
         </div>
         <div class="h3">Club Members</div>
-            <div class="card">
-              @include('layouts.clubMember')
-              </div>
+        <div class="col-md-8 col-md-offset-2">
+            <div class="table-responsive data-table" >
+                <table id="member" class="table table-bordered" width ="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Manage Members</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    
+                    @foreach($memberData as $memberDatum)	
+                    <tr>
+                        <td>{{ $memberDatum['name'] }}</td>
+                        <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
+                        <td>
+                        @if ($memberDatum['role'] != 1)
+                            <input class="btn btn-primary" type="button" value="Kick" id="kick"/>
+                            <div id="confirmKickModal" class="modal">
+                                <div class="modal-content">
+                                    <p>Are you sure you would like to kick {{$memberDatum['name']}}?</p>
+                                    <form>
+                                        <input class="btn btn-primary" type="submit" value="Yes" id="yesKick"/>
+                                        <input class="btn btn-primary" type="button" value="No" id="noKick"/>
+                                    </form>
+                                </div>
+                            </div>
+                            <input class="btn btn-primary" type="button"value="Message"/>
+                        @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
 </div>
+
 <!-- Scripts -->
 
     <script src="{{ asset('js/countries.js') }}"></script>
@@ -135,8 +175,27 @@
                 }
             }
             province.value = province_input.value;
+            
+            // Get the modal
+            var modal = document.getElementById("confirmKickModal");
+
+            // Get the button that opens the modal
+            var btn = document.getElementById("kick");
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+            modal.style.display = "block";
+            }
+            // Get the no confirmation button
+            var noBtn = document.getElementById("noKick");
+
+            // Close modal if no button is closed
+            noBtn.onclick = function() {
+                modal.style.display = "none";
+            }
 
         }
     </script>
 @endsection
+
 
