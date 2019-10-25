@@ -11,8 +11,8 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('updateUser') }}">
                         {{ csrf_field() }}
-                        <input type="hidden" name="_token" maxlength="255" value="{{ csrf_token() }}">
-                        <input type="hidden" name="id" maxlength="255" value="{{ $userinfo->id }}">
+                        <input type="hidden" name="_token" maxlength="254" value="{{ csrf_token() }}">
+                        <input type="hidden" name="id" maxlength="254" value="{{ $userinfo->id }}">
                         
                         <div class="form-group">
                             <label for="picture" class="col-md-4 control-label">Picture</label>
@@ -33,7 +33,7 @@
                         <div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
                             <label for="firstName" class="col-md-4 control-label">First Name</label>
                             <div class="col-md-6">
-                                <input id="firstName" type="text" class="form-control" name="firstName" maxlength="255" value="{{ $userinfo->firstName }}" required autofocus>
+                                <input id="firstName" type="text" class="form-control" name="firstName" maxlength="254" value="{{ $userinfo->firstName }}" required autofocus>
                                 @if ($errors->has('firstName'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('firstName') }}</strong>
@@ -45,7 +45,7 @@
                         <div class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
                             <label for="lastName" class="col-md-4 control-label">Last Name</label>
                             <div class="col-md-6">
-                                <input id="lastName" type="text" class="form-control" name="lastName" maxlength="255" value="{{ $userinfo->lastName }}" required autofocus>
+                                <input id="lastName" type="text" class="form-control" name="lastName" maxlength="254" value="{{ $userinfo->lastName }}" required autofocus>
                                 @if ($errors->has('lastName'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('lastName') }}</strong>
@@ -59,7 +59,7 @@
                         <div class="form-group{{ $errors->has('address') ? ' has-error' : '' }}">
                             <label for="address" class="col-md-4 control-label">Address</label>
                             <div class="col-md-6">
-                                <input id="address" type="address" class="form-control" name="address" maxlength="255" value="{{ $userinfo->address }}" required>
+                                <input id="address" type="address" class="form-control" name="address" maxlength="254" value="{{ $userinfo->address }}" required>
                                 @if ($errors->has('address'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('address') }}</strong>
@@ -83,7 +83,7 @@
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" maxlength="255" value="{{ $userinfo->email }}" required>
+                                <input id="email" type="email" class="form-control" name="email" maxlength="254" value="{{ $userinfo->email }}" required>
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
@@ -116,7 +116,7 @@
                         <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
                             <label for="city" class="col-md-4 control-label">City</label>
                             <div class="col-md-6">
-                                <input id="city" type="text" class="form-control" name="city" maxlength="255" value="{{ $userinfo->city }}" required>
+                                <input id="city" type="text" class="form-control" name="city" maxlength="254" value="{{ $userinfo->city }}" required>
                                 @if ($errors->has('city'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('city') }}</strong>
