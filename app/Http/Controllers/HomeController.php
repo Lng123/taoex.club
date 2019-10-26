@@ -81,7 +81,7 @@ class HomeController extends Controller
         $club = $club_table->where('id', $club_id)->first();
         
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        
+        $club_list_in = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
 
         $userClubName = DB::table('Club')
@@ -96,12 +96,12 @@ class HomeController extends Controller
                             ->where('club_name', $test)
                             ->get();
 	$clubMembers = $user_table->get();
-         $pending_invites = DB::table('Invite')->join('Club','Club.id', '=','Invite.club_id')->select('Invite.id', 'Invite.club_id','name')->where('Invite.id',$uid)->get();
+         $pending_invites = DB::table('Invite')->join('Club','Club.id', '=','Invite.club_id')->join('users','Club.owner_id','=','users.id')->select('Invite.id', 'Invite.club_id','Club.name','Club.city','Club.province','users.firstname')->where('Invite.id',$uid)->get();
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
         //$club = $club_table->where('id', $clubuser->club_id)->first();
         	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         
-        return view('home', array('pending_invites'=>$pending_invites,'club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
+        return view('home', array('club_list_in'=>$club_list_in,'pending_invites'=>$pending_invites,'club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
     }
     public function changeActiveClub($club_id)
     {

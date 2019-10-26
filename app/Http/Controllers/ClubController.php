@@ -318,7 +318,7 @@ class ClubController extends Controller
     }
 
 
-    public function acceptInvitation(Request $request)
+    public function acceptInvitation($id)
     {
         $uid = Auth::user()->id;
         $status = Auth::user()->approved_status;
@@ -327,7 +327,8 @@ class ClubController extends Controller
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
-
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
+        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$id]);
         $userClubName = DB::table('Club')
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
@@ -338,7 +339,8 @@ class ClubController extends Controller
         ->select('message', 'message_id')
         ->where('club_name', $test)
         ->get();
-        return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
+        return redirect('/home/club');
+        //return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
     }
 
     public function declineInvitation(Request $request)

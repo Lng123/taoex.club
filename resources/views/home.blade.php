@@ -31,7 +31,11 @@
                         <ul class="list-group" style="color:gray">
                             <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;" >{{ isset($club) ? $club->name : 'None' }} 
-                            
+                            @if(isset($club_list_in))
+                            @foreach ($club_list_in as $cloob)
+                            <li>{{$cloob->name}}</li>
+                               @endforeach
+                              @endif
                             <a class="btn btn-outline-success" style="width:5rem"
                             href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
@@ -151,7 +155,7 @@
                     <div class="card-header h4">Invitation</div>
                     <div class="card-body">
                         <div class="h5">You have an invitation</div>
-                        <form method="GET" action="{{ action('ClubController@acceptInvitation') }}">
+                        <form method="GET" action="{{ route('acceptInvite',[$invites->club_id]) }}">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-6">Club Name:</div>
@@ -159,11 +163,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">Club Owner:</div>
-                                    <div class="col-6"></div>
+                                    <div class="col-6">{{ $invites->firstname}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">Club Location:</div>
-                                    <div class="col-6">{{ $club->city }}, {{ $club->province }}</div>
+
+                                    <div class="col-6">{{ $invites->city }}, {{ $invites->province }}</div>
                                 </div>
                             </div>
                             <div class="form-group">
