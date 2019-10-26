@@ -144,7 +144,8 @@
     </div>
   </div>
 
-            @if (isset($club_id))
+            @if (isset($pending_invites))
+            @foreach ($pending_invites as $invites)
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header h4">Invitation</div>
@@ -154,7 +155,7 @@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-6">Club Name:</div>
-                                    <div class="col-6"> {{ $club->name }}</div>
+                                    <div class="col-6"> {{ $invites->name }}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">Club Owner:</div>
@@ -177,6 +178,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
             @endif
 <br>
                     <div class="panel panel-primary">

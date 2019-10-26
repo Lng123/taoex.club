@@ -96,12 +96,12 @@ class HomeController extends Controller
                             ->where('club_name', $test)
                             ->get();
 	$clubMembers = $user_table->get();
-
+         $pending_invites = DB::table('Invite')->join('Club','Club.id', '=','Invite.club_id')->select('Invite.id', 'Invite.club_id','name')->where('Invite.id',$uid)->get();
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
         //$club = $club_table->where('id', $clubuser->club_id)->first();
         	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         
-        return view('home', array('club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
+        return view('home', array('pending_invites'=>$pending_invites,'club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
     }
     public function changeActiveClub($club_id)
     {
