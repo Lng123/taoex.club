@@ -91,6 +91,11 @@
             </div>
         </div>
         </div>
+        <div class="h3">Club Members</div>
+            <div class="card">
+              @include('layouts.clubMember')
+              </div>
+            </div>
     </div>
 </div>
 <!-- Scripts -->

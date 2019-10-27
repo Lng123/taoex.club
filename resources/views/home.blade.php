@@ -31,7 +31,8 @@
                         <ul class="list-group" style="color:gray">
                             <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;" >{{ isset($club) ? $club->name : 'None' }} 
-                            <a class="btn btn-outline-success" style="display:@if (Auth::user()->club_id == null) '' @else none @endif; width:5rem" 	
+                            
+                            <a class="btn btn-outline-success" style="width:5rem"
                             href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
@@ -73,6 +74,11 @@
                                 <th>Messages</th>
                                 <th>Time</th>
                                 <th><a href="#">Click here to view messages</a></th>
+                                @if(isset($messages))
+                                @foreach ($messages as $message)
+                            <li>{{$message->message}}</li>
+                               @endforeach
+                               @endif
                             </tr>
                         </thead>
                         <tbody>                          
@@ -138,7 +144,7 @@
     </div>
   </div>
 
-            @if (isset($club_id) && Auth::user()->approved_status == 2)
+            @if (isset($club_id))
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header h4">Invitation</div>
@@ -172,7 +178,47 @@
                 </div>
             </div>
             @endif
-
+<br>
+                    <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse3" style="width:100%">Clubs</button>
+      </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse show">
+      <ul class="list-group">
+        <li class="list-group-item" style="overflow:auto">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr data-toggle="collapse" data-target=".contents">
+                                <th>Club ID</th>
+                                <th>Club Name</th>
+                                <th>Select</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(isset($club_list))
+                            @foreach ($club_list as $cl)
+                            <tr>
+                                <td>{{ $cl->id }}</td>
+                                <td>{{ $cl->name }}</td>
+                                @if($club_id == $cl->id)
+                                <td><a class="btn btn-outline-success" style="width:5rem" 	
+                                   disabled>Selected</a></td>
+                                @else
+                                <td><a class="btn btn-outline-success" style="width:5rem" 	
+                            href="{{ route('changeClub', [$cl->id]) }}">Select</a></td>
+                                @endif
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+  
+        </li>
+      </ul>
+    </div>
+  </div>
                 
         <!--<div class="h4" style="display:@if (Auth::user()->club_id == null) none @else '' @endif">Club Tournaments <hr/></div>-->
 	

@@ -40,9 +40,11 @@
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             
                             <a href="/home/ranking">5</a></span></li>
+                            @if(Auth::user()->type == 1)
                             <li class="list-group-item" style="font-weight: bold;">
                                 <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('editClub',$club->id) }}">Edit</a>
                             </li>
+                            @endif
                             <li class="list-group-item" style="font-weight: bold;">
                               <a class="btn btn-outline-secondary" style="width:5rem" href="{{ url("home/club/$club->id/playersearch") }}">Invite</a>
                           </li>
