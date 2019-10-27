@@ -237,15 +237,24 @@ class ClubController extends Controller
 
     public function invite(Request $request)
     {
-        $user_table = new User;
-        $uid = Auth::user()->id;
-        $player_id = $request->player;
-        $club_id = $request->club_id;
-        $status = Auth::user()->approved_status;
-        $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-        $user_table->where('id', $player_id)->update(['approved_status'=>2, 'club_id'=>$club_id]);
-        return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
-                                    'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
+        // $user_table = new User;
+        // $uid = Auth::user()->id;
+        // $player_id = $request->player;
+        // $club_id = $request->club_id;
+        // $status = Auth::user()->approved_status;
+        // $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
+        // $user_table->where('id', $player_id)->update(['approved_status'=>2, 'club_id'=>$club_id]);
+        // return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
+        //                             'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
+        // $user_table = new User;
+        // $uid = Auth::user()->id;
+        $userid = $request->input('ranking');
+        $uid = (int)$userid;
+        $club_id = (int)$request->input('club_id');
+        DB::table('Invite')->insert(['id' => $uid, 'club_id' =>$club_id]);
+        return $this->playersearch();
+        // return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
+        //                              'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
 
     }
 
@@ -299,7 +308,10 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $user_table = new User;
         $club_table = new Club;
+        $uid = Auth::user()->id;
         $club_count = Club::count();
+        $club_id = $club_table->where('owner_id', $uid)->value('id');
+        $club = $club_table->where('id', $club_id)->first();
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
         
         $rankings = $user_table->orderBy('score','desc')->get();
@@ -308,7 +320,7 @@ class ClubController extends Controller
 
 
         return view('taoex.playersearch')->with(['club_count'=> $club_count,
-                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount]);
+                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club]);
     }
 
 }

@@ -44,7 +44,7 @@
                                 <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('editClub',$club->id) }}">Edit</a>
                             </li>
                             <li class="list-group-item" style="font-weight: bold;">
-                              <a class="btn btn-outline-secondary" style="width:5rem" href="{{ url('home/club/playersearch', $club->id) }}">Invite</a>
+                              <a class="btn btn-outline-secondary" style="width:5rem" href="{{ url("home/club/$club->id/playersearch") }}">Invite</a>
                           </li>
                         </ul>
                     </div>
