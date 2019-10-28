@@ -41,11 +41,6 @@
                         <ul class="list-group" style="color:gray">
                             <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
                             <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;" >{{ isset($club) ? $club->name : 'None' }} 
-                            @if(isset($club_list_in))
-                            @foreach ($club_list_in as $cloob)
-                            <li>{{$cloob->name}}</li>
-                               @endforeach
-                              @endif
                             <a class="btn btn-outline-success" style="width:5rem"
                             href="{{ route('newClub') }}">Create</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
