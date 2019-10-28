@@ -10,6 +10,16 @@
             <li class="breadcrumb-item active">Dashboard</li>
             <!-- user card -->
         <br><div class="h3">Welcome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
+        <div class="dropdown">
+                              <button class="dropbtn">List of clubs</button>
+                              <div class="dropdown-content">
+                              @if(isset($club_list_in))
+                            @foreach ($club_list_in as $cloob)
+                            <a href="#">{{$cloob->name}}</a>
+                               @endforeach
+                              @endif
+                              </div>
+                            </div>   
         </ol>
 
         
