@@ -44,7 +44,7 @@
                                      </td>
                                      <td>{{$ranking->firstName}} {{$ranking->lastName}}</td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
-                                     <td style= "width: 10%"><a class="btn btn-outline-secondary" style="width:5rem" href="{{ url('home/club/playersearch') }}">Invite</a></td>
+                                     <td style= "width: 10%"><a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('invitePlayer',[$ranking->id]) }}">Invite</a></td>
                                    </tr>
                                @endforeach
                                  </tbody>

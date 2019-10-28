@@ -49,7 +49,9 @@ Route::post('/home/Club', 'ClubController@sendMessage');
 Route::get('/home/{club_id}/playersearch', 'ClubController@playersearch');
 
 //invitation
-Route::post('invitePlayer', 'ClubController@invite');
+//Route::post('invitePlayer', 'ClubController@invite')->name('invitePlayer');
+Route::get('/invitePlayer/{user_id}','ClubController@invite')->name('invitePlayer');
+Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
 
