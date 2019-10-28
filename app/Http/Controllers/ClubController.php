@@ -315,7 +315,7 @@ class ClubController extends Controller
         DB::table('invite')->insert(['id'=>$player_id,'club_id'=>$club_id]);
         //return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
         //                            'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
-        return redirect('/home/club/playersearch');
+        return redirect('/home/club/{club_id}/playersearch');
     }
 
 
