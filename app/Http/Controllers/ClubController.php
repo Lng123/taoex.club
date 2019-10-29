@@ -301,17 +301,9 @@ class ClubController extends Controller
 
     public function invite(Request $request)
     {
-        // $user_table = new User;
-        // $uid = Auth::user()->id;
-        // $player_id = $request->player;
-        // $club_id = $request->club_id;
+
         // $status = Auth::user()->approved_status;
-        // $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-        // $user_table->where('id', $player_id)->update(['approved_status'=>2, 'club_id'=>$club_id]);
-        // return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
-        //                             'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
-        // $user_table = new User;
-        // $uid = Auth::user()->id;
+
         $userid = $request->input('ranking');
         $uid = (int)$userid;
         $club_id = Auth::user()->club_id;
@@ -408,34 +400,16 @@ class ClubController extends Controller
         $club_id = Auth::user()->club_id;
         $club = $club_table->where('id', $club_id)->first();
         $already_invited = [];
+        $club_members = [];
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
-
-        // $userinvite = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->distinct()->first();
-        // $userinvitesub = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->groupBy('users.id')->having('Invite.club_id', '!=', $club_id)
-        //     ->orhaving('Invite.club_id', '!=', NULL)->distinct()->first();
         
         $allinvites = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->get();
+        $usersinclubs = DB::table('userclubs')->where('club_id',$club_id)->get();
+
+        foreach($usersinclubs as $cmembers) {
+            array_push($club_members, $cmembers->id);
+        }
          
-        // $rankings = $userinvite->leftJoin($userinvitesub, $userinvitesub->id, $userinvite->id)->leftJoin($userinvitesub, $userinvitesub->club_id, $userinvite->club_id)
-        //     ->where($userinvitesub->club_id,NULL)->orwhere($userinvite->club_id,NULL)->get();
-        
-        // $rankings = DB::select(" select distinct u.firstname, u.lastname, u.id, i.club_id, u.score, u.image, u.image_type
-        // FROM users as u
-        // LEFT JOIN invite as i
-        // ON u.id = i.id
-        // LEFT JOIN ( select distinct u.firstname, u.lastname, u.id, i.club_id, u.score
-        // FROM users as u
-        // LEFT JOIN invite as i
-        // ON u.id = i.id
-        // GROUP BY u.id
-        // HAVING i.club_id != $club_id
-        // OR i.club_id != NULL) as t
-        // ON t.id = i.id
-        // AND t.club_id = i.club_id
-        // WHERE i.club_id is NULL
-        //     OR t.club_id is NULL
-    
-        // ORDER BY u.score DESC;");
 
         foreach($allinvites as $invites) {
             if ($invites->club_id == $club_id) {
@@ -443,15 +417,16 @@ class ClubController extends Controller
             }
         }
         
-       $rankings = $user_table->orderBy('score','desc')->get();
-        // $rankings = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->where('Invite.club_id',46)
-        // ->orwhere('Invite.id', NULL)->orderBy('score','desc')->orderBy('users.id', 'asc')->distinct()->get();
+        $rankings = $user_table->orderBy('score','desc')->get();
+
         $playerCount = User::count();
 
 
 
         return view('taoex.playersearch')->with(['club_count'=> $club_count,
-                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club, 'already_invited' =>$already_invited]);
+                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club, 
+                                          'already_invited' =>$already_invited,
+                                          'club_members' => $club_members]);
     }
 
 }

@@ -47,11 +47,11 @@
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
                                      <td style= "width: 15%">
                                       
-                                      @if($ranking->club_id == $club->id)
-                                      <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>In Club</button>
+                                      @if(in_array($ranking->id,$club_members))
+                                        <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>In Club</button>
                                       @elseif(in_array($ranking->id,$already_invited))
                                         <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>Already Invited</button>
-                                       @else
+                                      @else
                                         <form method="POST" action="{{ route('invitePlayer',$club->id) }}">
                                           {{ csrf_field() }}
                                             <button class="btn btn-outline-secondary" style="width:8rem" type="submit" value="Invite" >Invite</button>
