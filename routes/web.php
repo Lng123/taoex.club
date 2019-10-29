@@ -50,6 +50,9 @@ Route::get('/home/club/{club_id}/playersearch', 'ClubController@playersearch');
 
 //invitation
 Route::post('/home/club/{club_id}/playersearch', 'ClubController@invite')->name('invitePlayer');
+//Route::post('invitePlayer', 'ClubController@invite')->name('invitePlayer');
+//Route::get('/invitePlayer/{user_id}','ClubController@invite')->name('invitePlayer');
+Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
 

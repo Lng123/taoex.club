@@ -56,7 +56,6 @@
                                           {{ csrf_field() }}
                                             <button class="btn btn-outline-secondary" style="width:8rem" type="submit" value="Invite" >Invite</button>
                                             <input type="hidden" value={{$ranking->id}} name="ranking" />
-                                            <input type="hidden" value={{$club->id}} name="club_id" />
                                         </form>
 
                                      @endif
