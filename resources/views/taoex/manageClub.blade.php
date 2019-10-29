@@ -4,6 +4,7 @@
    $(document).ready(function() {
         $('#member').DataTable()( {
             aaSorting: [[0, 'asc']]
+            "order": [[1, "desc"]]
         });
     } );
 </script>
@@ -109,24 +110,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    
                     @foreach($memberData as $memberDatum)	
                     <tr>
                         <td>{{ $memberDatum['name'] }}</td>
                         <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
                         <td>
                         @if ($memberDatum['role'] != 1)
-                            <input class="btn btn-primary" type="button" value="Kick" id="kick"/>
-                            <div id="confirmKickModal" class="modal">
-                                <div class="modal-content">
-                                    <p>Are you sure you would like to kick {{$memberDatum['name']}}?</p>
-                                    <form>
-                                        <input class="btn btn-primary" type="submit" value="Yes" id="yesKick"/>
-                                        <input class="btn btn-primary" type="button" value="No" id="noKick"/>
-                                    </form>
-                                </div>
-                            </div>
+                            <a class="btn btn-primary"	
+                                href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                             <input class="btn btn-primary" type="button"value="Message"/>
+                        </td>
                         @endif
                         </td>
                     </tr>
@@ -179,13 +172,28 @@
             // Get the modal
             var modal = document.getElementById("confirmKickModal");
 
-            // Get the button that opens the modal
-            var btn = document.getElementById("kick");
+            // Get modal message
+            var modalMessage = document.getElementById("modalMessage");
 
-            // When the user clicks the button, open the modal 
-            btn.onclick = function() {
-            modal.style.display = "block";
-            }
+            // Get buttons that opens the modal
+            var btns = document.getElementsByClassName("show");
+
+            // // function to display a modal
+            // function showModal() {
+            //     modalMessage.innerHTML = "wow"
+            //     modal.style.display = "block";
+            // }
+
+            // // puts an onclick function on each button
+            // var i, len = btns.length;
+            // for(i = 0; i < len; i++) {
+            //     var currentRow = btns[i].closest('tr');
+            //     var name = currentRow.cells[0];
+            //     btns[i].onclick = function() {
+            //         modal.style.display = "block";
+            //     };
+            // }
+
             // Get the no confirmation button
             var noBtn = document.getElementById("noKick");
 

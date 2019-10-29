@@ -188,13 +188,20 @@ class ClubController extends Controller
 
         foreach ($clubMembers as $clubMember) {
         	
-        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type);
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'id' => $clubMember->id, 'club_id' => $clubMember->club_id);
         	$i++;
 
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
         }
 
         return view('taoex.manageClub', compact('club'), array('memberData'=>$memberData));
+    }
+
+    public function removeClubMember($id)
+    {
+        $club_id = Auth::user()->club_id;
+        User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
+        return redirect()->route('manageClub');
     }
 
     /*
@@ -234,6 +241,10 @@ class ClubController extends Controller
 
         return redirect()->route("club");
     }
+
+    // public function removeClubMember($id) {
+    //     UserClubs::where('id', $id)->delete()
+    // }
 
     public function validateForm(Request $request)
     {
