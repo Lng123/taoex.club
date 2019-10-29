@@ -41,16 +41,20 @@ Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth
 Route::get('/home/clubBrowser', 'ClubController@showAllClub')->name('clubBrowser')->middleware('auth');
 Route::post('/home', 'ClubController@applyClub');
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
-Route::get('/home/{club_id}/editClubProfile', 'ClubController@showUpdateClubeForm')->name('editClub');
+Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
+Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
 Route::post('/home/Club', 'ClubController@sendMessage');
-Route::get('/home/{club_id}/playersearch', 'ClubController@playersearch');
+Route::get('/home/club/{club_id}/playersearch', 'ClubController@playersearch');
 
 //invitation
-Route::post('invitePlayer', 'ClubController@invite');
+Route::post('/home/club/{club_id}/playersearch', 'ClubController@invite')->name('invitePlayer');
+//Route::post('invitePlayer', 'ClubController@invite')->name('invitePlayer');
+//Route::get('/invitePlayer/{user_id}','ClubController@invite')->name('invitePlayer');
+Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
 
