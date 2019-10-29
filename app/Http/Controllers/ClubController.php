@@ -256,6 +256,7 @@ class ClubController extends Controller
     }
     public function applyClub(Request $request)
     {
+
         $ranking = 99;
         $club = new Club;
         $user_table = new User;
@@ -292,26 +293,28 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $matches = $match_table->where('club_id', $club_d)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        
-        return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
+        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
+        return redirect('/home/club');
+        //return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
     }
 
     public function invite(Request $request)
     {
-        $user_table = new User;
-        $uid = Auth::user()->id;
-        $player_id = $request->player;
-        $club_id = $request->club_id;
-        $status = Auth::user()->approved_status;
-        $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-        $user_table->where('id', $player_id)->update(['approved_status'=>2, 'club_id'=>$club_id]);
-        return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
-                                    'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
+
+        // $status = Auth::user()->approved_status;
+
+        $userid = $request->input('ranking');
+        $uid = (int)$userid;
+        $club_id = Auth::user()->club_id;
+        DB::table('Invite')->insert(['id' => $uid, 'club_id' =>$club_id]);
+        return $this->playersearch();
+        // return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
+        //                              'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
 
     }
 
 
-    public function acceptInvitation(Request $request)
+    public function acceptInvitation($id)
     {
         $uid = Auth::user()->id;
         $status = Auth::user()->approved_status;
@@ -320,7 +323,8 @@ class ClubController extends Controller
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
-
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
+        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$id]);
         $userClubName = DB::table('Club')
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
@@ -331,7 +335,8 @@ class ClubController extends Controller
         ->select('message', 'message_id')
         ->where('club_name', $test)
         ->get();
-        return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
+        return redirect('/home/club');
+        //return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
     }
 
     public function declineInvitation(Request $request)
@@ -389,16 +394,38 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $user_table = new User;
         $club_table = new Club;
+        $uid = Auth::user()->id;
         $club_count = Club::count();
+        $club_id = Auth::user()->club_id;
+        $club = $club_table->where('id', $club_id)->first();
+        $already_invited = [];
+        $club_members = [];
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
         
+        $allinvites = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->get();
+        $usersinclubs = DB::table('userclubs')->where('club_id',$club_id)->get();
+
+        foreach($usersinclubs as $cmembers) {
+            array_push($club_members, $cmembers->id);
+        }
+         
+
+        foreach($allinvites as $invites) {
+            if ($invites->club_id == $club_id) {
+                array_push($already_invited,$invites->id); 
+            }
+        }
+        
         $rankings = $user_table->orderBy('score','desc')->get();
+
         $playerCount = User::count();
 
 
 
         return view('taoex.playersearch')->with(['club_count'=> $club_count,
-                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount]);
+                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club, 
+                                          'already_invited' =>$already_invited,
+                                          'club_members' => $club_members]);
     }
 
 }
