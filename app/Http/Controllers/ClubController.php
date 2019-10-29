@@ -401,17 +401,53 @@ class ClubController extends Controller
         $club_table = new Club;
         $uid = Auth::user()->id;
         $club_count = Club::count();
-        $club_id = $club_table->where('owner_id', $uid)->value('id');
+        $club_id = Auth::user()->club_id;
         $club = $club_table->where('id', $club_id)->first();
+        $already_invited = [];
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
+
+        // $userinvite = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->distinct()->first();
+        // $userinvitesub = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->groupBy('users.id')->having('Invite.club_id', '!=', $club_id)
+        //     ->orhaving('Invite.club_id', '!=', NULL)->distinct()->first();
         
-        $rankings = $user_table->orderBy('score','desc')->get();
+        $allinvites = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->get();
+         
+        // $rankings = $userinvite->leftJoin($userinvitesub, $userinvitesub->id, $userinvite->id)->leftJoin($userinvitesub, $userinvitesub->club_id, $userinvite->club_id)
+        //     ->where($userinvitesub->club_id,NULL)->orwhere($userinvite->club_id,NULL)->get();
+        
+        // $rankings = DB::select(" select distinct u.firstname, u.lastname, u.id, i.club_id, u.score, u.image, u.image_type
+        // FROM users as u
+        // LEFT JOIN invite as i
+        // ON u.id = i.id
+        // LEFT JOIN ( select distinct u.firstname, u.lastname, u.id, i.club_id, u.score
+        // FROM users as u
+        // LEFT JOIN invite as i
+        // ON u.id = i.id
+        // GROUP BY u.id
+        // HAVING i.club_id != $club_id
+        // OR i.club_id != NULL) as t
+        // ON t.id = i.id
+        // AND t.club_id = i.club_id
+        // WHERE i.club_id is NULL
+        //     OR t.club_id is NULL
+    
+        // ORDER BY u.score DESC;");
+
+        foreach($allinvites as $invites) {
+            if ($invites->club_id == $club_id) {
+                array_push($already_invited,$invites->id); 
+            }
+        }
+        
+       $rankings = $user_table->orderBy('score','desc')->get();
+        // $rankings = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->where('Invite.club_id',46)
+        // ->orwhere('Invite.id', NULL)->orderBy('score','desc')->orderBy('users.id', 'asc')->distinct()->get();
         $playerCount = User::count();
 
 
 
         return view('taoex.playersearch')->with(['club_count'=> $club_count,
-                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club]);
+                                          'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club, 'already_invited' =>$already_invited]);
     }
 
 }

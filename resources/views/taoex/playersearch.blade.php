@@ -45,14 +45,21 @@
                                      </td>
                                      <td>{{$ranking->firstName}} {{$ranking->lastName}}</td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
-                                     <td style= "width: 10%">
-                                      <form method="POST" action="{{ route('invitePlayer',$club->id) }}">
-                                      {{ csrf_field() }}
-                                        <button class="btn btn-outline-secondary" style="width:5rem" type="submit" value="Invite" >Invite</button>
-                                        <input type="hidden" value={{$ranking->id}} name="ranking" />
-                                        <input type="hidden" value={{$club->id}} name="club_id" />
-                                        
-                                      </form>
+                                     <td style= "width: 15%">
+                                      
+                                      @if($ranking->club_id == $club->id)
+                                      <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>In Club</button>
+                                      @elseif(in_array($ranking->id,$already_invited))
+                                        <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>Already Invited</button>
+                                       @else
+                                        <form method="POST" action="{{ route('invitePlayer',$club->id) }}">
+                                          {{ csrf_field() }}
+                                            <button class="btn btn-outline-secondary" style="width:8rem" type="submit" value="Invite" >Invite</button>
+                                            <input type="hidden" value={{$ranking->id}} name="ranking" />
+                                            <input type="hidden" value={{$club->id}} name="club_id" />
+                                        </form>
+
+                                     @endif
                                     </td>
                                    </tr>
                                @endforeach
