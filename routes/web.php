@@ -38,6 +38,7 @@ Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('ch
 
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
+Route::get('/home/clubBrowser', 'ClubController@showAllClub')->name('clubBrowser')->middleware('auth');
 Route::post('/home', 'ClubController@applyClub');
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
 Route::get('/home/{club_id}/editClubProfile', 'ClubController@showUpdateClubeForm')->name('editClub');
