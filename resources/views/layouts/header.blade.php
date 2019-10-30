@@ -75,11 +75,25 @@ $(document).ready(function() {
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
                         <a class="nav-link" href="{{ route('club') }}">
                             <i class="fa fa-fw fa-area-chart"></i>
                             <span class="nav-link-text">Club</span>
                         </a>
+                    </li> -->
+                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#clubCollapseComponents" data-parent="#exampleAccordion">
+                            <i class="fa fa-fw fa-area-chart"></i>
+                            <span class="nav-link-text">Club</span>
+                        </a>
+                        <ul class="sidenav-second-level collapse" id="clubCollapseComponents">
+                            <li>
+                                <a href="{{ route('club') }}">My club</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('clubBrowser') }}">View all clubs</a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
                         <a class="nav-link" href="{{ route('league') }}">
@@ -88,11 +102,11 @@ $(document).ready(function() {
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#matchCollapseComponents" data-parent="#exampleAccordion">
                             <i class="fa fa-fw fa-wrench"></i>
                             <span class="nav-link-text">Match</span>
                         </a>
-                        <ul class="sidenav-second-level collapse" id="collapseComponents">
+                        <ul class="sidenav-second-level collapse" id="matchCollapseComponents">
                             <li>
                                 <a href="{{ route('matchHistory') }}">Match history</a>
                             </li>
