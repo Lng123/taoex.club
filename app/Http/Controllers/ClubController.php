@@ -409,7 +409,7 @@ class ClubController extends Controller
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
         ->get();
-
+        DB::table('users')->where('id',$uid)->update(['club_id'=>$id]);
         $test = (String) $userClubName;
         $messages = DB::table('messages')
         ->select('message', 'message_id')
@@ -425,6 +425,7 @@ class ClubController extends Controller
         $status = Auth::user()->approved_status;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>0, 'club_id'=>NULL]);
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
         return view('/home', array('color'=>'alert-success', 'message'=>'You have declined the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
     }
     
