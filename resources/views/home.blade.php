@@ -10,16 +10,6 @@
             <li class="breadcrumb-item active">Dashboard</li>
             <!-- user card -->
         <br><div class="h3">Welcome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
-        <div class="dropdown">
-                              <button class="dropbtn">List of clubs</button>
-                              <div class="dropdown-content">
-                              @if(isset($club_list_in))
-                            @foreach ($club_list_in as $cloob)
-                            <a href="#">{{$cloob->name}}</a>
-                               @endforeach
-                              @endif
-                              </div>
-                            </div>   
         </ol>
 
         
@@ -138,7 +128,7 @@
                                </table>
                                <span style="float:right">
                                @if (Auth::user()->club_id != null)
-                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
+                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                                @endif
 
                         	<a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a>
@@ -205,15 +195,23 @@
                             <tr data-toggle="collapse" data-target=".contents">
                                 <th>Club ID</th>
                                 <th>Club Name</th>
+                                <th>Status</th>
                                 <th>Select</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(isset($club_list))
-                            @foreach ($club_list as $cl)
+                            @if(isset($club_list_in))
+                            @foreach ($club_list_in as $cl)
                             <tr>
                                 <td>{{ $cl->id }}</td>
                                 <td>{{ $cl->name }}</td>
+                                
+                                @if($cl->owner_id == Auth::user()->id)
+                                <td>Owner</td>
+                                @else
+                                <td>Member</td>
+                                @endif
+                                
                                 @if($club_id == $cl->id)
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
                                    disabled>Selected</a></td>
