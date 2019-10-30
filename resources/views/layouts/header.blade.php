@@ -117,10 +117,18 @@ $(document).ready(function() {
                     </li>
                     @if(Auth::user()->admin == 1)
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-                        <a class="nav-link" href="/home/admin">
-                           <i class="fa fa-fw fa-clipboard"></i>
-                           <span class="nav-link-text">Admin Functions</span>
-                    	</a>
+                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#adminCollapseComponents" data-parent="#exampleAccordion">
+                            <i class="fa fa-fw fa-clipboard"></i>
+                            <span class="nav-link-text">Admin Portal</span>
+                        </a>
+                        <ul class="sidenav-second-level collapse" id="adminCollapseComponents">
+                            <li>
+                                <a href="{{ route('openUserAdmin') }}">Manage users</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('openClubAdmin') }}">Manage clubs</a>
+                            </li>
+                        </ul>
                     </li>
                     @endif
                 </ul>
