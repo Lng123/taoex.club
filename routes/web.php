@@ -24,7 +24,9 @@ Route::get('/home/ranking', 'RankingController@index');
 Route::get('/home/policy', 'PolicyController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
-Route::get('/home/admin', 'HomeController@openAdmin');
+Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
+Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
 Route::post('/home/admin', 'HomeController@sendAnnouncement');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
