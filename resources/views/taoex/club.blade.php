@@ -35,7 +35,7 @@
                             </span></li>
                             <li class="list-group-item" style="font-weight: bold;">Members: <span style="text-align: right;">{{ $numberMembers }}
                               <a class="btn btn-outline-success" style="width:7rem"   
-                            href="{{ route('clubFilter') }}">More Info</a>
+                            href="{{ route('clubFilter',[$club->id]) }}">More Info</a>
                             </span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             

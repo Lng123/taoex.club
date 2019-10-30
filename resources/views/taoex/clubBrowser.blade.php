@@ -35,7 +35,7 @@
                             @foreach ($club_list as $cl)
                             <tr>
                                 <td>{{ $cl->id }}</td>
-                                <td><a href="{{ route('clubFilter') }}">{{ $cl->name }}</a></td>
+                                <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a></td>
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
                                 <td>{{ $cl->created_at }}</td>
 

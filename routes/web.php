@@ -45,7 +45,7 @@ Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClu
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
-Route::get('/home/clubFilter', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
+Route::get('/home/clubFilter/{id}', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
 Route::post('/home/Club', 'ClubController@sendMessage');
 Route::get('/home/club/{club_id}/playersearch', 'ClubController@playersearch');

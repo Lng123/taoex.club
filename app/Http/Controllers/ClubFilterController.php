@@ -22,7 +22,7 @@ class ClubFilterController extends Controller
      */
 
 
-    public function index()
+    public function index($club_id)
     {
     	$date = 2018;
 
@@ -38,7 +38,7 @@ class ClubFilterController extends Controller
         //Obtain user ID
         $uid = Auth::user()->id;
         //Obtain club id
-        $club_id = Auth::user()->club_id;
+        //$club_id = Auth::user()->club_id;
         //Obtain status
         $approved_status = Auth::user()->approved_status;
         $type = Auth::user()->type;
