@@ -128,7 +128,7 @@
                                </table>
                                <span style="float:right">
                                @if (Auth::user()->club_id != null)
-                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
+                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                                @endif
 
                         	<a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a>
