@@ -228,9 +228,11 @@ class ClubController extends Controller
     public function showManageClub()
     {
         $date = date('Y');
-
+        //Obtain club id
+        $club_id = Auth::user()->club_id;
         //User Table
-    	$user_table = new User;
+        //$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+    	$clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
         //Club Table
         $club_table = new Club;
         //Match Table
@@ -240,8 +242,7 @@ class ClubController extends Controller
         
         //Obtain user ID
         $uid = Auth::user()->id;
-        //Obtain club id
-        $club_id = Auth::user()->club_id;
+        
         $club = Club::findOrFail($club_id);
         //Obtain status
         $approved_status = Auth::user()->approved_status;
@@ -253,7 +254,7 @@ class ClubController extends Controller
         
         $club = $club_table->where('id', $club_id)->first();
         
-        $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
+        //$clubMembers = $user_table->where('club_id', $club_id)->get();
 
         $string ="";
         
@@ -265,19 +266,20 @@ class ClubController extends Controller
 
         foreach ($clubMembers as $clubMember) {
         	
-        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'id' => $clubMember->id, 'club_id' => $clubMember->club_id);
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'id' => $clubMember->id, 'club_id' => $clubMember->club_id);
         	$i++;
 
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
         }
 
-        return view('taoex.manageClub', compact('club'), array('memberData'=>$memberData));
+        return view('taoex.manageClub', compact('club'), array('memberData'=>$memberData, 'club_owner'=>$club->owner_id));
     }
 
     public function removeClubMember($id)
     {
         $club_id = Auth::user()->club_id;
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
+        DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
         return redirect()->route('manageClub');
     }
 

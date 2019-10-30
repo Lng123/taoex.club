@@ -113,9 +113,9 @@
                     @foreach($memberData as $memberDatum)	
                     <tr>
                         <td>{{ $memberDatum['name'] }}</td>
-                        <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
+                        <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
                         <td>
-                        @if ($memberDatum['role'] != 1)
+                        @if ($memberDatum['id'] != $club_owner)
                             <a class="btn btn-primary"	
                                 href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                             <input class="btn btn-primary" type="button"value="Message"/>
