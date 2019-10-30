@@ -1,4 +1,5 @@
 @extends('layouts.header')
+@inject('clubinvite', 'App\Http\Controllers\ClubController')
 @section('content')
 <script>
    $(document).ready(function() {
@@ -17,7 +18,7 @@
       <li class="breadcrumb-item active">Club</li>
     </ol>
     <div class="card-header">
-                   <div class="h4">Top Players</div>
+    <div class="h4">Invite to club: {{$club->name}}</div>
                 </div>
                         <div class="card-body" style="overflow:auto">
                                 {{-- <p>Number of Players: {!!$playerCount!!}</p>--}}
@@ -44,7 +45,21 @@
                                      </td>
                                      <td>{{$ranking->firstName}} {{$ranking->lastName}}</td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
-                                     <td style= "width: 10%"><a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('invitePlayer',[$ranking->id]) }}">Invite</a></td>
+                                     <td style= "width: 15%">
+                                      
+                                      @if(in_array($ranking->id,$club_members))
+                                        <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>In Club</button>
+                                      @elseif(in_array($ranking->id,$already_invited))
+                                        <button class="btn btn-outline-secondary" style="width:8rem" value="Invited" disabled>Already Invited</button>
+                                      @else
+                                        <form method="POST" action="{{ route('invitePlayer',$club->id) }}">
+                                          {{ csrf_field() }}
+                                            <button class="btn btn-outline-secondary" style="width:8rem" type="submit" value="Invite" >Invite</button>
+                                            <input type="hidden" value={{$ranking->id}} name="ranking" />
+                                        </form>
+
+                                     @endif
+                                    </td>
                                    </tr>
                                @endforeach
                                  </tbody>

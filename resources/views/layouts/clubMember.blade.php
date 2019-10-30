@@ -6,51 +6,44 @@
 } );
 </script>
 <div class="card-body">
-                  <div class="card-body">
-                  
-                  
-                  <form method="POST" action="{{ action('ClubController@clubMemberRanking') }}">
+  <div class="card-body">
+    <form method="POST" action="{{ action('ClubController@clubMemberRanking') }}">
                                 {{ csrf_field() }}
-                            <div class="form-group">
-                                    <small><b>Rankings for the Year of:</b></small>
-                                   
- 					<input type="number" id="year" name="year"
+      <div class="form-group">
+        <small><b>Rankings for the Year of:</b></small>
+        <input type="number" id="year" name="year"
                                         min="2010" max="2019" value="2019" value="" />
-                                    <span class="validity"></span>   
-                                     <input type="submit" class="btn btn-primary">
-                            </div> 
-                             <hr>  
-                        </form>
-                        
-                       
-                      <div class="table-responsive data-table">
-                        <table id="member" class="table table-bordered" width="100%" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th>Rank</th>
-                              <th>Name</th>
-                              <th>Role</th>
-                              <th>Total Games</th>
-                              <th>Won</td>
-                              <th>Score</td>
-                              <th></td>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          
-                          @foreach($memberData as $memberDatum)	
-                            <tr>
-                            <td>{{ $memberDatum['rank'] }}</td>
-                              <td>{{ $memberDatum['name'] }}</td>
-                              <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
-                              <td>{{ $memberDatum['games'] }}</td>
-                              <td>{{ $memberDatum['won'] }}</td>
-                              <td>{{ $memberDatum['score'] }}</td>
-                              <td>@if ($memberDatum['role'] != 1)<input type="submit" class="btn btn-primary" value="Kick"/>@endif</td>
-                            </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
+        <span class="validity"></span>   
+        <input type="submit" class="btn btn-primary">
+      </div> 
+    </form>
+    </div>
+</div>
+<div class="table-responsive data-table">
+  <table id="member" class="table table-bordered" width="100%" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Total Games</th>
+        <th>Won</td>
+        <th>Score</td>
+        <th>Manage Members</td>
+      </tr>
+    </thead>
+    <tbody>
+    @foreach($memberData as $memberDatum)	
+      <tr>
+        <td>{{ $memberDatum['rank'] }}</td>
+        <td>{{ $memberDatum['name'] }}</td>
+        <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
+        <td>{{ $memberDatum['games'] }}</td>
+        <td>{{ $memberDatum['won'] }}</td>
+        <td>{{ $memberDatum['score'] }}</td>
+        <td>@if ($memberDatum['role'] != 1)<input class="btn btn-primary" value="Kick"/><input class="btn btn-primary" value="Message"/>@endif</td>
+      </tr>
+      @endforeach
+    </tbody>
+  </table>
+</div>

@@ -41,7 +41,7 @@
                             
                             <a href="/home/ranking">5</a></span></li>
                             <li class="list-group-item" style="font-weight: bold;">
-                                <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('editClub',$club->id) }}">Edit</a>
+                                <a class="btn btn-outline-secondary" style="width:5rem" href="{{ route('manageClub',$club->id) }}">Edit</a>
                             </li>
                         </ul>
                     </div>

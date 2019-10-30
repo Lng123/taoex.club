@@ -1,5 +1,13 @@
 @extends('layouts.header')
 @section('content')
+<script>
+   $(document).ready(function() {
+        $('#member').DataTable()( {
+            aaSorting: [[0, 'asc']]
+            "order": [[1, "desc"]]
+        });
+    } );
+</script>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
@@ -13,8 +21,7 @@
         <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Edit Club Profile</div>
-
+                <div class="h3">Edit Club Information</div>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('updateClub') }}">
                         {{ csrf_field() }}
@@ -92,12 +99,38 @@
         </div>
         </div>
         <div class="h3">Club Members</div>
-            <div class="card">
-              @include('layouts.clubMember')
-              </div>
+        <div class="col-md-8 col-md-offset-2">
+            <div class="table-responsive data-table" >
+                <table id="member" class="table table-bordered" width ="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Manage Members</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($memberData as $memberDatum)	
+                    <tr>
+                        <td>{{ $memberDatum['name'] }}</td>
+                        <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
+                        <td>
+                        @if ($memberDatum['id'] != $club_owner)
+                            <a class="btn btn-primary"	
+                                href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
+                            <input class="btn btn-primary" type="button"value="Message"/>
+                        </td>
+                        @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
 </div>
+
 <!-- Scripts -->
 
     <script src="{{ asset('js/countries.js') }}"></script>
@@ -135,8 +168,42 @@
                 }
             }
             province.value = province_input.value;
+            
+            // Get the modal
+            var modal = document.getElementById("confirmKickModal");
+
+            // Get modal message
+            var modalMessage = document.getElementById("modalMessage");
+
+            // Get buttons that opens the modal
+            var btns = document.getElementsByClassName("show");
+
+            // // function to display a modal
+            // function showModal() {
+            //     modalMessage.innerHTML = "wow"
+            //     modal.style.display = "block";
+            // }
+
+            // // puts an onclick function on each button
+            // var i, len = btns.length;
+            // for(i = 0; i < len; i++) {
+            //     var currentRow = btns[i].closest('tr');
+            //     var name = currentRow.cells[0];
+            //     btns[i].onclick = function() {
+            //         modal.style.display = "block";
+            //     };
+            // }
+
+            // Get the no confirmation button
+            var noBtn = document.getElementById("noKick");
+
+            // Close modal if no button is closed
+            noBtn.onclick = function() {
+                modal.style.display = "none";
+            }
 
         }
     </script>
 @endsection
+
 
