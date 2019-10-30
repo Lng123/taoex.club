@@ -49,7 +49,7 @@ class ClubFilterController extends Controller
         
         $club = $club_table->where('id', $club_id)->first();
         
-        $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
+        $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
 
         $string ="";
         
