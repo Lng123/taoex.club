@@ -280,6 +280,11 @@ class ClubController extends Controller
         $club_id = Auth::user()->club_id;
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
         DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
+        $club_name = DB::table('club')->where('id',$club_id)->value('name');
+        $message = "You have been kicked from {$club_name}";
+        $club_owner_id = DB::table('club')->where('id',$club_id)->value('owner_id');
+        
+        DB::table('user_messages')->insert(['id'=>$id,'message'=>$message,'sender'=>$club_owner_id]);
         return redirect()->route('manageClub');
     }
 

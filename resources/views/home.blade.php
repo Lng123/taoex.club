@@ -80,15 +80,22 @@
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr data-toggle="collapse" data-target=".contents">
+                                <th>Sender</th>
                                 <th>Messages</th>
                                 <th>Time</th>
-                                <th><a href="#">Click here to view messages</a></th>
-                                @if(isset($messages))
-                                @foreach ($messages as $message)
-                            <li>{{$message->message}}</li>
-                               @endforeach
-                               @endif
                             </tr>
+                            @if(isset($messages))
+                                    @foreach ($messages as $message)
+                                    <td>Club</td>
+                                <td>{{$message->message}}</td>
+                                  @endforeach
+                                  @endif
+                                  @if(isset($personal_messages))
+                                    @foreach ($personal_messages as $message)
+                                    <td>{{$message->firstname}} {{$message->lastname}}</td>
+                                <td>{{$message->message}}</td><td>{{$message->message_time}}</td>
+                                  @endforeach
+                                  @endif
                         </thead>
                         <tbody>                          
                        
