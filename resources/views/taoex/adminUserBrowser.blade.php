@@ -53,7 +53,7 @@ $(document).ready(function() {
                                      </td>
                                      <td width="55%">
                                         <span class = "playername">{{$ranking->firstName}} {{$ranking->lastName}}
-                                                <a href="#" style="color:grey;" class="edit"> &#9998;</a>
+                                                <a style="color:grey;" class="edit"> &#9998;</a>
                                         </span>
                                         
                                         <form style="display: none;" class="form">
