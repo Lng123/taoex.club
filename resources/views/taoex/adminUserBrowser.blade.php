@@ -2,10 +2,18 @@
 @section('content')
 <script>
 $(document).ready(function() {
-    // $(".edit").click(function() {
-    //     console.log("test");
-    //     $(this).siblings().attr('contenteditable',true).focus();
-    // });
+    $(".edit").click(function() {
+        $(this).parent().css("display","none");
+        $(this).parent().next().css("display","block");
+    });
+    $('[name = "cancel"]').click(function() {
+        $(this).parent().css("display","none");
+        $(this).parent().prev().css("display","block");
+    });
+
+    $('#member').DataTable()( {
+     aaSorting: [[0, 'asc']]
+    });
 });
 
 </script>
@@ -43,9 +51,19 @@ $(document).ready(function() {
               <img style="max-width:60px;" src="/images/empty_profile.png" alt="Avatar">
           @endif
                                      </td>
-                                     <td><span contenteditable = "true" class = "playername">{{$ranking->firstName}} {{$ranking->lastName}}</span><a href="#" style="color:grey;" class="edit"> &#9998;</a></td>
+                                     <td width="55%">
+                                        <span class = "playername">{{$ranking->firstName}} {{$ranking->lastName}}
+                                                <a href="#" style="color:grey;" class="edit"> &#9998;</a>
+                                        </span>
+                                        
+                                        <form style="display: none;" class="form">
+                                            <input type="text" class = editplayername value="{{$ranking->firstName}} {{$ranking->lastName}}">
+                                            <button class="btn btn-outline-secondary" style="width:4rem; font-size:10px" type="submit" value="updateName" >Update</button>
+                                            <button class="btn btn-outline-secondary" style="widtch:5rem; font-size:10px" type="button" name="cancel">Cancel</button>
+                                        </form>
+                                    </td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
-                                     <td style = "width:100px"><a class="btn btn-outline-success" style="width:4rem">Remove</a></td>
+                                     <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('Are you sure you want to remove this member?')">Remove</a></td>
                                    </tr>
                                @endforeach
                                  </tbody>
