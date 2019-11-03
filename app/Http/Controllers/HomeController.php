@@ -261,6 +261,20 @@ class HomeController extends Controller
 
         public function openUserAdmin()
         {
+            $match_table = new Match;
+            $result_table = new MatchResult;
+            $user_table = new User;
+            $club_table = new Club;
+            $club_count = Club::count();
+            $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
+            
+            $rankings = $user_table->orderBy('score','desc')->get();
+            $playerCount = User::count();
+
+
+
+            return view('taoex.adminUserBrowser')->with(['club_count'=> $club_count,
+                                            'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount]);
         
         }
     
