@@ -27,7 +27,7 @@
                                 <th>Club Name</th>
                                 <th>Club Owner</th>
                                 <th>Created at</th>
-                                <th>Apply</th>
+                                <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +35,7 @@
                             @foreach ($club_list as $cl)
                             <tr>
                                 <td>{{ $cl->id }}</td>
-                                <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a></td>
+                                <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a><a href='' style="color:grey;"> &#9998;</a></td>
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
                                 <td>{{ $cl->created_at }}</td>
 
@@ -46,7 +46,7 @@
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
                             href="{{ route('changeClub', [$cl->id]) }}">Apply</a></td>
                                 @endif -->
-                                <td><a class="btn btn-outline-success" style="width:5rem">Apply</a></td>
+                                <td><a class="btn btn-outline-success" style="width:5rem">Remove</a></td>
                             </tr>
                             @endforeach
                             @endif

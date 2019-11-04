@@ -24,7 +24,9 @@ Route::get('/home/ranking', 'RankingController@index');
 Route::get('/home/policy', 'PolicyController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
-Route::get('/home/admin', 'HomeController@openAdmin');
+Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
+Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
 Route::post('/home/admin', 'HomeController@sendAnnouncement');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
@@ -45,13 +47,13 @@ Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClu
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
-Route::get('/home/clubFilter', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
+Route::get('/home/clubFilter/{id}', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
 Route::post('/home/Club', 'ClubController@sendMessage');
-Route::get('/home/club/{club_id}/playersearch', 'ClubController@playersearch');
+Route::get('/home/club/playersearch', 'ClubController@playersearch');
 
 //invitation
-Route::post('/home/club/{club_id}/playersearch', 'ClubController@invite')->name('invitePlayer');
+Route::post('/home/club/playersearch', 'ClubController@invite')->name('invitePlayer');
 //Route::post('invitePlayer', 'ClubController@invite')->name('invitePlayer');
 //Route::get('/invitePlayer/{user_id}','ClubController@invite')->name('invitePlayer');
 Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
@@ -62,9 +64,9 @@ Route::get('declineInvataion', 'ClubController@declineInvitation');
 Route::get('/home/league', 'LeagueController@index')->name('league')->middleware('auth');
 
 //Match
-Route::post('applyMatch', 'ApplyMatchController@apply');
+Route::post('/home', 'ApplyMatchController@apply');
 Route::post('home/club/recordMatch', 'ApplyMatchController@record');
-Route::get('/home/applyNewMatch', 'ApplyMatchController@index')->name('applyNewMatch')->middleware('auth');
+Route::get('/applyNewMatch', 'ApplyMatchController@index')->name('applyNewMatch')->middleware('auth');
 Route::get('/home/matchHistory', 'MatchController@index')->name('matchHistory')->middleware('auth');
 Route::post('/home/filterMatch', 'MatchController@filter');
 Route::get('/home/allMatch', 'MatchController@all');
