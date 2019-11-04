@@ -85,3 +85,6 @@ Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('upda
 
 //delete message
 Route::get('/home/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');
+
+//admin functions
+Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
