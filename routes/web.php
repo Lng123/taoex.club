@@ -80,3 +80,6 @@ Route::get('/home/{id}/edituser', 'Auth\UsersController@showEditForm')->name('ed
 Route::get('/home/{id}/deleteuser','Auth\UsersController@deleteUserInfo')->name('deleteUser');
 Route::delete('/home/{id}/deleteuseraction','Auth\UsersController@deleteUserAction')->name('deleteUserAction');
 Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('updateUser');
+
+//delete message
+Route::get('/home/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');

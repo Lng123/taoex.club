@@ -94,6 +94,7 @@
                                     @foreach ($personal_messages as $message)
                                     <td>{{$message->firstname}} {{$message->lastname}}</td>
                                 <td>{{$message->message}}</td><td>{{$message->message_time}}</td>
+                                <td><a href="{{ route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time]) }}"> x </a></td>
                                   @endforeach
                                   @endif
                         </thead>
