@@ -529,7 +529,14 @@ class ClubController extends Controller
             $i++;
         }
 
-        return view('taoex.adminManageClubMembers', array('memberData'=>$memberData, 'clubData'=>$clubData, 'club_owner'=>$currentClub->owner_id));
+        return view('taoex.adminManageClubMembers', array('memberData'=>$memberData, 'clubData'=>$clubData, 'club_owner'=>$currentClub->owner_id, 'club_id'=>$club_id));
+    }
+
+    public function adminRemoveMember($club_id, $id)
+    {
+        User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
+        DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
+        return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
     }
 
 }

@@ -38,7 +38,7 @@
                             <td>
                             @if ($memberDatum['id'] != $club_owner)
                                 <a class="btn btn-primary"	
-                                    href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
+                                    href="{{ route('adminRemoveMember', ['id'=>$memberDatum['id'],'club_id'=>$club_id]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                                 <input class="btn btn-primary" type="button"value="Message"/>
                             </td>
                             @endif
