@@ -35,7 +35,7 @@
                             </span></li>
                             <li class="list-group-item" style="font-weight: bold;">Members: <span style="text-align: right;">{{ $numberMembers }}
                               <a class="btn btn-outline-success" style="width:7rem"   
-                            href="{{ route('clubFilter') }}">More Info</a>
+                            href="{{ route('clubFilter',[$club->id]) }}">More Info</a>
                             </span></li>
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             
@@ -46,7 +46,7 @@
                             </li>
                             @endif
                             <li class="list-group-item" style="font-weight: bold;">
-                              <a class="btn btn-outline-secondary" style="width:5rem" href="{{ url("home/club/$club->id/playersearch") }}">Invite</a>
+                              <a class="btn btn-outline-secondary" style="width:5rem" href="{{ url("home/club/playersearch") }}">Invite</a>
                           </li>
                         </ul>
                     </div>
@@ -108,7 +108,7 @@
                                </table>
                                <span style="float:right">
                                @if (Auth::user()->club_id != null)
-                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
+                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                                @endif
                           <a class="btn btn-outline-info" style="margin-right:3px" data-toggle="collapse" href="#collapse3">Record a Match</a>
 

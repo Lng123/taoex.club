@@ -144,6 +144,83 @@ class ClubController extends Controller
         return view('taoex.applyForClub', array('nearPlayers'=>$nearPlayers));
     }
     
+    public function showAllClub()
+    {
+       
+    	$match_table = new Match;
+        $result_table = new MatchResult;
+        $user_table = new User;
+
+        $uid = Auth::user()->id;
+        $club_id = Auth::user()->club_id;
+           
+        $status = Auth::user()->approved_status;
+        $club_table = new Club;
+        $clubuser_table = new Clubuser;
+        
+        //$matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
+	//$matches = $match_table->paginate(3);
+	
+	//$matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
+    	//$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+        
+        $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
+    	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+    	$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+    	$all_clubs = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->distinct()->get();
+    	
+       
+	//$clubusers = $clubuser_table->get();
+	$total_score = $result_table->where('player_id', $uid)->sum('total');
+       
+       //$sumString = "";
+       //for($i = 37; $i < 62; $i++) {
+       //$total_score = $result_table->where('player_id', '=', $i)->sum('total');
+       //$sumString .= "id: " . $i . "     sum: ". $total_score . "; \r\n";
+       //}
+       //return $sumString;
+       
+       //***** Number of players in the database ****
+       $player_count = $user_table->orderBy('score','desc')->get()->count();
+       $ranking = $user_table->where('score','>=', $total_score)->get()->count();
+       //return $ranking;
+       
+       $users = $user_table->get();
+        foreach ($users as $user) { 
+                $totalScore = $result_table->where('player_id',$user->id)->sum('total');
+    		User::where('id', $user->id)->update(array('score'=>$totalScore));
+         }
+        //Session::put('totalScore', $totalScore);
+        $club = $club_table->where('id', $club_id)->first();
+        
+        //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
+        $club_list = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.firstName', 'users.lastName')
+        ->join('users', 'Club.owner_id', '=', 'users.id')
+        ->get();
+        
+        $userClubID = Auth::user()->club_id;
+
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
+
+        $test = (String) $userClubName;
+
+        $userMessages = DB::table('messages')
+                            ->select('message', 'message_id')
+                            ->where('club_name', $test)
+                            ->get();
+	$clubMembers = $user_table->get();
+
+        //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
+        //$club = $club_table->where('id', $clubuser->club_id)->first();
+        	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+        
+        return view('taoex.clubBrowser', array('club_list'=>$club_list, 'club'=>$club,  'club_id'=>$club_id, 'status'=>$status, 'matches'=>$matches, 'totalScore'=>$total_score, 'ranking'=>$ranking, 'userMessages'=>$userMessages, 'results'=>$results, 'clubMembers'=>$clubMembers));
+    }
+
     /*
      * Click on "edit' link will route to this method
      * Show the view of "editClubProfile"
@@ -331,7 +408,7 @@ class ClubController extends Controller
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
         ->get();
-
+        DB::table('users')->where('id',$uid)->update(['club_id'=>$id]);
         $test = (String) $userClubName;
         $messages = DB::table('messages')
         ->select('message', 'message_id')
@@ -347,6 +424,7 @@ class ClubController extends Controller
         $status = Auth::user()->approved_status;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>0, 'club_id'=>NULL]);
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
         return view('/home', array('color'=>'alert-success', 'message'=>'You have declined the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
     }
     

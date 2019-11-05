@@ -29,7 +29,7 @@
         <th>Total Games</th>
         <th>Won</td>
         <th>Score</td>
-        <th>Manage Members</td>
+        <!-- <th>Manage Members</td> -->
       </tr>
     </thead>
     <tbody>
@@ -41,7 +41,7 @@
         <td>{{ $memberDatum['games'] }}</td>
         <td>{{ $memberDatum['won'] }}</td>
         <td>{{ $memberDatum['score'] }}</td>
-        <td>@if ($memberDatum['role'] != 1)<input class="btn btn-primary" value="Kick"/><input class="btn btn-primary" value="Message"/>@endif</td>
+        <!-- <td>@if ($memberDatum['role'] != 1)<input class="btn btn-primary" value="Kick"/><input class="btn btn-primary" value="Message"/>@endif</td> -->
       </tr>
       @endforeach
     </tbody>

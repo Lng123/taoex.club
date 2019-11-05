@@ -103,27 +103,27 @@
             <div class="table-responsive data-table" >
                 <table id="member" class="table table-bordered" width ="100%" cellspacing="0">
                     <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Role</th>
-                        <th>Manage Members</td>
-                    </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Manage Members</td>
+                        </tr>
                     </thead>
                     <tbody>
-                    @foreach($memberData as $memberDatum)	
-                    <tr>
-                        <td>{{ $memberDatum['name'] }}</td>
-                        <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
-                        <td>
-                        @if ($memberDatum['id'] != $club_owner)
-                            <a class="btn btn-primary"	
-                                href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
-                            <input class="btn btn-primary" type="button"value="Message"/>
-                        </td>
-                        @endif
-                        </td>
-                    </tr>
-                    @endforeach
+                        @foreach($memberData as $memberDatum)	
+                        <tr>
+                            <td>{{ $memberDatum['name'] }}</td>
+                            <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
+                            <td>
+                            @if ($memberDatum['id'] != $club_owner)
+                                <a class="btn btn-primary"	
+                                    href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
+                                <input class="btn btn-primary" type="button"value="Message"/>
+                            </td>
+                            @endif
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
