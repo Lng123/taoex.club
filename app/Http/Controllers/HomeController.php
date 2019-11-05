@@ -291,8 +291,8 @@ class HomeController extends Controller
     }
 
     public function editName(Request $request) {
-        //dd($request->input('firstname'));
-        //dd($request->input('lastname'));
+        $request->input('firstname');
+        $request->input('lastname');
 
     }
 
