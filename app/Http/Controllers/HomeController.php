@@ -261,7 +261,49 @@ class HomeController extends Controller
 
         public function openUserAdmin()
         {
-        
+            $match_table = new Match;
+        $result_table = new MatchResult;
+        $user_table = new User;
+
+        $uid = Auth::user()->id;
+        $club_id = Auth::user()->club_id;
+           
+        $user_list = DB::table('Users')->select('*')->get();
+    	
+       
+	//$clubusers = $clubuser_table->get();
+	$total_score = $result_table->where('player_id', $uid)->sum('total');
+       
+       //$sumString = "";
+       //for($i = 37; $i < 62; $i++) {
+       //$total_score = $result_table->where('player_id', '=', $i)->sum('total');
+       //$sumString .= "id: " . $i . "     sum: ". $total_score . "; \r\n";
+       //}
+       //return $sumString;
+       
+       //***** Number of players in the database ****
+       $player_count = $user_table->orderBy('score','desc')->get()->count();
+       $ranking = $user_table->where('score','>=', $total_score)->get()->count();
+       //return $ranking;
+       
+       $users = $user_table->get();
+        foreach ($users as $user) { 
+                $totalScore = $result_table->where('player_id',$user->id)->sum('total');
+    		User::where('id', $user->id)->update(array('score'=>$totalScore));
+         }        $userClubID = Auth::user()->club_id;
+
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
+
+        $test = (String) $userClubName;
+
+        $userMessages = DB::table('messages')
+                            ->select('message', 'message_id')
+                            ->where('club_name', $test)
+                            ->get();
+        return view('taoex.adminUserBrowser', array('user_list'=>$user_list, 'ranking'=>$ranking, 'userMessages'=>$userMessages));
         }
     
     	public function deleteMatch(Request $request)
