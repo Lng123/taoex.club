@@ -1,69 +1,85 @@
 @extends('layouts.header')
 @section('content')
-<div class="content-wrapper" style="background-color:#d7d9e9">
-    <div class="container-fluid">
-        <!-- Breadcrumbs-->
-        <ol class="breadcrumb" style="background-color:white; margin-top:10px">
-            <li class="breadcrumb-item">
-                <a href="#">Taoex</a>
-            </li>
-            <li class="breadcrumb-item active">View all clubs</li>
-            <!-- user card -->
-        <br><div class="h3">Wecome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
-        </ol>
-                    <div class="panel panel-primary">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse3" style="width:100%">All clubs</button>
-      </h4>
-    </div>
-    <div id="collapse3" class="panel-collapse collapse show">
-      <ul class="list-group">
-        <li class="list-group-item" style="overflow:auto">
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr data-toggle="collapse" data-target=".contents">
-                                <th></th>
-                                <th>User ID</th>
-                                <th>User Name</th>
-                                <th>Remove</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(isset($user_list))
-                            @foreach ($user_list as $ul)
-                            <tr>
-                                <td style="width:70px">
-                                     @if (($ul->image) != NULL)
-              <img style="max-width:60px;" src="{{ "data:image/" . $ul->image_type . ";base64," . $ul->image }}">
+<script>
+$(document).ready(function() {
+    $(".edit").click(function() {
+        $(this).parent().css("display","none");
+        $(this).parent().next().css("display","block");
+    });
+    $('[name = "cancel"]').click(function() {
+        $(this).parent().css("display","none");
+        $(this).parent().prev().css("display","block");
+    });
+
+    $('#member').DataTable()( {
+     aaSorting: [[0, 'asc']]
+    });
+});
+
+</script>
+<div class="content-wrapper">
+  <div class="container-fluid">
+    <!-- Breadcrumbs-->
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="/home">Taoex</a>
+      </li>
+      <li class="breadcrumb-item active">Club</li>
+    </ol>
+    <div class="card-header">
+                   <div class="h4">Manage Users</div>
+                </div>
+                        <div class="card-body" style="overflow:auto">
+                                {{-- <p>Number of Players: {!!$playerCount!!}</p>--}}
+                               <table class="table table-striped table-bordered" id="member" style="overflow-x: scroll">
+                                 <thead>
+                                   <tr>
+                                     <th>
+                                     </th>
+                                     <th>Name</th>
+                                     <th>Score</th>
+                                   </tr>
+                                 </thead>
+                                 <tbody>
+                           
+                                   @foreach ($ranking as $ranking)
+                                   <tr>
+                                     <td style="width:70px">
+                                     @if (isset($ranking->image))
+              <img style="max-width:60px;" src="{{ "data:image/" . $ranking->image_type . ";base64," . $ranking->image }}">
+
           @else
               <img style="max-width:60px;" src="/images/empty_profile.png" alt="Avatar">
           @endif
                                      </td>
-                                <td>{{ $ul->id }}</td>
-                                <td>{{ $ul->firstName}} {{ $ul->lastName}}</td>
+                                     <td width="55%">
+                                        <span class = "playername">{{$ranking->firstName}} {{$ranking->lastName}}
+                                                <a style="color:grey;" class="edit"> &#9998;</a>
+                                        </span>
+                                        
+                                        <form style="display: none;" class="form">
+                                            <input type="text" class = editplayername value="{{$ranking->firstName}} {{$ranking->lastName}}">
+                                            <button class="btn btn-outline-secondary" style="width:4rem; font-size:10px" type="submit" value="updateName" >Update</button>
+                                            <button class="btn btn-outline-secondary" style="widtch:5rem; font-size:10px" type="button" name="cancel">Cancel</button>
+                                        </form>
+                                    </td>
+                                     <td><big><i>{{ $ranking->score}}</i></big></td>
+                                     <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('Are you sure you want to remove this member?')">Remove</a></td>
+                                   </tr>
+                               @endforeach
+                                 </tbody>
+                               </table>
+                               <!--<span style="float:right">
+                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
 
-                                <td><a class="btn btn-outline-success" style="width:5rem">Remove</a></td>
-                            </tr>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-  
-        </li>
-      </ul>
-    </div>
-  </div>
-                
-        <!--<div class="h4" style="display:@if (Auth::user()->club_id == null) none @else '' @endif">Club Tournaments <hr/></div>-->
-	
+                        	<a class="btn btn-outline-info" style="float:right" href=/home/allMatch>more...</a>
+                        
 
-	
-    </div>
-    </div>
-    
+                </span>-->
+                </div>
+	    </div>
+	      </div>
 </div>
-    <!-- /.container-fluid-->
-</div>
+<!-- /.container-fluid-->
 <!-- /.content-wrapper-->
 @endsection

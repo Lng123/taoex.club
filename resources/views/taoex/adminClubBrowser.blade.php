@@ -9,7 +9,7 @@
             </li>
             <li class="breadcrumb-item active">View all clubs</li>
             <!-- user card -->
-        <br><div class="h3">Wecome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
+        <br><div class="h3">Welcome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
         </ol>
                     <div class="panel panel-primary">
     <div class="panel-heading">
@@ -35,7 +35,7 @@
                             @foreach ($club_list as $cl)
                             <tr>
                                 <td>{{ $cl->id }}</td>
-                                <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a><a href='' style="color:grey;"> &#9998;</a></td>
+                                <td><a href="{{ route('manageClubMembers',[$cl->id]) }}">{{ $cl->name }}</a><a href='' style="color:grey;"> &#9998;</a></td>
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
                                 <td>{{ $cl->created_at }}</td>
 
