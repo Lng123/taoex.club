@@ -290,6 +290,12 @@ class HomeController extends Controller
         ]);
     }
 
+    public function editName(Request $request) {
+        $request->input('firstname');
+        $request->input('lastname');
+
+    }
+
 
 
 

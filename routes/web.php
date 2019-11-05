@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
 Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
