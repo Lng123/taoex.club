@@ -162,7 +162,7 @@ class HomeController extends Controller
         DB::table('announcements')->insert($data);
         $clubMembers = $user_table->get();
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
-        return view('taoex.admin', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
+        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
     }
 
     public function deleteAnnouncement($announcement, $time_sent)
@@ -191,7 +191,7 @@ class HomeController extends Controller
         $clubMembers = $user_table->get();
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
 
-        return view('taoex.admin', array('list_of_announcements' => $list_of_announcements, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
+        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
     }
 
     public function openClubAdmin()
