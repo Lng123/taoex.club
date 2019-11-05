@@ -192,13 +192,42 @@ class ClubController extends Controller
          }
         //Session::put('totalScore', $totalScore);
         $club = $club_table->where('id', $club_id)->first();
-        
         //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        $club_list = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.firstName', 'users.lastName')
+
+
+        $allclub_list = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
         ->join('users', 'Club.owner_id', '=', 'users.id')
-        ->get();
-        
+        ->leftjoin('club_application', function($join){
+            $join->on('Club.id', '=' ,'club_application.club_id');
+        });
+
+        $applied_list = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
+        ->join('users', 'Club.owner_id', '=', 'users.id')
+        ->leftjoin('club_application', function($join){
+            $join->on('Club.id', '=' ,'club_application.club_id');
+        })
+        ->where('club_application.user_id','=',$uid);
+
+        $inclub_list = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.id as user_id', 'users.firstName','users.lastName','users.id as status','status=inClub' )
+        ->join('users', 'Club.owner_id', '=', 'users.id')
+        ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
+        ->where('users.id', '=',$uid);
+    
+        // $x = "inClub";
+        // $inclub_list = DB::select(DB::raw("SELECT 
+        //                                  club.name, club.id, club.owner_id, club.created_at, users.id as user_id, users.firstName, users.lastName, '$x'as status
+        //                             From club
+        //                             join users on Club.owner_id = users.id
+        //                             join userclubs on Club.id = userclubs.club_id
+        //                             where users.id = '$uid'"
+        //                    ));
+
+        //$club_list = $applied_list->union($inclub_list)->union($allclub_list)->get();
+        $club_list = $applied_list->union($allclub_list)->get();
+
         $userClubID = Auth::user()->club_id;
 
         $userClubName = DB::table('Club')
@@ -212,7 +241,8 @@ class ClubController extends Controller
                             ->select('message', 'message_id')
                             ->where('club_name', $test)
                             ->get();
-	$clubMembers = $user_table->get();
+        $clubMembers = $user_table->get();
+    
 
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
         //$club = $club_table->where('id', $clubuser->club_id)->first();
@@ -382,15 +412,22 @@ class ClubController extends Controller
     {
 
         // $status = Auth::user()->approved_status;
-
         $userid = $request->input('ranking');
         $uid = (int)$userid;
         $club_id = Auth::user()->club_id;
         DB::table('Invite')->insert(['id' => $uid, 'club_id' =>$club_id]);
         return $this->playersearch();
-        // return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
-        //                              'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
+        //return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
+        //                             'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
 
+    }
+
+    public function playerApply(Request $request)
+    {
+        $user_id = Auth::user()->id;
+        $club_id = $request->input('club_id');
+        DB::table('club_application')->insert(['user_id'=>$user_id, 'club_id'=>$club_id, 'status'=>'applied']);
+        return $this->showAllClub();
     }
 
 
