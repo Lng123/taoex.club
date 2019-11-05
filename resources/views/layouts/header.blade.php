@@ -128,6 +128,9 @@ $(document).ready(function() {
                             <li>
                                 <a href="{{ route('openClubAdmin') }}">Manage clubs</a>
                             </li>
+                            <li>
+                                <a href="{{ route('openAnnouncement') }}">Announcements</a>
+                            </li>
                         </ul>
                     </li>
                     @endif
