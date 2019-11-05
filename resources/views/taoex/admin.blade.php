@@ -243,7 +243,7 @@
                                      
                                      
                                      </td>
-                                     <td width=10%">
+                                     <td width=10%>
                                      <form method="POST" action="{{action('HomeController@openAdmin')}}">
                                                     {{ csrf_field() }}
                                      <button type="submit" class="btn btn-outline-info" data-toggle="collapse" href="#<?php echo $string= str_replace(' ', '',$match->name)?>" ><i class="fa fa-fw fa-pencil"></i></button>
