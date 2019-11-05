@@ -266,7 +266,7 @@ class ClubController extends Controller
 
         foreach ($clubMembers as $clubMember) {
         	
-        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'id' => $clubMember->id, 'club_id' => $clubMember->club_id);
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'id' => $clubMember->id);
         	$i++;
 
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
@@ -506,6 +506,30 @@ class ClubController extends Controller
                                           'clubs' => $clubs, 'ranking'=> $rankings, 'player_count'=> $playerCount, 'club' => $club, 
                                           'already_invited' =>$already_invited,
                                           'club_members' => $club_members]);
+    }
+
+    public function adminManageMembers($club_id) {
+        $clubs = new Club;
+        $clubMembers = DB::table('UserClubs')
+            ->join('users','users.id','=','UserClubs.id')
+            ->select('*')
+            ->where('UserClubs.club_id', $club_id)
+            ->get();
+        $currentClub = $clubs->where('id', $club_id)->first();
+        $memberData = [];
+        $clubData = [];
+        $i = 0;
+        foreach ($clubMembers as $clubMember) {       	
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'id' => $clubMember->id);
+        	$i++;
+        }
+        $i = 0;
+        foreach ($clubs as $club) {
+            $clubData[$i] = array('club_id' => $clubs->id, 'club_name' => $clubs->name);
+            $i++;
+        }
+
+        return view('taoex.adminManageClubMembers', array('memberData'=>$memberData, 'clubData'=>$clubData, 'club_owner'=>$currentClub->owner_id));
     }
 
 }

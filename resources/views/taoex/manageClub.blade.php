@@ -4,7 +4,6 @@
    $(document).ready(function() {
         $('#member').DataTable()( {
             aaSorting: [[0, 'asc']]
-            "order": [[1, "desc"]]
         });
     } );
 </script>
@@ -15,117 +14,119 @@
           <li class="breadcrumb-item">
             <a href="/home">Taoex</a>
           </li>
-          <li class="breadcrumb-item active">Club</li>
+          <li class="breadcrumb-item">
+            <a href="{{ route('club') }}">Club</a>
+          </li>
+          <li class="breadcrumb-item active">Manage Club</li>
         </ol>
-
         <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="h3">Edit Club Information</div>
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('updateClub') }}">
-                        {{ csrf_field() }}
-                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" name="id" value="{{ $club->id }}">
-                        
-                        <div class="form-group">
-                            <label for="picture" class="col-md-4 control-label">Picture</label>
-                            <div class="col-md-6">
-                                <?php
-                                      $image = App\Utility::get_image_fromTable($club->id,'Club');
-                                ?>
-                                &nbsp;&nbsp;&nbsp;&nbsp;<img src="{{ "data:image/" . $image['type'] . ";base64," . $image['data'] }}">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="h3">Edit Club Information</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="{{ route('updateClub') }}">
+                            {{ csrf_field() }}
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <input type="hidden" name="id" value="{{ $club->id }}">
+                            
+                            <div class="form-group">
+                                <label for="picture" class="col-md-4 control-label">Picture</label>
+                                <div class="col-md-6">
+                                    <?php
+                                        $image = App\Utility::get_image_fromTable($club->id,'Club');
+                                    ?>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<img src="{{ "data:image/" . $image['type'] . ";base64," . $image['data'] }}">
+                                </div>
+                                <label for="selectfile" class="col-md-4 control-label">Select File</label>
+                                <div class="col-md-6">
+                                    <input type="file" name="image" id="image"/>
+                                </div>
                             </div>
-                            <label for="selectfile" class="col-md-4 control-label">Select File</label>
-                            <div class="col-md-6">
-                                <input type="file" name="image" id="image"/>
+                            
+                            
+                            <div class="form-group">
+                                <label for="ClubName" class="col-md-4 control-label">Name</label>
+                                <div class="col-md-6">
+                                    <input id="Name" type="text" class="form-control" name="Name" value="{{ $club->name }}" required autofocus>
+                                </div>
                             </div>
-                        </div>
-                        
-                        
-                        <div class="form-group">
-                            <label for="ClubName" class="col-md-4 control-label">Name</label>
-                            <div class="col-md-6">
-                                <input id="Name" type="text" class="form-control" name="Name" value="{{ $club->name }}" required autofocus>
-                            </div>
-                        </div>
 
 
-                        <div class="form-group">
-                            <label for="country" class="col-md-4 control-label">Country</label>
-                            <div class="col-md-6">
-                                <select id="country" name="country" class="form-control" disabled="disabled">
-                                    
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="States" class="col-md-4 control-label">States/Province</label>
-                            <div class="col-md-6">
-                                <select id="province" name="province" class="form-control">
-                                    
-                                </select>
-                            </div>
-                        </div> 
-                        
-                        <input type="hidden" id="country_input" name="country_input" value="{{ Auth::user()->country }}">
-                        <input type="hidden" id="province_input" name="province_input" value="{{ $club->province }}">
-
-                        <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
-                            <label for="city" class="col-md-4 control-label">City</label>
-                            <div class="col-md-6">
-                                <input id="city" type="text" class="form-control" name="city" value="{{ $club->city }}" required>
-                                @if ($errors->has('city'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('city') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="form-group">
+                                <label for="country" class="col-md-4 control-label">Country</label>
+                                <div class="col-md-6">
+                                    <select id="country" name="country" class="form-control" disabled="disabled">
                                         
-                                <button type="submit" class="btn btn-primary">
-                                    Save
-                                </button>
-                                
+                                    </select>
+                                </div>
                             </div>
-                        </div> 
-                    </form>
+                            
+                            <div class="form-group">
+                                <label for="States" class="col-md-4 control-label">States/Province</label>
+                                <div class="col-md-6">
+                                    <select id="province" name="province" class="form-control">
+                                        
+                                    </select>
+                                </div>
+                            </div> 
+                            
+                            <input type="hidden" id="country_input" name="country_input" value="{{ Auth::user()->country }}">
+                            <input type="hidden" id="province_input" name="province_input" value="{{ $club->province }}">
+
+                            <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
+                                <label for="city" class="col-md-4 control-label">City</label>
+                                <div class="col-md-6">
+                                    <input id="city" type="text" class="form-control" name="city" value="{{ $club->city }}" required>
+                                    @if ($errors->has('city'))
+                                        <span class="help-block">
+                                            <strong>{{ $errors->first('city') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                            
+                                    <button type="submit" class="btn btn-primary">
+                                        Save
+                                    </button>
+                                    
+                                </div>
+                            </div> 
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-        <div class="h3">Club Members</div>
-        <div class="col-md-8 col-md-offset-2">
-            <div class="table-responsive data-table" >
-                <table id="member" class="table table-bordered" width ="100%" cellspacing="0">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Role</th>
-                            <th>Manage Members</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($memberData as $memberDatum)	
-                        <tr>
-                            <td>{{ $memberDatum['name'] }}</td>
-                            <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
-                            <td>
-                            @if ($memberDatum['id'] != $club_owner)
-                                <a class="btn btn-primary"	
-                                    href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
-                                <input class="btn btn-primary" type="button"value="Message"/>
-                            </td>
-                            @endif
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="col-md-8">
+                <div class="h3">Club Members</div>
+                <div class="table-responsive data-table" >
+                    <table id="member" class="table table-bordered" width ="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Manage Members</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($memberData as $memberDatum)	
+                            <tr>
+                                <td>{{ $memberDatum['name'] }}</td>
+                                <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
+                                <td>
+                                @if ($memberDatum['id'] != $club_owner)
+                                    <a class="btn btn-primary"	
+                                        href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
+                                    <input class="btn btn-primary" type="button"value="Message"/>
+                                </td>
+                                @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -41,7 +41,8 @@ Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('ch
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
 Route::get('/home/clubBrowser', 'ClubController@showAllClub')->name('clubBrowser')->middleware('auth');
-Route::post('/home', 'ClubController@applyClub');
+//Route::post('/home', 'ClubController@applyClub')->name('applyClub');
+Route::post('applyClub',array('uses' =>'ClubController@applyClub'));
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
 Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
@@ -82,3 +83,6 @@ Route::get('/home/{id}/edituser', 'Auth\UsersController@showEditForm')->name('ed
 Route::get('/home/{id}/deleteuser','Auth\UsersController@deleteUserInfo')->name('deleteUser');
 Route::delete('/home/{id}/deleteuseraction','Auth\UsersController@deleteUserAction')->name('deleteUserAction');
 Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('updateUser');
+
+//Admin Club Controls
+Route::get('/home/{club_id}/manageClubMembers', 'ClubController@adminManageMembers')->name('manageClubMembers');
