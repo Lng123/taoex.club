@@ -46,7 +46,7 @@
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
                             href="{{ route('changeClub', [$cl->id]) }}">Apply</a></td>
                                 @endif -->
-                                <td><a class="btn btn-outline-success" style="width:5rem">Remove</a></td>
+                                <td><a class="btn btn-outline-success" style="width:5rem" href="{{ route('adminDeleteClub',['club_id'=>$cl->id]) }}" onclick = "return confirm('Are you sure you want to remove this club?')">Remove</a></td>
                             </tr>
                             @endforeach
                             @endif

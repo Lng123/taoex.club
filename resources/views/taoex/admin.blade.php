@@ -41,7 +41,41 @@
       </ul>
     </div>
   </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse3" style="width:100%">Show Announcements</button>
+      </h4>
+    </div>
+    <div id="collapse3" class="panel-collapse collapse show">
+      <ul class="list-group">
+      
+        <li class="list-group-item" style="overflow:auto">
 
+        <table class="table table-striped table-bordered">
+          <thead>
+              <tr data-toggle="collapse" data-target=".contents">
+                  <th>Messages</th>
+                  <th>Time</th>
+              </tr>
+              </thead>
+              @if(isset($list_of_announcements))
+
+              @foreach($list_of_announcements as $ann)
+              <tr>
+              <td>{{$ann->announcement}}</td>
+              <td>{{$ann->time_sent}}</td>
+              <td><a href="{{ route('deleteAnnouncement',['announcement'=>$ann->announcement,'time_sent'=>$ann->time_sent]) }}"> x </a></td>
+                    @endforeach
+                    @endif
+                    </tr>
+
+        </table>
+      
+        </li>
+      </ul>
+    </div>
+  </div>
       </div>
     
     
