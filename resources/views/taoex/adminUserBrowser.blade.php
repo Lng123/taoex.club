@@ -47,6 +47,7 @@ $(document).ready(function() {
                                      <td style="width:70px">
                                      @if (isset($ranking->image))
               <img style="max-width:60px;" src="{{ "data:image/" . $ranking->image_type . ";base64," . $ranking->image }}">
+
           @else
               <img style="max-width:60px;" src="/images/empty_profile.png" alt="Avatar">
           @endif
