@@ -179,7 +179,10 @@
                           <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                           @endif
 
-                          <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a> </span> </div> @endif </li> </ul> </div> </div> @if (isset($pending_invites)) @foreach ($pending_invites as $invites) <div class="col-md-8">
+                          <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a> </span> </div> @endif </li> </ul> </div> </div> 
+                          @if (isset($pending_invites)) 
+                          @foreach ($pending_invites as $invites) 
+                          <div class="col-md-8">
                             <div class="card mb-3">
                               <div class="card-header h4">Invitation</div>
                               <div class="card-body">
@@ -211,9 +214,48 @@
                                 </form>
                               </div>
                             </div>
-                  </div>
-                  @endforeach
-                  @endif
+                          </div>
+                          @endforeach
+                          @endif
+
+
+
+
+                          @foreach ($pending_club_applications as $pa) 
+                          <div class="col-md-8">
+                            <div class="card mb-3">
+                              <div class="card-header h4">Club Application</div>
+                              <div class="card-body"> 
+                                <div class="h5">A player wants to join your club <div style="font-size:15px">{{ $pa->name }}</div></div>
+                                <form method="GET" action="{{ route('acceptClubApplication',['userid'=>$pa->user_id,'clubid'=>$pa->club_id]) }}">
+                                  <div class="form-group">
+                                    <div class="row">
+                                      <div class="col-6">Player name</div>
+                                      <div class="col-6"> {{ $pa->firstname }} {{ $pa->lastname }}</div>
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-6">Player Location:</div>
+                                      <div class="col-6">{{ $pa->city }}, {{ $pa->province }}</div>
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Accept</button>
+                                  </div>
+                                </form>
+                                <form method="GET" action="{{ action('ClubController@declineInvitation') }}">
+                                  <div class="form-group">
+                                    <button type="submit" class="btn btn-danger btn-block">Decline</button>
+                                  </div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                          @endforeach
+
+
+
+                  
+
                   <br>
                   <div class="panel panel-primary">
                     <div class="panel-heading">

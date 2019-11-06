@@ -73,6 +73,8 @@ Route::post('/home/club/playersearch', 'ClubController@invite')->name('invitePla
 Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
+Route::get('acceptClubApplication/{userid}/{clubid}', 'ClubController@acceptClubApplication')->name('acceptClubApplication');
+
 
 //league
 Route::get('/home/league', 'LeagueController@index')->name('league')->middleware('auth');

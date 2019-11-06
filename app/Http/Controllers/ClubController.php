@@ -318,7 +318,7 @@ class ClubController extends Controller
         $club_name = DB::table('club')->where('id',$club_id)->value('name');
         $message = "You have been kicked from {$club_name}";
         $club_owner_id = DB::table('club')->where('id',$club_id)->value('owner_id');
-        
+        DB::table('club_application')->where('user_id', $id)->where('club_id', $club_id)->where('status','inClub')->delete();
         DB::table('user_messages')->insert(['id'=>$id,'message'=>$message,'sender'=>$club_owner_id]);
         return redirect()->route('manageClub');
     }
@@ -469,6 +469,7 @@ class ClubController extends Controller
         //return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
     }
 
+
     public function declineInvitation(Request $request)
     {
         $uid = Auth::user()->id;
@@ -478,7 +479,17 @@ class ClubController extends Controller
         DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
         return view('/home', array('color'=>'alert-success', 'message'=>'You have declined the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
     }
-    
+
+
+    public function acceptClubApplication($applicant_id, $club_id)
+    {
+        DB::table('userclubs')->insert(['id'=>$applicant_id,'club_id'=>$club_id]);
+        DB::table('users')->where('id',$applicant_id)->update(['club_id'=>$club_id]);
+        DB::table('club_application')->where('user_id', $applicant_id)->where('club_id', $club_id)->where('status','applied')->update(['status'=>'inClub']);
+        return redirect('/home/club');
+    }
+
+
     public function sendMessage(Request $request)
     {
         $this->validate($request, [
