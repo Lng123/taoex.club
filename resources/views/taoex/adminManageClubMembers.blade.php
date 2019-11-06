@@ -28,7 +28,7 @@
                             <th>Name</th>
                             <th>Role</th>
                             <th>Manage Members</th>
-                            <th>Assign as owner</th>
+                            <th>Assign as Owner</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,7 +44,7 @@
                             @endif
                             </td>
                             @if($club_owner == $memberDatum['id'])
-                                <td><a class="btn btn-outline-success" style="width:5rem" disabled>Admin</a></td>
+                                <td><a class="btn btn-outline-success" style="width:5rem" disabled>Owner</a></td>
                                 @else
                                 <td><a class="btn btn-outline-success" style="width:5rem" href="{{ route('adminChangeClubOwner', ['id'=>$memberDatum['id'], 'club_id'=>$club_id]) }}"onclick="return confirm('Are you sure you want to assign this memeber as the Club Owner?')">Assign</a></td>
                                 @endif
