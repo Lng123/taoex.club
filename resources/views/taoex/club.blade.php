@@ -40,7 +40,7 @@
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             
                             <a href="/home/ranking">5</a></span></li>
-                            @if(Auth::user()->type == 1)
+                            @if($club->owner_id == Auth::user()->id)
                             <li class="list-group-item" style="font-weight: bold;">
                                 <a class="btn btn-outline-secondary" href="{{ route('manageClub') }}">Manage Club</a>
                             </li>
