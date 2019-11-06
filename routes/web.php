@@ -26,8 +26,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
 Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
-Route::post('/home/admin', 'HomeController@sendAnnouncement')->name('openAnnouncement');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
@@ -99,12 +99,14 @@ Route::get('/home/{id}/deleteuser','Auth\UsersController@deleteUserInfo')->name(
 Route::delete('/home/{id}/deleteuseraction','Auth\UsersController@deleteUserAction')->name('deleteUserAction');
 Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('updateUser');
 
-//delete message
+//messaging
 Route::get('/home/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');
-
+Route::post('/home/admin/sendMessageRequest', 'MessageController@sendMessageRequest')->name('sendMessageRequest');
 //admin functions
-Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
 
-Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
-//Admin Club Controls
+Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
 Route::get('/home/{club_id}/manageClubMembers', 'ClubController@adminManageMembers')->name('manageClubMembers');
+
+//Announcement controls
+Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
+Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');

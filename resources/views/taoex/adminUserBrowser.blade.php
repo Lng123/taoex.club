@@ -46,10 +46,10 @@ $(document).ready(function() {
                                    <tr>
                                      <td style="width:70px">
                                      @if (isset($ranking->image))
-              <img style="max-width:60px;" src="{{ "data:image/" . $ranking->image_type . ";base64," . $ranking->image }}">
+              <img style="max-width:60px" src="{{ "data:image/" . $ranking->image_type . ";base64," . $ranking->image }}">
 
           @else
-              <img style="max-width:60px;" src="/images/empty_profile.png" alt="Avatar">
+              <img style="max-width:60px" src="/images/empty_profile.png" alt="Avatar">
           @endif
                                      </td>
                                      <td width="55%">
@@ -57,9 +57,13 @@ $(document).ready(function() {
                                                 <a style="color:grey;" class="edit"> &#9998;</a>
                                         </span>
                                         
-                                        <form style="display: none;" class="form">
-                                            <input type="text" class = editplayername value="{{$ranking->firstName}} {{$ranking->lastName}}">
-                                            <button class="btn btn-outline-secondary" style="width:4rem; font-size:10px" type="submit" value="updateName" >Update</button>
+                                        <form method="POST" style="display: none;" class="form" action="{{ route('editName') }}">
+                                            {{ csrf_field() }}
+                                            <input type="number" style="display: none;" value="{{$ranking->id}}"
+                                               name="id">
+                                            <input type="text" class = editplayername value="{{$ranking->firstName}}" name="firstname" style="width:150px" >
+                                            <input type="text" class = editplayername value="{{$ranking->lastName}}" name="lastname" style="width:150px">
+                                            <button class="btn btn-outline-secondary" style="width:3rem; font-size:10px" type="submit" value="updateName" >Update</button>
                                             <button class="btn btn-outline-secondary" style="widtch:5rem; font-size:10px" type="button" name="cancel">Cancel</button>
                                         </form>
                                     </td>
