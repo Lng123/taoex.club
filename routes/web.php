@@ -32,6 +32,9 @@ Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
 
+//Delete User Admin
+Route::get('/deleteuseradmin/{id}', 'HomeController@deleteUserAdmin')->name('deleteUserAdmin');
+
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
 

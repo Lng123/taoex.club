@@ -110,8 +110,9 @@
                                @if (Auth::user()->club_id != null)
                                <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                                @endif
+                                   @if (Auth::user()->id == $club->owner_id)
                           <a class="btn btn-outline-info" style="margin-right:3px" data-toggle="collapse" href="#collapse3">Record a Match</a>
-
+                                @endif
                           <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a>
                         
 

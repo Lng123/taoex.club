@@ -68,7 +68,7 @@ $(document).ready(function() {
                                         </form>
                                     </td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
-                                     <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('Are you sure you want to remove this member?')">Remove</a></td>
+                                     <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('Are you sure you want to remove this member?')"href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a></td>
                                    </tr>
                                @endforeach
                                  </tbody>

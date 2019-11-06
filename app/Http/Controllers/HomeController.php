@@ -302,6 +302,12 @@ class HomeController extends Controller
     }
 
 
+    public function deleteUserAdmin($id) {
+        $user_table = new User;
+        $remove = $user_table->where('id', $id)->delete();
+        return redirect('/home/adminManageUser');
+
+    }
 
 
     public function deleteMatch(Request $request)
