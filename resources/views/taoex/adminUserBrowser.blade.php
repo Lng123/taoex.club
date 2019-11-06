@@ -68,8 +68,12 @@ $(document).ready(function() {
                                         </form>
                                     </td>
                                      <td><big><i>{{ $ranking->score}}</i></big></td>
+                                       @if(($clubs->where('owner_id', $ranking->id))->count() == 0)
                                      <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('Are you sure you want to remove this member?')"href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a></td>
-                                   </tr>
+                                       @else
+                                       <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return confirm('This user owns one or more clubs.  Please re-assign the Club Owner(s) for these club(s) from the Club Admin page first.')">Remove</a></td>
+                                        @endif
+                                     </tr>
                                @endforeach
                                  </tbody>
                                </table>

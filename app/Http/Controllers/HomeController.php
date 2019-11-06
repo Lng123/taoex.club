@@ -304,7 +304,14 @@ class HomeController extends Controller
 
     public function deleteUserAdmin($id) {
         $user_table = new User;
+        $match_table = new Match;
+        $result_table = new MatchResult;
+        
+        $remove_matchresult = $result_table->where('player_id', $id)->delete();
+        $remove_invite = DB::table('Invite')->where('id', $id)->delete();
+        $remove_match = $match_table->where('winner_id', $id)->update(['winner_id'=> NULL]);
         $remove = $user_table->where('id', $id)->delete();
+        
         return redirect('/home/adminManageUser');
 
     }
