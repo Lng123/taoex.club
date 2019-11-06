@@ -291,8 +291,13 @@ class HomeController extends Controller
     }
 
     public function editName(Request $request) {
-        $request->input('firstname');
-        $request->input('lastname');
+        $user_table = new User;
+        $id = $request->id;
+        $firstname = $request->input('firstname');
+        $lastname = $request->input('lastname');
+        $user_table->where('id', $id)->update(['firstname' => $firstname]);
+        $user_table->where('id', $id)->update(['lastname' => $lastname]);
+        return redirect('/home/adminManageUser');
 
     }
 
