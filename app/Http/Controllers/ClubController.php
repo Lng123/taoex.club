@@ -195,38 +195,42 @@ class ClubController extends Controller
         //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
 
 
-        $allclub_list = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
-        ->join('users', 'Club.owner_id', '=', 'users.id')
-        ->leftjoin('club_application', function($join){
-            $join->on('Club.id', '=' ,'club_application.club_id');
-        });
 
-        $applied_list = DB::table('Club')
+        // $u = "";
+        // $minus = DB::table('Club')
+        // ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.id as user_id', 'users.firstName','users.lastName', DB::raw("'$u' as status"))
+        // ->join('users', 'Club.owner_id', '=', 'users.id')
+        // ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
+        // ->where('users.id', '=',$uid);
+        $applied_inclub = DB::table('Club')
         ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
         ->join('users', 'Club.owner_id', '=', 'users.id')
         ->leftjoin('club_application', function($join){
-            $join->on('Club.id', '=' ,'club_application.club_id');
+            $join->on('Club.id', '=','club_application.club_id');
         })
-        ->where('club_application.user_id','=',$uid);
+        ->where('club_application.user_id','=',$uid)
+        ->orderBy('club.id');
 
-        $inclub_list = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.id as user_id', 'users.firstName','users.lastName','users.id as status','status=inClub' )
+
+
+        $applied_inclub2 = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName',  DB::raw("'' as status"))
         ->join('users', 'Club.owner_id', '=', 'users.id')
-        ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
-        ->where('users.id', '=',$uid);
-    
-        // $x = "inClub";
-        // $inclub_list = DB::select(DB::raw("SELECT 
-        //                                  club.name, club.id, club.owner_id, club.created_at, users.id as user_id, users.firstName, users.lastName, '$x'as status
-        //                             From club
-        //                             join users on Club.owner_id = users.id
-        //                             join userclubs on Club.id = userclubs.club_id
-        //                             where users.id = '$uid'"
-        //                    ));
+        ->whereNotIn('Club.id',function($q)use($uid){
+            $q->select('Club.id')
+            ->from('club')
+            ->join('users', 'Club.owner_id', '=', 'users.id')
+            ->leftjoin('club_application', function($join){
+                $join->on('Club.id', '=' ,'club_application.club_id');
+            })
+            ->where('club_application.user_id','=',$uid)
+            ->orderBy('club.id');
+        })
+        ->orderBy('club.id');
+
 
         //$club_list = $applied_list->union($inclub_list)->union($allclub_list)->get();
-        $club_list = $applied_list->union($allclub_list)->get();
+        $club_list = ($applied_inclub)->union($applied_inclub2)->distinct()->get();
 
         $userClubID = Auth::user()->club_id;
 
@@ -234,6 +238,7 @@ class ClubController extends Controller
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
         ->get();
+        
 
         $test = (String) $userClubName;
 
@@ -427,7 +432,11 @@ class ClubController extends Controller
     }
 
     public function playerApply(Request $request)
-    {
+    {   
+        
+        //DB::table('club_application')->where('status', 'inClub')->delete();
+        
+        
         $user_id = Auth::user()->id;
         $club_id = $request->input('club_id');
         DB::table('club_application')->insert(['user_id'=>$user_id, 'club_id'=>$club_id, 'status'=>'applied']);
