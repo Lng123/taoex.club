@@ -27,7 +27,8 @@
                         <tr>
                             <th>Name</th>
                             <th>Role</th>
-                            <th>Manage Members</td>
+                            <th>Manage Members</th>
+                            <th>Assign as owner</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,9 +41,13 @@
                                 <a class="btn btn-primary"	
                                     href="{{ route('adminRemoveMember', ['id'=>$memberDatum['id'],'club_id'=>$club_id]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                                 <input class="btn btn-primary" type="button"value="Message"/>
-                            </td>
                             @endif
                             </td>
+                            @if($club_owner == $memberDatum['id'])
+                                <td><a class="btn btn-outline-success" style="width:5rem" disabled>Admin</a></td>
+                                @else
+                                <td><a class="btn btn-outline-success" style="width:5rem" href="{{ route('adminChangeClubOwner', ['id'=>$memberDatum['id'], 'club_id'=>$club_id]) }}"onclick="return confirm('Are you sure you want to assign this memeber as the Club Owner?')">Assign</a></td>
+                                @endif
                         </tr>
                         @endforeach
                     </tbody>
