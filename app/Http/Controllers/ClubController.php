@@ -600,5 +600,22 @@ class ClubController extends Controller
         DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
         return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
     }
+    
+    public function adminChangeClubOwner($club_id, $id) {
+        $clubs = new Club();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $clubs->where('id', $club_id)->update(['owner_id'=>$id]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
+    }
+    
+    public function changeClubOwner($id) {
+        $clubs = new Club();
+        $club_id = Auth::user()->club_id;
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $clubs->where('id', $club_id)->update(['owner_id'=>$id]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        return redirect('/home/club');
+    }
 
 }

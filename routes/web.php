@@ -32,6 +32,9 @@ Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
 
+//Delete User Admin
+Route::get('/deleteuseradmin/{id}', 'HomeController@deleteUserAdmin')->name('deleteUserAdmin');
+
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
 
@@ -56,6 +59,8 @@ Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClu
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::get('/adminRemoveMember/{club_id}/{id}', 'ClubController@adminRemoveMember')->name('adminRemoveMember');
+Route::get('/changeClubOwner/{id}', 'ClubController@changeClubOwner')->name('changeClubOwner');
+Route::get('/adminChangeClubOwner/{club_id}/{id}', 'ClubController@adminChangeClubOwner')->name('adminChangeClubOwner');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter/{id}', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');

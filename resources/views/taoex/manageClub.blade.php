@@ -106,7 +106,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Role</th>
-                                <th>Manage Members</td>
+                                <th>Manage Members</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -119,9 +119,10 @@
                                     <a class="btn btn-primary"	
                                         href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                                     <input class="btn btn-primary" type="button"value="Message"/>
-                                </td>
+                                
+                                <a class="btn btn-outline-success" style="width:8rem" href="{{ route('changeClubOwner', ['id'=>$memberDatum['id']]) }}"onclick="return confirm('Are you sure you want to assign this memeber as the Club Owner? This will remove your Club Owner status.')">Assign as Owner</a>
                                 @endif
-                                </td>
+                                    </td>
                             </tr>
                             @endforeach
                         </tbody>

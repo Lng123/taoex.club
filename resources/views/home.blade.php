@@ -32,7 +32,8 @@
             <ul class="list-group" style="color:gray">
               <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
               <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;">{{ isset($club) ? $club->name : 'None' }}
-                  <a class="btn btn-outline-success" style="width:5rem" href="{{ route('newClub') }}">Create</a></span></li>
+                  <br>
+                  <a class="btn btn-outline-success" style="width:9rem" href="{{ route('newClub') }}">Create New Club</a></span></li>
               <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
               <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
 
@@ -175,9 +176,6 @@
                           </tbody>
                         </table>
                         <span style="float:right">
-                          @if (Auth::user()->club_id != null)
-                          <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
-                          @endif
 
                           <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a> </span> </div> @endif </li> </ul> </div> </div> 
                           @if (isset($pending_invites)) 
