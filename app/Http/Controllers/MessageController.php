@@ -30,4 +30,20 @@ class MessageController extends Controller
         DB::table('user_messages')->where('id','=', $uid)->where('message_time','=', $message_time)->where('sender', '=', $sender_id)->delete();
         return redirect('/home');
     }   
+
+    public function sendMessageRequest(Request $request){
+        $uid = $request->id;
+        $message = $request->message;
+        $sender_id = $request->sender;
+        DB::table('user_messages')->insert(['id'=>$uid,'message'=>$message,'sender'=>$sender_id]);
+        return redirect('/home');
+    }
+
+    public function sendAdminMessage(Request $request){
+        $receiver_id = $request->id;
+        $message = $request ->input('message');
+        $sender_id = Auth::user()->id;
+        DB::table('user_messages')->insert(['id'=>$receiver_id,'message'=>$message,'sender'=>$sender_id]);
+        return redirect('home/adminManageUser');
+    }
 }

@@ -97,14 +97,15 @@ class HomeController extends Controller
             ->where('club_name', $test)
             ->get();
         //$personal_messages = DB::table('user_messages')->join('users','users.id','=','user_messages.sender')->select('message','message_time','users.firstname')->get();
-        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->get();
+        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.id','=',$uid)->get();
+        $sent_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.sender','=',$uid)->get();
         $clubMembers = $user_table->get();
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname')->where('Invite.id', $uid)->get();
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
         //$club = $club_table->where('id', $clubuser->club_id)->first();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
-        return view('home', array('list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
+        return view('home', array('sent_messages'=>$sent_messages,'list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
     }
     public function changeActiveClub($club_id)
     {
@@ -290,6 +291,29 @@ class HomeController extends Controller
         ]);
     }
 
+    public function openAdminMessage($id){
+        $match_table = new Match;
+        $result_table = new MatchResult;
+        $user_table = new User;
+
+        $uid = Auth::user()->id;
+        $club_id = Auth::user()->club_id;
+
+        $status = Auth::user()->approved_status;
+        $club_table = new Club;
+        $clubuser_table = new Clubuser;
+        
+
+        $matches = $match_table->orderBy('endDate', 'desc')->get();
+        $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+        $clubMembers = $user_table->get();
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        $name = DB::table('users')->where('id',$id)->value('firstname');
+        $lname = DB::table('users')->where('id',$id)->value('lastname');
+        $fullname = "{$name} {$lname}";
+        return view('taoex.adminSendMessage', array('fullname'=>$fullname,'id' => $id,'list_of_announcements' => $list_of_announcements, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
+        //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
+    }
 
 
 

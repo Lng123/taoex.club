@@ -93,5 +93,7 @@ Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name(
 Route::get('/home/{club_id}/manageClubMembers', 'ClubController@adminManageMembers')->name('manageClubMembers');
 
 //Announcement controls
+Route::get('/home/adminSendMessage/{id}','HomeController@openAdminMessage')->name('openAdminMessage');
+Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');
