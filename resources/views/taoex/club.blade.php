@@ -40,7 +40,7 @@
                             <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
                             
                             <a href="/home/ranking">5</a></span></li>
-                            @if(Auth::user()->type == 1)
+                            @if($club->owner_id == Auth::user()->id)
                             <li class="list-group-item" style="font-weight: bold;">
                                 <a class="btn btn-outline-secondary" href="{{ route('manageClub') }}">Manage Club</a>
                             </li>
@@ -110,8 +110,9 @@
                                @if (Auth::user()->club_id != null)
                                <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
                                @endif
+                                   @if (Auth::user()->id == $club->owner_id)
                           <a class="btn btn-outline-info" style="margin-right:3px" data-toggle="collapse" href="#collapse3">Record a Match</a>
-
+                                @endif
                           <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a>
                         
 

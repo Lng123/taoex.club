@@ -39,14 +39,21 @@
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
                                 <td>{{ $cl->created_at }}</td>
 
-                                <!-- @if($club_id == $cl->id)
+                                @if($cl->status=='applied')
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
-                                   disabled>Selected</a></td>
+                                   disabled>Applied</a></td>
+                                @elseif($cl->status=='inClub')
+                                <td><a class="btn btn-outline-success" style="width:5rem" 	
+                                   disabled>In Club</a></td>
                                 @else
-                                <td><a class="btn btn-outline-success" style="width:5rem" 	
-                            href="{{ route('changeClub', [$cl->id]) }}">Apply</a></td>
-                                @endif -->
-                                <td><a class="btn btn-outline-success" style="width:5rem">Apply</a></td>
+                                <td>
+                                <form method="POST" action="{{route('playerApplyToClub')}}">
+                                {{ csrf_field() }}
+                                <button class="btn btn-outline-success" style="width:5rem" type="submit">Apply</button>
+                                <input type="hidden" value={{$cl->id}} name="club_id" />
+                                </form>
+                                </td>
+                                @endif
                             </tr>
                             @endforeach
                             @endif
