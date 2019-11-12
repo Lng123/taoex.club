@@ -27,11 +27,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
+Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers');
 Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
-Route::post('/home/admin', 'HomeController@sendAnnouncement')->name('openAnnouncement');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
+
+//Delete User Admin
+Route::get('/deleteuseradmin/{id}', 'HomeController@deleteUserAdmin')->name('deleteUserAdmin');
 
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
@@ -41,27 +44,43 @@ Route::get('/changeclub/{club_id}', 'HomeController@changeActiveClub')->name('ch
 
 //Club
 Route::get('/home/club', 'ClubController@index')->name('club')->middleware('auth');
+
+
+Route::get('/home/club/showAllClub', 'ClubController@showAllClub')->name('clubBrowser')->middleware('auth');
+Route::post('/home', 'ClubController@applyClub');
+
+
 Route::get('/home/clubBrowser', 'ClubController@showAllClub')->name('clubBrowser')->middleware('auth');
 //Route::post('/home', 'ClubController@applyClub')->name('applyClub');
 Route::post('applyClub',array('uses' =>'ClubController@applyClub'));
+
+
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
 Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::get('/adminRemoveMember/{club_id}/{id}', 'ClubController@adminRemoveMember')->name('adminRemoveMember');
+Route::get('/changeClubOwner/{id}', 'ClubController@changeClubOwner')->name('changeClubOwner');
+Route::get('/adminChangeClubOwner/{club_id}/{id}', 'ClubController@adminChangeClubOwner')->name('adminChangeClubOwner');
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter/{id}', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
 Route::post('/home/Club', 'ClubController@sendMessage');
 Route::get('/home/club/playersearch', 'ClubController@playersearch');
 
-//invitation
+//club application
+Route::post('/home/club/showAllClub', 'ClubController@playerApply')->name('playerApplyToClub');
+
+
+//club invitation
 Route::post('/home/club/playersearch', 'ClubController@invite')->name('invitePlayer');
 //Route::post('invitePlayer', 'ClubController@invite')->name('invitePlayer');
 //Route::get('/invitePlayer/{user_id}','ClubController@invite')->name('invitePlayer');
 Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('acceptInvite');
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
+Route::get('acceptClubApplication/{userid}/{clubid}', 'ClubController@acceptClubApplication')->name('acceptClubApplication');
+
 
 //league
 Route::get('/home/league', 'LeagueController@index')->name('league')->middleware('auth');
@@ -86,12 +105,18 @@ Route::get('/home/{id}/deleteuser','Auth\UsersController@deleteUserInfo')->name(
 Route::delete('/home/{id}/deleteuseraction','Auth\UsersController@deleteUserAction')->name('deleteUserAction');
 Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('updateUser');
 
-//delete message
+//messaging
 Route::get('/home/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');
-
+Route::post('/home/admin/sendMessageRequest', 'MessageController@sendMessageRequest')->name('sendMessageRequest');
 //admin functions
-Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
 
-Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
-//Admin Club Controls
+Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
 Route::get('/home/{club_id}/manageClubMembers', 'ClubController@adminManageMembers')->name('manageClubMembers');
+
+//Announcement controls
+Route::get('/home/adminSendMessage/{id}','HomeController@openAdminMessage')->name('openAdminMessage');
+Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser');
+Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
+Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
+Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
+Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');
