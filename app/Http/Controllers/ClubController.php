@@ -316,7 +316,9 @@ class ClubController extends Controller
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
         DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
         $club_name = DB::table('club')->where('id',$club_id)->value('name');
-        $message = "You have been kicked from {$club_name}";
+        $name = DB::table('users')->where('id',$id)->value('firstname');
+        $lname = DB::table('users')->where('id',$id)->value('lastname');
+        $message = "{$name} {$lname} has been kicked from {$club_name}";
         $club_owner_id = DB::table('club')->where('id',$club_id)->value('owner_id');
         DB::table('club_application')->where('user_id', $id)->where('club_id', $club_id)->where('status','inClub')->delete();
         DB::table('user_messages')->insert(['id'=>$id,'message'=>$message,'sender'=>$club_owner_id]);

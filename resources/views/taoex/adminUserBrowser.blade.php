@@ -1,21 +1,22 @@
 @extends('layouts.header')
 @section('content')
 <script>
-$(document).ready(function() {
+  $(document).ready(function() {
     $(".edit").click(function() {
-        $(this).parent().css("display","none");
-        $(this).parent().next().css("display","block");
+      $(this).parent().css("display", "none");
+      $(this).parent().next().css("display", "block");
     });
     $('[name = "cancel"]').click(function() {
-        $(this).parent().css("display","none");
-        $(this).parent().prev().css("display","block");
+      $(this).parent().css("display", "none");
+      $(this).parent().prev().css("display", "block");
     });
 
-    $('#member').DataTable()( {
-     aaSorting: [[0, 'asc']]
+    $('#member').DataTable()({
+      aaSorting: [
+        [0, 'asc']
+      ]
     });
-});
-
+  });
 </script>
 <div class="content-wrapper">
   <div class="container-fluid">
@@ -73,20 +74,27 @@ $(document).ready(function() {
                                        @else
                                        <td style = "width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick = "return alert('This user owns one or more clubs.  Please re-assign the Club Owner for these club(s) from the Admin Club page first.')">Remove</a></td>
                                         @endif
+                                                   <td>
+              <a class="btn btn-outline-success" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
+            </td>
+                        <td>
+              <a class="btn btn-outline-success" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
+            </td>
                                      </tr>
                                @endforeach
                                  </tbody>
                                </table>
                                <!--<span style="float:right">
+
                                <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
 
                         	<a class="btn btn-outline-info" style="float:right" href=/home/allMatch>more...</a>
                         
 
                 </span>-->
-                </div>
-	    </div>
-	      </div>
+    </div>
+  </div>
+</div>
 </div>
 <!-- /.container-fluid-->
 <!-- /.content-wrapper-->

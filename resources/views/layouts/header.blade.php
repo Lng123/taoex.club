@@ -126,6 +126,9 @@ $(document).ready(function() {
                                 <a href="{{ route('openUserAdmin') }}">Manage users</a>
                             </li>
                             <li>
+                                <a href="{{ route('openBannedUsers') }}">Banned Users</a>
+                            </li>
+                            <li>
                                 <a href="{{ route('openClubAdmin') }}">Manage clubs</a>
                             </li>
                             <li>
