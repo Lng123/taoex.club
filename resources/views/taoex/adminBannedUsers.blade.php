@@ -25,10 +25,10 @@
       <li class="breadcrumb-item">
         <a href="/home">Taoex</a>
       </li>
-      <li class="breadcrumb-item active">Club</li>
+      <li class="breadcrumb-item active">Banned Users</li>
     </ol>
     <div class="card-header">
-      <div class="h4">Manage Users</div>
+      <div class="h4">List of Banned Users</div>
     </div>
     <div class="card-body" style="overflow:auto">
       {{-- <p>Number of Players: {!!$playerCount!!}</p>--}}
@@ -38,42 +38,38 @@
             <th>
             </th>
             <th>Name</th>
-            <th>Score</th>
-            <th>Remove</th>
-            <th>Message</th>
-            <th>Ban</th>
+            <th>Unban</th>
+            <th>Reason</th>
           </tr>
         </thead>
         <tbody>
 
-          @foreach ($ranking as $ranking)
+          @foreach ($bannedUsers as $user)
           <tr>
             <td style="width:70px">
-              @if (isset($ranking->image))
-              <img style="max-width:60px;" src="{{ "data:image/" . $ranking->image_type . ";base64," . $ranking->image }}">
+              @if (isset($user->image))
+              <img style="max-width:60px;" src="{{ "data:image/" . $user->image_type . ";base64," . $user->image }}">
 
               @else
               <img style="max-width:60px;" src="/images/empty_profile.png" alt="Avatar">
               @endif
             </td>
             <td width="55%">
-              <span class="playername">{{$ranking->firstName}} {{$ranking->lastName}}
+              <span class="playername">{{$user->firstName}} {{$user->lastName}}
                 <a style="color:grey;" class="edit"> &#9998;</a>
               </span>
 
               <form style="display: none;" class="form">
-                <input type="text" class=editplayername value="{{$ranking->firstName}} {{$ranking->lastName}}">
+                <input type="text" class=editplayername value="{{$user->firstName}} {{$user->lastName}}">
                 <button class="btn btn-outline-secondary" style="width:4rem; font-size:10px" type="submit" value="updateName">Update</button>
                 <button class="btn btn-outline-secondary" style="widtch:5rem; font-size:10px" type="button" name="cancel">Cancel</button>
               </form>
             </td>
-            <td><big><i>{{ $ranking->score}}</i></big></td>
-            <td style="width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick="return confirm('Are you sure you want to remove this member?')">Remove</a></td>
             <td>
-              <a class="btn btn-outline-success" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
+              <a class="btn btn-outline-success" style="width:5rem" href="{{route('unbanUser',['id'=>$user->id])}}">Lift Ban</a>
             </td>
             <td>
-              <a class="btn btn-outline-success" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
+              {{$user->reason}}
             </td>
           </tr>
           @endforeach

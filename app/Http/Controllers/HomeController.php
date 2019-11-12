@@ -291,6 +291,30 @@ class HomeController extends Controller
         ]);
     }
 
+    public function openBannedUsers()
+    {
+        $match_table = new Match;
+        $result_table = new MatchResult;
+        $user_table = new User;
+        $club_table = new Club;
+        $club_count = Club::count();
+        $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
+
+        //$rankings = $user_table->orderBy('score', 'desc')->get();
+        $banned_users = DB::table('banned_users')->join('users','users.id','=','banned_users.banned_id')->select('*')->get();
+        $playerCount = User::count();
+
+
+
+        return view('taoex.adminBannedUsers')->with([
+            'club_count' => $club_count,
+            'clubs' => $clubs, 'bannedUsers' => $banned_users, 'player_count' => $playerCount
+        ]);
+    }
+
+
+
+
     public function openAdminMessage($id){
         $match_table = new Match;
         $result_table = new MatchResult;

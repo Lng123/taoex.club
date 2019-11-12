@@ -26,6 +26,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers');
 Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
@@ -94,6 +95,8 @@ Route::get('/home/{club_id}/manageClubMembers', 'ClubController@adminManageMembe
 
 //Announcement controls
 Route::get('/home/adminSendMessage/{id}','HomeController@openAdminMessage')->name('openAdminMessage');
+Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser');
+Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');

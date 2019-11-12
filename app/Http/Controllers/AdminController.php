@@ -30,4 +30,16 @@ class AdminController extends Controller
         DB::table('club')->where('id','=', $club_id)->delete();
         return redirect('/home/adminManageClub');
     }   
+
+    public function banUser($ban_id){
+        $admin_id = Auth::user()->id;
+        DB::table('banned_users')->insert(['banned_id'=>$ban_id,'admin_id'=>$admin_id,'reason'=>'Banned']);
+        return redirect('/home/adminBannedUsers');
+    }
+
+    public function unbanUser($ban_id){
+        $admin_id = Auth::user()->id;
+        DB::table('banned_users')->where('banned_id','=',$ban_id)->delete();
+        return redirect('/home/adminBannedUsers');
+    }
 }
