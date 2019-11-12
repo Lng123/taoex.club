@@ -12,7 +12,7 @@ $(document).ready(function() {
     });
 
     $('#member').DataTable()( {
-     aaSorting: [[0, 'asc']]
+      aaSorting: [[0, 'asc']]
     });
 });
 

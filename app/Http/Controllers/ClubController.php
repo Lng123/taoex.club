@@ -195,7 +195,29 @@ class ClubController extends Controller
         
         //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
         $club_list = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.firstName', 'users.lastName')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.firstName', 'users.lastName');
+
+
+
+        // $u = "";
+        // $minus = DB::table('Club')
+        // ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.id as user_id', 'users.firstName','users.lastName', DB::raw("'$u' as status"))
+        // ->join('users', 'Club.owner_id', '=', 'users.id')
+        // ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
+        // ->where('users.id', '=',$uid);
+        $applied_inclub = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status', 'Club.club_score')
+        ->join('users', 'Club.owner_id', '=', 'users.id')
+        ->leftjoin('club_application', function($join){
+            $join->on('Club.id', '=','club_application.club_id');
+        })
+        ->where('club_application.user_id','=',$uid)
+        ->orderBy('club.id');
+
+
+
+        $applied_inclub2 = DB::table('Club')
+        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName',  DB::raw("'' as status"), 'Club.club_score')
         ->join('users', 'Club.owner_id', '=', 'users.id')
         ->get();
         
