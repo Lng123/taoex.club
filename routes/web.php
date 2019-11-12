@@ -74,6 +74,7 @@ Route::get('/acceptInvitation/{id}', 'ClubController@acceptInvitation')->name('a
 Route::get('acceptInvatation', 'ClubController@acceptInvitation');
 Route::get('declineInvataion', 'ClubController@declineInvitation');
 Route::get('acceptClubApplication/{userid}/{clubid}', 'ClubController@acceptClubApplication')->name('acceptClubApplication');
+Route::get('declineClubApplication/{userid}/{clubid}', 'ClubController@declineClubApplication')->name('declineClubApplication');
 
 
 //league
