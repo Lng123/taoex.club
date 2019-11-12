@@ -17,6 +17,7 @@
         <input type="submit" class="btn btn-primary">
       </div> 
     </form>
+    <span>Total Score: {{$total_score[0]->club_score}} </span>
     </div>
 </div>
 <div class="table-responsive data-table">
@@ -29,6 +30,7 @@
         <th>Total Games</th>
         <th>Won</td>
         <th>Score</td>
+        <th>Club Score</th>
         <!-- <th>Manage Members</td> -->
       </tr>
     </thead>
@@ -41,6 +43,7 @@
         <td>{{ $memberDatum['games'] }}</td>
         <td>{{ $memberDatum['won'] }}</td>
         <td>{{ $memberDatum['score'] }}</td>
+        <td>{{ $memberDatum['rank']}}</td>
         <!-- <td>@if ($memberDatum['role'] != 1)<input class="btn btn-primary" value="Kick"/><input class="btn btn-primary" value="Message"/>@endif</td> -->
       </tr>
       @endforeach

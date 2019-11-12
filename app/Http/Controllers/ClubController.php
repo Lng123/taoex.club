@@ -317,7 +317,9 @@ class ClubController extends Controller
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
         DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
         $club_name = DB::table('club')->where('id',$club_id)->value('name');
-        $message = "You have been kicked from {$club_name}";
+        $name = DB::table('users')->where('id',$id)->value('firstname');
+        $lname = DB::table('users')->where('id',$id)->value('lastname');
+        $message = "{$name} {$lname} has been kicked from {$club_name}";
         $club_owner_id = DB::table('club')->where('id',$club_id)->value('owner_id');
         DB::table('club_application')->where('user_id', $id)->where('club_id', $club_id)->where('status','inClub')->delete();
         DB::table('user_messages')->insert(['id'=>$id,'message'=>$message,'sender'=>$club_owner_id]);
@@ -445,12 +447,13 @@ class ClubController extends Controller
     }
 
 
-    public function acceptInvitation($id)
+    public function acceptInvitation($club_id)
     {
         $uid = Auth::user()->id;
-        $status = Auth::user()->approved_status;
-        $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
+        //$status = Auth::user()->approved_status;
+        //$totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>1]);
+
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
@@ -479,7 +482,6 @@ class ClubController extends Controller
         }
 
         return redirect('/home/club');
-        //return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
     }
 
 
@@ -596,6 +598,7 @@ class ClubController extends Controller
                                           'club_members' => $club_members]);
     }
 
+
     public function adminManageMembers($club_id) {
         $clubs = new Club;
         $clubMembers = DB::table('UserClubs')
@@ -626,5 +629,23 @@ class ClubController extends Controller
         DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
         return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
     }
+    
+    public function adminChangeClubOwner($club_id, $id) {
+        $clubs = new Club();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $clubs->where('id', $club_id)->update(['owner_id'=>$id]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
+    }
+    
+    public function changeClubOwner($id) {
+        $clubs = new Club();
+        $club_id = Auth::user()->club_id;
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        $clubs->where('id', $club_id)->update(['owner_id'=>$id]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        return redirect('/home/club');
+    }
+
 
 }

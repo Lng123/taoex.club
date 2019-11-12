@@ -7,7 +7,7 @@
       <li class="breadcrumb-item">
         <a href="/home">Dashboard</a>
       </li>
-      <li class="breadcrumb-item active">Admin</li>
+      <li class="breadcrumb-item active">Admin Announcements</li>
     </ol>
 
     <div class="row">

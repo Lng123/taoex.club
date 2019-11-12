@@ -32,7 +32,8 @@
             <ul class="list-group" style="color:gray">
               <li class="list-group-item" style="font-weight: bold;">User Level: <span style="text-align: right;">{{ (Auth::user()->type == 1) ? 'Club Owner' : 'Normal' }}</span></li>
               <li class="list-group-item" style="font-weight: bold;">Club: <span style="text-align: right;">{{ isset($club) ? $club->name : 'None' }}
-                  <a class="btn btn-outline-success" style="width:5rem" href="{{ route('newClub') }}">Create</a></span></li>
+                  <br>
+                  <a class="btn btn-outline-success" style="width:9rem" href="{{ route('newClub') }}">Create New Club</a></span></li>
               <li class="list-group-item" style="font-weight: bold;">Total Score: <span style="text-align: right;">{{ $totalScore }}</span></li>
               <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
 
@@ -84,6 +85,43 @@
                           @endif
                           @if(isset($personal_messages))
                           @foreach ($personal_messages as $message)
+                          <tr>
+                            <td>{{$message->firstname}} {{$message->lastname}}</td>
+                            <td>{{$message->message}}</td>
+                            <td>{{$message->message_time}}</td>
+                            <td><a href="{{ route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time]) }}"> x </a></td>
+                          </tr>
+                          @endforeach
+                          @endif
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel-group">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse4" style="width:100%">Sent Messages</button>
+                  </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse show">
+                  <ul class="list-group">
+                    <li class="list-group-item" style="overflow:auto">
+                      <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr data-toggle="collapse" data-target=".contents">
+                            <th>Sender</th>
+                            <th>Messages</th>
+                            <th>Time</th>
+                          </tr>
+                          @if(isset($sent_messages))
+                          @foreach ($sent_messages as $message)
                           <tr>
                             <td>{{$message->firstname}} {{$message->lastname}}</td>
                             <td>{{$message->message}}</td>
@@ -175,9 +213,6 @@
                           </tbody>
                         </table>
                         <span style="float:right">
-                          @if (Auth::user()->club_id != null)
-                          <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
-                          @endif
 
                           <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a> </span> </div> @endif </li> </ul> </div> </div> 
                           @if (isset($pending_invites)) 
@@ -195,7 +230,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-6">Club Owner:</div>
-                                      <div class="col-6">{{ $invites->firstname}}</div>
+                                      <div class="col-6">{{ $invites->firstname}} {{$invites->lastname}}</div>
                                     </div>
                                     <div class="row">
                                       <div class="col-6">Club Location:</div>

@@ -19,6 +19,16 @@
           </li>
           <li class="breadcrumb-item active">Manage Club</li>
         </ol>
+        <form method="POST" id="club_dropdown">
+            <select class="form-control" name="select_id" onchange="top.location.href = this.options[this.selectedIndex].value">
+                <option>{{$currentClub->name}}</option>
+                @foreach($clubData as $clubDatum)
+                @if ($clubDatum['club_id'] != $club_id)
+                <option value="{{route('manageClubMembers', $clubDatum['club_id'])}}">{{$clubDatum['club_name']}}</option>
+                @endif
+                @endforeach
+            </select>
+        </form>
         <div class="col-md-8">
             <div class="h3">Club Members</div>
             <div class="table-responsive data-table" >
@@ -27,7 +37,8 @@
                         <tr>
                             <th>Name</th>
                             <th>Role</th>
-                            <th>Manage Members</td>
+                            <th>Manage Members</th>
+                            <th>Assign as Owner</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,9 +51,13 @@
                                 <a class="btn btn-primary"	
                                     href="{{ route('adminRemoveMember', ['id'=>$memberDatum['id'],'club_id'=>$club_id]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                                 <input class="btn btn-primary" type="button"value="Message"/>
-                            </td>
                             @endif
                             </td>
+                            @if($club_owner == $memberDatum['id'])
+                                <td><a class="btn btn-outline-success" style="width:5rem" disabled>Owner</a></td>
+                                @else
+                                <td><a class="btn btn-outline-success" style="width:5rem" href="{{ route('adminChangeClubOwner', ['id'=>$memberDatum['id'], 'club_id'=>$club_id]) }}"onclick="return confirm('Are you sure you want to assign this memeber as the Club Owner?')">Assign</a></td>
+                                @endif
                         </tr>
                         @endforeach
                     </tbody>

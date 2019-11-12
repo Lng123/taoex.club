@@ -97,23 +97,24 @@ class HomeController extends Controller
             ->where('club_name', $test)
             ->get();
         //$personal_messages = DB::table('user_messages')->join('users','users.id','=','user_messages.sender')->select('message','message_time','users.firstname')->get();
-        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->get();
+        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.id', '=', $uid)->get();
+        $sent_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.sender', '=', $uid)->get();
         $clubMembers = $user_table->get();
-        $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname')->where('Invite.id', $uid)->get();
-        
+        $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname','users.lastname')->where('Invite.id', $uid)->get();
+
         $pending_applications = DB::table('club_application')
-             ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
-             ->join('club', 'club_application.club_id', '=','club.id')
-             ->join('users', 'users.id', '=', 'club_application.user_id')
-             ->where('club_application.status','=','applied')
-             ->where('club.owner_id','=',$uid)
-             ->get();
+            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
+            ->join('club', 'club_application.club_id', '=', 'club.id')
+            ->join('users', 'users.id', '=', 'club_application.user_id')
+            ->where('club_application.status', '=', 'applied')
+            ->where('club.owner_id', '=', $uid)
+            ->get();
 
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
         //$club = $club_table->where('id', $clubuser->club_id)->first();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
-        return view('home', array('list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites,'pending_club_applications'=>$pending_applications, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
+        return view('home', array('sent_messages' => $sent_messages, 'list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites, 'pending_club_applications' => $pending_applications, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
     }
     public function changeActiveClub($club_id)
     {
@@ -151,13 +152,6 @@ class HomeController extends Controller
 
     public function sendAnnouncement(Request $request)
     {
-        $match_table = new Match;
-        $result_table = new MatchResult;
-        $user_table = new User;
-
-        $matches = $match_table->orderBy('endDate', 'desc')->get();
-        $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-
 
         $this->validate($request, [
             'announcement' => 'required'
@@ -169,9 +163,9 @@ class HomeController extends Controller
         );
 
         DB::table('announcements')->insert($data);
-        $clubMembers = $user_table->get();
+
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
-        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement, 'matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers));
+        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement));
     }
 
     public function deleteAnnouncement($announcement, $time_sent)
@@ -281,14 +275,11 @@ class HomeController extends Controller
 
     public function openUserAdmin()
     {
-        $match_table = new Match;
-        $result_table = new MatchResult;
-        $user_table = new User;
         $club_table = new Club;
         $club_count = Club::count();
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
-
-        $rankings = $user_table->orderBy('score', 'desc')->get();
+        $banned_users = DB::table('banned_users')->pluck('banned_id')->all();
+        $rankings = DB::table('users')->select('*')->whereNotIn('id', $banned_users)->orderBy('score', 'desc')->get();
         $playerCount = User::count();
 
 
@@ -299,7 +290,8 @@ class HomeController extends Controller
         ]);
     }
 
-    public function editName(Request $request) {
+    public function editName(Request $request)
+    {
         $user_table = new User;
         $id = $request->id;
         $firstname = $request->input('firstname');
@@ -307,10 +299,42 @@ class HomeController extends Controller
         $user_table->where('id', $id)->update(['firstname' => $firstname]);
         $user_table->where('id', $id)->update(['lastname' => $lastname]);
         return redirect('/home/adminManageUser');
+    }
 
+    public function openBannedUsers()
+    {
+        $banned_users = DB::table('banned_users')->join('users', 'users.id', '=', 'banned_users.banned_id')->select('*')->get();
+        return view('taoex.adminBannedUsers')->with([
+            'bannedUsers' => $banned_users
+        ]);
     }
 
 
+
+
+    public function openAdminMessage($id)
+    {
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        $name = DB::table('users')->where('id', $id)->value('firstname');
+        $lname = DB::table('users')->where('id', $id)->value('lastname');
+        $fullname = "{$name} {$lname}";
+        return view('taoex.adminSendMessage', array('fullname' => $fullname, 'id' => $id, 'list_of_announcements' => $list_of_announcements));
+        //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
+    }
+
+    public function deleteUserAdmin($id)
+    {
+        $user_table = new User;
+        $match_table = new Match;
+        $result_table = new MatchResult;
+
+        $remove_matchresult = $result_table->where('player_id', $id)->delete();
+        $remove_invite = DB::table('Invite')->where('id', $id)->delete();
+        $remove_match = $match_table->where('winner_id', $id)->update(['winner_id' => NULL]);
+        $remove = $user_table->where('id', $id)->delete();
+
+        return redirect('/home/adminManageUser');
+    }
 
 
     public function deleteMatch(Request $request)
@@ -446,7 +470,79 @@ class HomeController extends Controller
         $ranking = $user_table->where('score', '>=', $total_score)->get()->count();
 
         $editSuccess = 1;
+        $match_id =  $result_table->where('id', $resultTarget)->get();
+
+        $club_id = getClubId($match_id);
+        updateCScore($club_id);
+        dd($match_id);
 
         return view('taoex.admin', array('matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers, 'ranking' => $ranking, 'editSuccess' => $editSuccess));
+    }
+
+    public function getClubId($match_id) {
+        $match_table = new Match;
+
+        $club_id = $match_table->where('match_id', $match_id)->select('club_id');
+
+        return $club_id;
+
+    }
+
+    public function updateCScore($club_id) {
+        $date = date("Y");
+
+        //User Table
+    	$user_table = new User;
+        //Club Table
+        $club_table = new Club;
+        //Match Table
+        $match_table = new Match;
+        //Match Result Table
+        $result_table = new MatchResult;
+        
+        //Obtain user ID
+        $uid = Auth::user()->id;
+        //Obtain club id
+        //$club_id = Auth::user()->club_id;
+        //Obtain status
+        $approved_status = Auth::user()->approved_status;
+        $type = Auth::user()->type;
+        $province = Auth::user()->province;
+        $city = Auth::user()->city;
+        
+        $clubGames = $match_table->where('club_id', $club_id)->get();
+        
+        $club = $club_table->where('id', $club_id)->first();
+        
+        $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
+
+        $string ="";
+        
+        $combined = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->get();
+                $clubGameCount = $match_table->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->get()->count();
+
+        $memberData = [];
+        $i = 0;
+        $total_score = 0;
+
+        foreach ($clubMembers as $clubMember) {
+        	
+        	$gameCount = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->get()->count();
+        	
+        	$won = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->where('winner_id',$clubMember->id)->get()->count();
+        	
+            $score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
+            
+            if ($clubGameCount == 0) {
+                $rank = ($score/1) * $won;
+            } else {
+                $rank = ($score/$clubGameCount) * $won;
+            }
+        	$total_score += rank;
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>$rank);
+        	$i++;
+        }
+        $club_table->where('id',$club_id)->update(['club_score'=>ranking]);
+
     }
 }
