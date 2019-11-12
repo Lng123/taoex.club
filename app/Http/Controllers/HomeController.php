@@ -288,8 +288,8 @@ class HomeController extends Controller
         $club_table = new Club;
         $club_count = Club::count();
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
-
-        $rankings = $user_table->orderBy('score', 'desc')->get();
+        $banned_users = DB::table('banned_users')->pluck('banned_id')->all();
+        $rankings = DB::table('users')->select('*')->whereNotIn('id',$banned_users)->orderBy('score', 'desc')->get();
         $playerCount = User::count();
 
 
