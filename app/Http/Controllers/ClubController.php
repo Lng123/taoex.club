@@ -572,6 +572,7 @@ class ClubController extends Controller
                                           'already_invited' =>$already_invited,
                                           'club_members' => $club_members]);
     }
+<<<<<<< HEAD
 
     public function adminManageMembers($club_id) {
         $clubs = new Club;
@@ -621,4 +622,6 @@ class ClubController extends Controller
         return redirect('/home/club');
     }
 
+=======
+>>>>>>> Nelson
 }
