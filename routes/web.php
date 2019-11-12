@@ -92,6 +92,9 @@ Route::post('/home/admin/sendMessageRequest', 'MessageController@sendMessageRequ
 
 Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
 Route::get('/home/{club_id}/manageClubMembers', 'Auth\ClubsController@adminManageMembers')->name('manageClubMembers');
+Route::post('updateClubMembers', 'Auth\ClubsController@updateClubMembers')->name('updateClubMembers');
+
+
 
 //Announcement controls
 Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');

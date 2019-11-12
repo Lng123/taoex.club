@@ -19,6 +19,16 @@
           </li>
           <li class="breadcrumb-item active">Manage Club</li>
         </ol>
+        <form method="POST" id="club_dropdown">
+            <select class="form-control" name="select_id" onchange="top.location.href = this.options[this.selectedIndex].value">
+                <option>{{$currentClub->name}}</option>
+                @foreach($clubData as $clubDatum)
+                @if ($clubDatum['club_id'] != $club_id)
+                <option value="{{route('manageClubMembers', $clubDatum['club_id'])}}">{{$clubDatum['club_name']}}</option>
+                @endif
+                @endforeach
+            </select>
+        </form>
         <div class="col-md-8">
             <div class="h3">Club Members</div>
             <div class="table-responsive data-table" >
