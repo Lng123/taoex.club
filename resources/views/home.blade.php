@@ -230,7 +230,7 @@
                                     </div>
                                     <div class="row">
                                       <div class="col-6">Club Owner:</div>
-                                      <div class="col-6">{{ $invites->firstname}}</div>
+                                      <div class="col-6">{{ $invites->firstname}} {{$invites->lastname}}</div>
                                     </div>
                                     <div class="row">
                                       <div class="col-6">Club Location:</div>
