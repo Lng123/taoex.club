@@ -24,7 +24,7 @@
                                <table class="table table-striped table-bordered" id="member" style="overflow-x: scroll">
                                  <thead>
                                    <tr>
-                                   <th>Club Name</th>
+                                    <th>Club Name</th>
                                     <th>Club Owner</th>
                                     <th>Created at</th>
                                     <th>Apply</th>
@@ -35,7 +35,7 @@
                             @foreach ($club_list as $cl)
                             <tr>
                                 <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a></td>
-                                <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
+                                <td>{{ $cl->firstName}} {{ $cl->lastName}}</td>
                                 <td>{{ $cl->created_at }}</td>
 
                                 @if($cl->status=='applied')
