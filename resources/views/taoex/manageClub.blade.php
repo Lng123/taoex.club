@@ -116,9 +116,9 @@
                                 <td>@if ($memberDatum['id'] == $club_owner) Club Owner @else Club Member @endif</td>
                                 <td>
                                 @if ($memberDatum['id'] != $club_owner)
-                                    <a class="btn btn-primary"	
+                                    <a class="btn btn-outline-danger"	
                                         href="{{ route('removeMember', [$memberDatum['id']]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
-                                    <input class="btn btn-primary" type="button"value="Message"/>
+                                    <input class="btn btn-outline-primary" type="button"value="Message"/>
                                 
                                 <a class="btn btn-outline-success" style="width:8rem" href="{{ route('changeClubOwner', ['id'=>$memberDatum['id']]) }}"onclick="return confirm('Are you sure you want to assign this memeber as the Club Owner? This will remove your Club Owner status.')">Assign as Owner</a>
                                 @endif
