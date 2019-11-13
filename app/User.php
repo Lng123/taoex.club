@@ -57,17 +57,15 @@ class User extends Authenticatable
 
     protected $fillable = [
 
-        'firstName', 'lastName', 'phone', 'address', 'country', 'province', 'city', 'type', 'opt', 'email', 'password', 'approved_status','image','image_type'
-
+        'id','firstName', 'lastName', 'phone', 'address', 'country', 'province', 'city', 'type', 'opt', 'email', 'password', 'approved_status','image','image_type'
     ];
-
-
 
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
+
 
     protected $hidden = [
         'password', 'remember_token',
@@ -118,6 +116,10 @@ class User extends Authenticatable
 
     public static function updateUserToClubOwner($uid, $club_id) {
         DB::table('users')->where('id', $uid)->update(['type'=>1, 'approved_status'=>1, 'club_id'=>$club_id]);
+    }
+
+    public static function isBanned(){
+        return (DB::table('banned_users')->where('banned_id', auth()->user()->id)->first());
     }
 
 }
