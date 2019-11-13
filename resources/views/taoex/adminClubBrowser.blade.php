@@ -13,9 +13,9 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/home">Taoex</a>
+        <a href="{{route('home')}}">Taoex</a>
       </li>
-      <li class="breadcrumb-item active">Club</li>
+      <li class="breadcrumb-item active">Manage Clubs</li>
     </ol>
     <div class="card-header">
     <div class="h4">Manage all clubs</div>
@@ -47,7 +47,7 @@
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
                             href="{{ route('changeClub', [$cl->id]) }}">Apply</a></td>
                                 @endif -->
-                                <td><a class="btn btn-outline-success" style="width:5rem" href="{{ route('adminDeleteClub',['club_id'=>$cl->id]) }}" onclick = "return confirm('Are you sure you want to remove this club?')">Remove</a></td>
+                                <td><a class="btn btn-outline-danger" style="width:5rem" href="{{ route('adminDeleteClub',['club_id'=>$cl->id]) }}" onclick = "return confirm('Are you sure you want to remove this club?')">Remove</a></td>
                             </tr>
                             @endforeach
                             @endif

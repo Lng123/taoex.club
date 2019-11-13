@@ -5,11 +5,13 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/home">Dashboard</a>
+        <a href="{{route('home')}}">Taoex</a>
       </li>
       <li class="breadcrumb-item active">Admin Announcements</li>
     </ol>
-
+    <div class="card-header">
+      <div class="h4">Admin Announcements</div>
+    </div>
     <div class="row">
 
       <div class="col-md-12" style="max-height: 1000px; overflow:auto;">

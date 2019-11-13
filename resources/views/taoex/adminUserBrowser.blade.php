@@ -23,9 +23,9 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/home">Taoex</a>
+        <a href="{{route('home')}}">Taoex</a>
       </li>
-      <li class="breadcrumb-item active">Club</li>
+      <li class="breadcrumb-item active">Manage Users</li>
     </ol>
     <div class="card-header">
       <div class="h4">Manage Users</div>
@@ -72,15 +72,15 @@
             </td>
             <td><big><i>{{ $ranking->score}}</i></big></td>
             @if(($clubs->where('owner_id', $ranking->id))->count() == 0)
-            <td style="width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick="return confirm('Are you sure you want to remove this member?')" href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a></td>
+            <td style="width:100px"><a class="btn btn-outline-danger" style="width:5rem" onclick="return confirm('Are you sure you want to remove this member?')" href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a></td>
             @else
-            <td style="width:100px"><a class="btn btn-outline-success" style="width:5rem" onclick="return alert('This user owns one or more clubs.  Please re-assign the Club Owner for these club(s) from the Admin Club page first.')">Remove</a></td>
+            <td style="width:100px"><a class="btn btn-outline-danger" style="width:5rem" onclick="return alert('This user owns one or more clubs.  Please re-assign the Club Owner for these club(s) from the Admin Club page first.')">Remove</a></td>
             @endif
             <td>
-              <a class="btn btn-outline-success" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
+              <a class="btn btn-outline-primary" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
             </td>
             <td>
-              <a class="btn btn-outline-success" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
+              <a class="btn btn-outline-warning" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
             </td>
           </tr>
           @endforeach

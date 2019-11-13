@@ -5,7 +5,7 @@
     <!-- Breadcrumbs-->
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="/home">Dashboard</a>
+        <a href="{{route('home')}}">Taoex</a>
       </li>
       <li class="breadcrumb-item active">Admin</li>
     </ol>
