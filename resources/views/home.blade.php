@@ -277,7 +277,7 @@
                                     <button type="submit" class="btn btn-primary btn-block">Accept</button>
                                   </div>
                                 </form>
-                                <form method="GET" action="{{ action('ClubController@declineInvitation') }}">
+                                <form method="GET" action="{{ route('declineClubApplication',['userid'=>$pa->user_id,'clubid'=>$pa->club_id]) }}">
                                   <div class="form-group">
                                     <button type="submit" class="btn btn-danger btn-block">Decline</button>
                                   </div>

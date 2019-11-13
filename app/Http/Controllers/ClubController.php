@@ -43,7 +43,7 @@ class ClubController extends Controller
         $totalScore = 0;
         //you can remove them if needed but they make sure that new users don't cause errors.*/
 
-        if ($club_id != null && $approved_status == 1) {
+        if ($club_id != null) {
             $club = $club_table->where('id', $club_id)->first();
             $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
             $nearPlayers = $user_table->where('approved_status', 0)->get();
@@ -67,9 +67,10 @@ class ClubController extends Controller
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
 
             return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
-        } else if ($club_id != null && $approved_status == 0) {
-            return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));
-        }
+        } 
+        // else if ($club_id != null && $approved_status == 0) {
+        //     return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));
+        // }
         //$matches = $tournament->where('club_id', $club->id);
         if ($club_id == null)
         {
@@ -452,24 +453,35 @@ class ClubController extends Controller
         //$status = Auth::user()->approved_status;
         //$totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>1]);
-        //$ranking = 0;
-        //$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
-        //$userClubID = Auth::user()->club_id;
-        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
-        DB::table('club_application')->where('user_id', $uid)->where('club_id', $club_id)->where('status','applied')->update(['status'=>'inClub']);
-        //$userClubName = DB::table('Club')
-        //->select(DB::raw('name'))
-        //->where('id', $userClubID)
-        //->get();
-        DB::table('users')->where('id',$uid)->update(['club_id'=>$club_id]);
-        //$test = (String) $userClubName;
-        //$messages = DB::table('messages')
-        //->select('message', 'message_id')
-        //->where('club_name', $test)
-        //->get();
-        return redirect('/home/club')->with('message','You accepted the invitation!');
-        //return view('/home', array('color'=>'alert-success','messages'=> $messages, 'message'=>'You have accepted the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status,'club_list' =>$club_list,'ranking' => $ranking));
+
+        $ranking = 0;
+        $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $userClubID = Auth::user()->club_id;
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
+        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$id]);
+        $userClubName = DB::table('Club')
+        ->select(DB::raw('name'))
+        ->where('id', $userClubID)
+        ->get();
+        DB::table('users')->where('id',$uid)->update(['club_id'=>$id]);
+        $test = (String) $userClubName;
+        $messages = DB::table('messages')
+        ->select('message', 'message_id')
+        ->where('club_name', $test)
+        ->get();
+
+        
+        //change the status of a user status to be inclub when the user accepts invitation
+        if (DB::table('club_application')->select('user_id')->where('user_id', $uid)->where('club_id', $id)->get()->isEmpty())
+        {
+            DB::table('club_application')->insert(['user_id'=>$uid, 'club_id'=>$id, 'status'=>'inClub']);
+        }
+        else
+        {
+            DB::table('club_application')->where('user_id', $uid)->where('club_id', $id)->update(['status'=>'inClub']);
+        }
+
+        return redirect('/home/club');
     }
 
 
@@ -492,6 +504,19 @@ class ClubController extends Controller
         return redirect('/home/club');
     }
 
+    public function declineClubApplication($applicant_id, $club_id)
+    {   
+        $clubinfo = DB::table('club')->select('owner_id','name')->where('id',$club_id)->get();
+        $applicant = DB::table('users')->select('firstname', 'lastname')->where('id', $applicant_id)->get();
+        //Message
+        $message = "{$applicant[0]->firstname}.{$applicant[0]->lastname}'s club application to {$clubinfo[0]->name} has been declined.";
+        DB::table('user_messages')->insert(['id'=>$applicant_id,'message'=>$message,'sender'=>$clubinfo[0]->owner_id]);
+
+        DB::table('club_application')->where('user_id', $applicant_id)->where('club_id', $club_id)->where('status','applied')->delete();
+        //return redirect('/home/club');
+        
+        return redirect('/home');
+    }
 
     public function sendMessage(Request $request)
     {
@@ -573,6 +598,7 @@ class ClubController extends Controller
                                           'club_members' => $club_members]);
     }
 
+
     public function adminManageMembers($club_id) {
         $clubs = new Club;
         $clubMembers = DB::table('UserClubs')
@@ -620,5 +646,6 @@ class ClubController extends Controller
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return redirect('/home/club');
     }
+
 
 }

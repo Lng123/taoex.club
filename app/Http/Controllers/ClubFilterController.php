@@ -24,7 +24,7 @@ class ClubFilterController extends Controller
 
     public function index($club_id)
     {
-    	$date = 2018;
+        $date = date("Y");
 
         //User Table
     	$user_table = new User;
@@ -54,7 +54,8 @@ class ClubFilterController extends Controller
         $string ="";
         
         $combined = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->get();
-                $clubGameCount = $match_table->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->get()->count();
+            $clubGameCount = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')
+                ->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->get()->count();
 
         $memberData = [];
         $i = 0;
@@ -72,13 +73,15 @@ class ClubFilterController extends Controller
             } else {
                 $rank = ($score/$clubGameCount) * $won;
             }
-        	
+            round($rank,2);
         	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>$rank);
         	$i++;
 
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
         }
-            return view('taoex.clubFilter', array('memberData'=>$memberData));
+            // dd($memberData);
+            $total_score = $club_table->where('id', $club_id)->select('club_score')->get();
+            return view('taoex.clubFilter', array('memberData'=>$memberData, 'total_score'=>$total_score));
 
     }
     

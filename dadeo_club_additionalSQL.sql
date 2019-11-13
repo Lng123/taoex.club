@@ -54,5 +54,7 @@ CREATE TABLE `banned_users` (
   `ban_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci TABLESPACE `dadeo_club`;
 
+ALTER TABLE club ADD COLUMN club_score int DEFAULT 0;
 
+ALTER TABLE club ADD COLUMN season int DEFAULT 2018;
 
