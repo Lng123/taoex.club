@@ -12,12 +12,13 @@
       <div class="form-group">
         <small><b>Rankings for the Year of:</b></small>
         <input type="number" id="year" name="year"
-                                        min="2010" max="2019" value="2019" value="" />
+                                        min="2010" max="2019" value={{$date}} />
+        <input type="hidden" name ="club_id" value={{$club_id}} >
         <span class="validity"></span>   
         <input type="submit" class="btn btn-primary">
       </div> 
     </form>
-    <span>Total Score: {{$total_score[0]->club_score}} </span>
+    <span><b>Club Score: {{$total_score}} </b></span>
     </div>
 </div>
 <div class="table-responsive data-table">
@@ -30,20 +31,18 @@
         <th>Total Games</th>
         <th>Won</td>
         <th>Score</td>
-        <th>Club Score</th>
         <!-- <th>Manage Members</td> -->
       </tr>
     </thead>
     <tbody>
-    @foreach($memberData as $memberDatum)	
+    @foreach($memberData as $index=>$memberDatum)	
       <tr>
-        <td>{{ $memberDatum['rank'] }}</td>
+        <td>{{ $index + 1 }}</td>
         <td>{{ $memberDatum['name'] }}</td>
         <td>@if ($memberDatum['role'] == 1) Club Owner @else Club Member @endif</td>
         <td>{{ $memberDatum['games'] }}</td>
         <td>{{ $memberDatum['won'] }}</td>
         <td>{{ $memberDatum['score'] }}</td>
-        <td>{{ $memberDatum['rank']}}</td>
         <!-- <td>@if ($memberDatum['role'] != 1)<input class="btn btn-primary" value="Kick"/><input class="btn btn-primary" value="Message"/>@endif</td> -->
       </tr>
       @endforeach

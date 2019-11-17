@@ -82,7 +82,8 @@ class ClubController extends Controller
     public function clubMemberRanking(Request $request)
     {
     	
-	$date = $request->year;
+    $date = $request->year;
+    $club_id = $request->club_id;
 
         //User Table
     	$user_table = new User;
@@ -96,7 +97,7 @@ class ClubController extends Controller
         //Obtain user ID
         $uid = Auth::user()->id;
         //Obtain club id
-        $club_id = Auth::user()->club_id;
+        //$club_id = Auth::user()->club_id;
         //Obtain status
         $approved_status = Auth::user()->approved_status;
         $type = Auth::user()->type;
@@ -107,34 +108,61 @@ class ClubController extends Controller
         
         $club = $club_table->where('id', $club_id)->first();
         
-        $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
+        $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
 
         $string ="";
         
         $combined = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->get();
-                $clubGameCount = $match_table->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->get()->count();
+            $clubGameCount = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')
+                ->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->get()->count();
 
         $memberData = [];
         $i = 0;
-
+        $total_score = 0;
+        $rank = 0;
         foreach ($clubMembers as $clubMember) {
         	
         	$gameCount = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->get()->count();
         	
         	$won = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->where('winner_id',$clubMember->id)->get()->count();
-        	
-        	$score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
-        	
-        	$rank = ($score/$clubGameCount) * $won;
-        	
-        	
-        	
-        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>ceil($rank));
+            $sDate  = $date."-01-1";
+            $eDate = $date."-12-31";
+            //$score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
+            $score = DB::select("SELECT SUM(score.total) as tscore
+            FROM (SELECT total
+            FROM matchresult
+            JOIN `match`
+            ON `match`.`id` = matchresult.match_id
+            WHERE club_id = $club_id
+            AND player_id = $clubMember->id
+            AND endDate >= '$date-01-1'
+            AND endDate <= '$date-12-31'
+            ORDER BY total DESC
+            LIMIT 10) AS score")[0]->tscore;
+
+            if ($score == NULL) {
+                $score = 0;
+            }
+
+            // if ($clubGameCount == 0) {
+            //     $rank = ($score/1) * $won;
+            // } else {
+            //     $rank = ($score/$clubGameCount) * $won;
+            // }
+            $total_score += $score;
+            // round($rank,2);
+        	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>$rank);
         	$i++;
 
             //$string .= " id: " . $clubMember->id . " : " . $gameCount . " gamesWon: ". $won . "//\\";
         }
-            return view('taoex.clubFilter', array('memberData'=>$memberData));
+            $ranksort = array_column($memberData, 'score');
+
+            array_multisort($ranksort, SORT_DESC, $memberData);
+            // dd($memberData);
+            $total_score = $total_score / $i;
+            $total_score = round($total_score);
+            return view('taoex.clubFilter', array('memberData'=>$memberData, 'total_score'=>$total_score, 'club_id'=>$club_id, 'date'=>$date));
 
     }
 
