@@ -126,7 +126,7 @@
                       <table class="table table-striped table-bordered">
                         <thead>
                           <tr data-toggle="collapse" data-target=".contents">
-                            <th>Sender</th>
+                            <th>Receiver</th>
                             <th>Messages</th>
                             <th>Time</th>
                           </tr>

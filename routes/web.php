@@ -88,7 +88,7 @@ Route::get('/home/league', 'LeagueController@index')->name('league')->middleware
 
 //Match
 Route::post('/home', 'ApplyMatchController@apply');
-Route::post('home/club/recordMatch', 'ApplyMatchController@record');
+Route::post('home/club', 'ApplyMatchController@record');
 Route::get('/applyNewMatch', 'ApplyMatchController@index')->name('applyNewMatch')->middleware('auth');
 Route::get('/home/matchHistory', 'MatchController@index')->name('matchHistory')->middleware('auth');
 Route::post('/home/filterMatch', 'MatchController@filter');

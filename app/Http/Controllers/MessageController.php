@@ -43,8 +43,8 @@ class MessageController extends Controller
         $receiver_id = $request->id;
         $message = $request ->input('message');
         $sender_id = Auth::user()->id;
-        DB::table('user_messages')->insert(['id'=>$receiver_id,'message'=>$message,'sender'=>$sender_id]);
-        return redirect('home/adminManageUser');
+        DB::table('user_messages')->insert(['id'=>$receiver_id,'message'=>$message,'sender'=>$sender_id,'message_tag'=>'[ADMIN]']);
+        return redirect('home/adminManageUser')->with('status','Message sent successfully');
     }
 
     public function sendClubMemberMessage(Request $request) {

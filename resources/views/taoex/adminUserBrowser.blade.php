@@ -18,6 +18,7 @@
     });
   });
 </script>
+
 <div class="content-wrapper">
   <div class="container-fluid">
     <!-- Breadcrumbs-->
@@ -30,6 +31,11 @@
     <div class="card-header">
       <div class="h4">Manage Users</div>
     </div>
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+    @endif
     <div class="card-body" style="overflow:auto">
       {{-- <p>Number of Players: {!!$playerCount!!}</p>--}}
       <table class="table table-striped table-bordered" id="member" style="overflow-x: scroll">
