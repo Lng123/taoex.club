@@ -97,8 +97,8 @@ class HomeController extends Controller
             ->where('club_name', $test)
             ->get();
         //$personal_messages = DB::table('user_messages')->join('users','users.id','=','user_messages.sender')->select('message','message_time','users.firstname')->get();
-        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.id', '=', $uid)->get();
-        $sent_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.sender', '=', $uid)->get();
+        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'message_tag', 'users.firstname', 'users.lastname')->where('user_messages.id', '=', $uid)->get();
+        $sent_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_tag', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.sender', '=', $uid)->get();
         $clubMembers = $user_table->get();
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname','users.lastname')->where('Invite.id', $uid)->get();
 

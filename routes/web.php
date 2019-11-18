@@ -107,8 +107,13 @@ Route::delete('/home/{id}/deleteuseraction','Auth\UsersController@deleteUserActi
 Route::post('updateUserInfo', 'Auth\UsersController@updateUserInfo')->name('updateUser');
 
 //messaging
-Route::get('/home/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');
+Route::get('/home/deleteMessage/{id}/{sender}/{message_time}', 'MessageController@deleteMessage')->name('deleteMessage');
+Route::get('/home/replyMessage/{id}/{sender}/{message_time}', 'MessageController@replyMessage')->name('replyMessage');
+Route::get('/home/clubOwnerSendMessage/{id}','ClubController@openClubOwnerMessage')->name('openClubOwnerMessage');
+Route::post('/home/clubOwnerSendMessage/', 'MessageController@sendClubMemberMessage');
+Route::post('/home/replyMessage/', 'MessageController@sendReplyMessage');
 Route::post('/home/admin/sendMessageRequest', 'MessageController@sendMessageRequest')->name('sendMessageRequest');
+
 //admin functions
 
 Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
@@ -124,3 +129,4 @@ Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unban
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');
+

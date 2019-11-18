@@ -485,13 +485,13 @@ class ClubController extends Controller
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
-        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$id]);
+        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
+        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
         $userClubName = DB::table('Club')
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
         ->get();
-        DB::table('users')->where('id',$uid)->update(['club_id'=>$id]);
+        DB::table('users')->where('id',$uid)->update(['club_id'=>$club_id]);
         $test = (String) $userClubName;
         $messages = DB::table('messages')
         ->select('message', 'message_id')
@@ -500,13 +500,13 @@ class ClubController extends Controller
 
         
         //change the status of a user status to be inclub when the user accepts invitation
-        if (DB::table('club_application')->select('user_id')->where('user_id', $uid)->where('club_id', $id)->get()->isEmpty())
+        if (DB::table('club_application')->select('user_id')->where('user_id', $uid)->where('club_id', $club_id)->get()->isEmpty())
         {
-            DB::table('club_application')->insert(['user_id'=>$uid, 'club_id'=>$id, 'status'=>'inClub']);
+            DB::table('club_application')->insert(['user_id'=>$uid, 'club_id'=>$club_id, 'status'=>'inClub']);
         }
         else
         {
-            DB::table('club_application')->where('user_id', $uid)->where('club_id', $id)->update(['status'=>'inClub']);
+            DB::table('club_application')->where('user_id', $uid)->where('club_id', $club_id)->update(['status'=>'inClub']);
         }
 
         return redirect('/home/club');
@@ -673,6 +673,16 @@ class ClubController extends Controller
         $clubs->where('id', $club_id)->update(['owner_id'=>$id]);
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         return redirect('/home/club');
+    }
+
+    public function openClubOwnerMessage($id)
+    {
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        $name = DB::table('users')->where('id', $id)->value('firstname');
+        $lname = DB::table('users')->where('id', $id)->value('lastname');
+        $fullname = "{$name} {$lname}";
+        return view('taoex.clubOwnerSendMessage', array('fullname' => $fullname, 'id' => $id, 'list_of_announcements' => $list_of_announcements));
+        //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
     }
 
 
