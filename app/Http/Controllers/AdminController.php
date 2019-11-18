@@ -31,15 +31,39 @@ class AdminController extends Controller
         return redirect('/home/adminManageClub');
     }   
 
-    public function banUser($ban_id){
+    public function banUser($id){
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        $name = DB::table('users')->where('id', $id)->value('firstname');
+        $lname = DB::table('users')->where('id', $id)->value('lastname');
+        $fullname = "{$name} {$lname}";
+        $banned_users = DB::table('banned_users')->join('users', 'users.id', '=', 'banned_users.banned_id')->select('*')->get();
+        return view('taoex.adminBannedUsers', array('fullname' => $fullname, 'ban_id' => $id, 'list_of_announcements' => $list_of_announcements,'bannedUsers' =>$banned_users));
+        //return redirect('taoex.adminBannedUsers');
+        //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
+    }
+
+
+    public function submitUserBan(Request $request){
+        $ban_id = $request->ban_id;
+        $message = $request ->input('message');
         $admin_id = Auth::user()->id;
-        DB::table('banned_users')->insert(['banned_id'=>$ban_id,'admin_id'=>$admin_id,'reason'=>'Banned']);
-        return redirect('/home/adminBannedUsers');
+        
+        DB::table('banned_users')->insert(['banned_id'=>$ban_id,'admin_id'=>$admin_id,'reason'=>$message]);
+        return redirect('home/adminBannedUsers')->with('status','User has been banned successfully');
     }
 
     public function unbanUser($ban_id){
         $admin_id = Auth::user()->id;
         DB::table('banned_users')->where('banned_id','=',$ban_id)->delete();
         return redirect('/home/adminBannedUsers');
+    }
+
+    
+    public function deleteMatch(Request $request){
+        $match_id= $request->match_id;
+        $admin_id = Auth::user()->id;
+        
+        DB::table('match')->where('id','=',$match_id)->delete();
+        return redirect('/home');
     }
 }

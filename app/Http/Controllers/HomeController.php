@@ -83,21 +83,14 @@ class HomeController extends Controller
 
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
         $club_list_in = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $userClubID = Auth::user()->club_id;
-
-        $userClubName = DB::table('Club')
-            ->select(DB::raw('name'))
-            ->where('id', $userClubID)
-            ->get();
-
-        $test = (string) $userClubName;
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
-            ->select('message', 'message_id')
-            ->where('club_name', $test)
+            ->select('message', 'message_id','club_name')
+            ->where('club_name', $club_name)
             ->get();
         //$personal_messages = DB::table('user_messages')->join('users','users.id','=','user_messages.sender')->select('message','message_time','users.firstname')->get();
-        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.id', '=', $uid)->get();
+        $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname','message_tag')->where('user_messages.id', '=', $uid)->get();
         $sent_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.id')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'users.firstname', 'users.lastname')->where('user_messages.sender', '=', $uid)->get();
         $clubMembers = $user_table->get();
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname', 'users.lastname')->where('Invite.id', $uid)->get();
