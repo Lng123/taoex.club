@@ -531,18 +531,32 @@ class HomeController extends Controller
         	
         	$won = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->where('winner_id',$clubMember->id)->get()->count();
         	
-            $score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
+            //$score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
+
+            $score = DB::select("SELECT SUM(score.total) as tscore
+            FROM (SELECT total
+            FROM matchresult
+            JOIN `match`
+            ON `match`.`id` = matchresult.match_id
+            WHERE club_id = $club_id
+            AND player_id = $clubMember->id
+            AND endDate >= '$date-01-1'
+            AND endDate <= '$date-12-31'
+            ORDER BY total DESC
+            LIMIT 10) AS score")[0]->tscore;
             
             if ($clubGameCount == 0) {
                 $rank = ($score/1) * $won;
             } else {
                 $rank = ($score/$clubGameCount) * $won;
             }
-        	$total_score += rank;
+        	$total_score += score;
         	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>$rank);
         	$i++;
         }
+        $total_score = $total_score / $i;
         $club_table->where('id',$club_id)->update(['club_score'=>ranking]);
+        //$club_table->where('id',$club_id)->update(['club_score'=>ranking]);
 
     }
 }
