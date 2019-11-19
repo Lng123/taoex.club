@@ -53,85 +53,75 @@
       </div>
 
       <div class="col-md-8" style="max-height: 1000px; overflow:auto;">
+      
+      @if(isset($recordSuccess) and $recordSuccess == 1)
+        <div class="alert alert-success" role="alert" style="margin-top:20px">
+            <strong>Match Successfully Recorded!</strong>
 
-        @if(isset($recordSuccess))
+        </div>
+      @endif
+          @if(isset($updateSuccess) and $updateSuccess == 1)
+        <div class="alert alert-success" role="alert" style="margin-top:20px">
+            <strong>Match Successfully Updated!</strong>
+
+        </div>
+      @endif
+    @if(isset($winnerExist) and $winnerExist == 1)
+        <div class="alert alert-danger" role="alert" style="margin-top:20px">
+            <strong>There already is another winner for the match,<br>Delete their record and try again!</strong>
+
+        </div>
+          @endif
+      @if(isset($createSuccess))
         <div class="alert alert-success" role="alert" style="margin-top:20px">
           <strong>Match Successfully Recorded!</strong>
           <a class="btn btn-outline-info" href=/home/club>Reload </a> </div> @endif @if(isset($createSuccess)) <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Created!</strong>
-            <a class="btn btn-outline-info" href=/home/club>Reload </a> </div> @endif <div class="panel-group">
-              <div class="panel panel-primary">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                    <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse1" style="width:100%">Club Messages</button>
-                  </h4>
-                </div>
-                <div id="collapse1" class="panel-collapse collapse show">
-                  <ul class="list-group">
-                    <li class="list-group-item" style="overflow:auto">
-                      <table class="table table-striped table-bordered">
-                        <thead>
-                          <tr data-toggle="collapse" data-target=".contents">
-                            <th>Messages</th>
-                            <th>Time</th>
-                          </tr>
-                          @if(isset($club_messages))
-                          @foreach ($club_messages as $message)
-                          <tr>
-                            <td>{{$message->message}}</td>
-                            <td>{{$message->message_id}}</td>
-                          </tr>
-                          @endforeach
-                          @endif
-                        </thead>
-                        <tbody>
 
-                        </tbody>
-                      </table>
-
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <div class="panel-group">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">
-                    <h4 class="panel-title">
-                      <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse1" style="width:100%">Recent Club Matches</button>
-                    </h4>
-                  </div>
-                  <div id="collapse1" class="panel-collapse collapse show">
-                    <ul class="list-group">
-                      <li class="list-group-item" style="overflow:auto">
-                        @if(isset($matches))
-                        <table class="table table-striped table-bordered" id="example" style="overflow-x: scroll">
-                          <thead>
-                            <tr>
-                              <th>Match Name</th>
-                              <th>Address</th>
-                              <th>Start Time</th>
-                              <th>Start Date</th>
-                              <th>End Date</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            @foreach ($matches as $match)
-                            <tr>
-                              <td>{{$match->name}}</td>
-                              <td>{{$match->address}}</td>
-                              <td>{{$match->start_time}}</td>
-                              <td>{{$match->startDate}}</td>
-                              <td>{{$match->endDate}}</td>
-                            </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
-                        <span style="float:right">
-                          @if (Auth::user()->club_id != null)
-                          <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
-                          @endif
-                          @if (Auth::user()->id == $club->owner_id)
+        </div>
+      @endif  
+    
+      
+      
+      
+        <div class="panel-group">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse1" style="width:100%">Recent Club Matches</button>
+      </h4>
+    </div>
+    <div id="collapse1" class="panel-collapse collapse show">
+      <ul class="list-group">
+        <li class="list-group-item" style="overflow:auto">
+                   @if(isset($matches))
+                               <table class="table table-striped table-bordered" id="example" style="overflow-x: scroll">
+                                 <thead>
+                                   <tr>
+                                     <th>Match Name</th>
+                                     <th>Address</th>
+                                     <th>Start Time</th>
+                                     <th>Start Date</th>
+                                     <th>End Date</th>
+                                   </tr>
+                                 </thead>
+                                 <tbody>
+                                   @foreach ($matches as $match)
+                                   <tr>
+                                     <td>{{$match->name}}</td>
+                                     <td>{{$match->address}}</td>
+                                     <td>{{$match->start_time}}</td>
+                                     <td>{{$match->startDate}}</td>
+                                     <td>{{$match->endDate}}</td>
+                                   </tr>
+                               @endforeach
+                                 </tbody>
+                               </table>
+                               <span style="float:right">
+                               @if (Auth::user()->club_id != null)
+                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/applyNewMatch">Create a Match</a>
+                               @endif
+                                   @if (Auth::user()->id == $club->owner_id)
                           <a class="btn btn-outline-info" style="margin-right:3px" data-toggle="collapse" href="#collapse3">Record a Match</a>
                           @endif
                           <a class="btn btn-outline-info" style="float:right" href=/home/allMatch>View more...</a> </span> @endif </li> </ul> </div> </div> </div> <br>
@@ -196,6 +186,18 @@
                                 </div>
                               </div>
                             </div>
+                                @if ('a' != 'a' )
+                            <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                @else
+                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                @endif
+                          </form>
+                        
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 
                             <div class="panel-group">
                               <div class="panel panel-primary">

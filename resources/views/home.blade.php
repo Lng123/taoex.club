@@ -75,7 +75,8 @@
                             <th>Messages</th>
                             <th>Time</th>
                             <th>Tag</th>
-                            <th>Delete</th>
+
+                            <th>Actions</th>
                           </tr>
                           @if(isset($userMessages))
                           @foreach ($userMessages as $message)
@@ -84,7 +85,7 @@
                             <td>{{$message->message}}</td>
                             <td>{{$message->message_id}}</td>
                             <td>[Club]</td>
-                            
+                           
                           </tr>
                           @endforeach
                           @endif
@@ -92,10 +93,18 @@
                           @foreach ($personal_messages as $message)
                           <tr>
                             <td>{{$message->firstname}} {{$message->lastname}}</td>
+                            @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
+                            <td>{{$message->message_tag}} {{$message->message}}</td>
+                            @else
                             <td>{{$message->message}}</td>
+                            @endif
                             <td>{{$message->message_time}}</td>
-                            <td>{{$message->message_tag}}</td>
-                            <td><a href="{{ route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time]) }}"> x </a></td>
+                            <td>
+                              <a href="{{route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time])}}"> Delete </a>
+                              @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
+                              <a href="{{route('replyMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time])}}">Reply</a>
+                              @endif
+                            </td>
                           </tr>
                           @endforeach
                           @endif

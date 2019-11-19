@@ -35,6 +35,7 @@ LEFT JOIN club
 on invite.club_id = club.id;
 
 
+DROP TABLE club_application;
 CREATE TABLE club_application(
 	application_id int NOT NULL AUTO_INCREMENT,
 	user_id int,
@@ -45,6 +46,7 @@ CREATE TABLE club_application(
 
 INSERT INTO club_application(user_id, club_id, status)
 SELECT id, club_id, 'inClub' FROM USERCLUBS;
+
 
 
 CREATE TABLE `banned_users` (

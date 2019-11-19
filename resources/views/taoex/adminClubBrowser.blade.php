@@ -28,6 +28,7 @@
                                 <th>Club Name</th>
                                 <th>Club Owner</th>
                                 <th>Created at</th>
+                                <th>Club Score</th>
                                 <th>Remove</th>
                                    </tr>
                                  </thead>
@@ -38,6 +39,7 @@
                                 <td>{{ $cl->id }}</td>
                                 <td><a href="{{ route('manageClubMembers',[$cl->id]) }}">{{ $cl->name }}</a><a href='' style="color:grey;"> &#9998;</a></td>
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
+                                <td>{{ $cl->club_score }}</td>
                                 <td>{{ $cl->created_at }}</td>
 
                                 <!-- @if($club_id == $cl->id)
