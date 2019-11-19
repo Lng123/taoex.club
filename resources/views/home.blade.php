@@ -94,11 +94,12 @@
                           <tr>
                             <td>{{$message->firstname}} {{$message->lastname}}</td>
                             @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
-                            <td>{{$message->message_tag}} {{$message->message}}</td>
+                            <td>{{$message->message}}</td>
                             @else
                             <td>{{$message->message}}</td>
                             @endif
                             <td>{{$message->message_time}}</td>
+                            <td>{{$message->message_tag}}</td>
                             <td>
                               <a href="{{route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time])}}"> Delete </a>
                               @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
