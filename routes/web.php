@@ -24,10 +24,10 @@ Route::get('/home/ranking', 'RankingController@index');
 Route::get('/home/policy', 'PolicyController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
-Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin');
-Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin');
+Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
+Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
-Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers');
+Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
 Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
 Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
@@ -56,7 +56,7 @@ Route::post('applyClub',array('uses' =>'ClubController@applyClub'));
 
 
 Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
-Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub');
+Route::get('/home/manageClub', 'ClubController@showManageClub')->name('manageClub')->middleware('is_club_owner');
 Route::post('updateClubProfile', 'ClubController@updateClubProfile')->name('updateClub');
 Route::get('/removeMember/{id}', 'ClubController@removeClubMember')->name('removeMember');
 Route::get('/adminRemoveMember/{club_id}/{id}', 'ClubController@adminRemoveMember')->name('adminRemoveMember');
@@ -117,7 +117,7 @@ Route::post('/home/admin/sendMessageRequest', 'MessageController@sendMessageRequ
 //admin functions
 
 Route::get('home/adminManageClub/{club_id}','AdminController@deleteClub')->name('adminDeleteClub');
-Route::get('/home/{club_id}/manageClubMembers', 'Auth\ClubsController@adminManageMembers')->name('manageClubMembers');
+Route::get('/home/{club_id}/manageClubMembers', 'Auth\ClubsController@adminManageMembers')->name('manageClubMembers')->middleware('is_admin');
 Route::post('updateClubMembers', 'Auth\ClubsController@updateClubMembers')->name('updateClubMembers');
 
 

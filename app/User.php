@@ -122,4 +122,12 @@ class User extends Authenticatable
         return (DB::table('banned_users')->where('banned_id', auth()->user()->id)->first());
     }
 
+    public static function isAdmin(){
+        return (auth()->user()->admin==1);
+    }
+    
+    public static function isClubOwner(){
+        return (auth()->user()->club_id!=null);
+    }
+
 }
