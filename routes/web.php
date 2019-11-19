@@ -65,7 +65,7 @@ Route::get('/adminChangeClubOwner/{club_id}/{id}', 'ClubController@adminChangeCl
 Route::post('/home/clubMember', 'ClubController@clubMemberRanking');
 Route::get('/home/clubFilter/{id}', 'ClubFilterController@index')->name('clubFilter')->middleware('auth');
 Route::post('/home/clubFiltered', 'ClubFilterController@clubMemberRanking')->name('clubFiltered')->middleware('auth');
-Route::post('/home/Club', 'ClubController@sendMessage');
+Route::post('/home/Club', 'ClubController@sendMessagePage');
 Route::get('/home/club/playersearch', 'ClubController@playersearch');
 
 //club application
@@ -127,6 +127,7 @@ Route::get('/home/adminSendMessage/{id}','HomeController@openAdminMessage')->nam
 Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser');
 Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
+Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('adminBanUser');
 Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');
-
+Route::post('/home/admitSubmitBan/', 'AdminController@submitUserBan');

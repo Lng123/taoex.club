@@ -86,7 +86,7 @@
               <a class="btn btn-outline-primary" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
             </td>
             <td>
-              <a class="btn btn-outline-warning" style="width:5rem" href="{{route('banUser',['id'=>$ranking->id])}}">Ban User</a>
+              <a class="btn btn-outline-warning" style="width:5rem" href="{{route('adminBanUser',['id'=>$ranking->id])}}">Ban User</a>
             </td>
           </tr>
           @endforeach

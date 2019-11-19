@@ -66,7 +66,21 @@ class ClubController extends Controller
 
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
 
-            return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
+            // copied it over from the previous project teams code, would like to refactor if time permits, a lot of lines just to get the name beause they put the name in the message as a json
+        $userClubID = Auth::user()->club_id;
+
+        $userClubName = DB::table('Club')
+            ->select(DB::raw('name'))
+            ->where('id', $userClubID)
+            ->get();
+
+        $test = (string) $userClubName;
+        $club_messages = DB::table('messages')
+        ->select('message', 'message_id','club_name')
+        ->where('club_name', $test)
+        ->get();
+
+            return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
         } 
         // else if ($club_id != null && $approved_status == 0) {
         //     return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));
@@ -546,7 +560,7 @@ class ClubController extends Controller
         return redirect('/home');
     }
 
-    public function sendMessage(Request $request)
+    public function sendMessagePage(Request $request)
     {
         $this->validate($request, [
             'message' => 'required'
@@ -559,32 +573,39 @@ class ClubController extends Controller
         #                        ->select(DB::raw('name'))
         #                        ->where('owner_id', $uid)
         #                        ->get();
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->get();
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
         #$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $message = $request->input('message');
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')
-        ->select(DB::raw('name'))
-        ->where('id', $userClubID)
-        ->get();
-
-        $test = (String) $userClubName;
         $messages = DB::table('messages')
         ->select('message', 'message_id')
-        ->where('club_name', $test)
+        ->where('club_name', $club_name)
         ->get();
+
+
+        $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname', 'users.lastname')->where('Invite.id', $uid)->get();
+
+        $pending_applications = DB::table('club_application')
+            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
+            ->join('club', 'club_application.club_id', '=', 'club.id')
+            ->join('users', 'users.id', '=', 'club_application.user_id')
+            ->where('club_application.status', '=', 'applied')
+            ->where('club.owner_id', '=', $uid)
+            ->get();
 
         #$data = array(
         #    'club_name'=> $club_name->name,
         #    'message'=> $message,
         #);
         DB::table('messages')->insert(['club_name' => $club_name,'message'=>$message]);
+        //DB::table('messages')->insert(['club_name' => 'test','message'=>$message]);
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         #return view('/yes', array('color'=>'alert-success', 'message'=>'Your message was sent', 'totalScore'=>$totalScore));
-        return view ('/home',array('totalScore'=>$totalScore,'ranking'=>$ranking,'messages'=>$messages));
+        return redirect('/home/club');
+        //return view ('/home',array('pending_club_applications'=>$pending_applications,'pending_invites'=>$pending_invites,'totalScore'=>$totalScore,'ranking'=>$ranking,'messages'=>$messages));
     }
 
     public function playersearch() {

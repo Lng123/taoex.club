@@ -27,6 +27,42 @@
       </li>
       <li class="breadcrumb-item active">Banned Users</li>
     </ol>
+
+    @if (session('status'))
+    <div class="alert alert-success">
+        {{ session('status') }}
+    </div>
+    @endif
+    @if(isset($ban_id))
+    <div class="panel-group">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse2" style="width:100%">Ban User</button>
+              </h4>
+            </div>
+            <div id="collapse2" class="panel-collapse collapse show">
+              <ul class="list-group">
+                <li class="list-group-item" style="overflow:auto">
+                  <form method="POST" action="{{ action('AdminController@submitUserBan') }}">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                      <label for="message">Ban user {{$ban_id}} - {{$fullname}}:</label>
+                      <input type="text" class="form-control" id="ban_id" name="ban_id" value={{$ban_id}} readonly >
+                      <input type="text" class="form-control" id="message" name="message" placeholder="Enter reason for ban here" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Ban this user</button>
+                  </form> @if(isset($announcement))
+                  <div class="alert alert-success" role="alert" style="margin-top:20px">
+                    <strong>Message has been sent!</strong> Please check landing page for the update.
+                  </div>
+                  @endif
+
+                </li>
+              </ul>
+            </div>
+          </div>
+          @endif
     <div class="card-header">
       <div class="h4">List of Banned Users</div>
     </div>

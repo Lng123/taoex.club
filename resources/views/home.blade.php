@@ -74,13 +74,18 @@
                             <th>Sender</th>
                             <th>Messages</th>
                             <th>Time</th>
+                            <th>Tag</th>
+
                             <th>Actions</th>
                           </tr>
-                          @if(isset($messages))
-                          @foreach ($messages as $message)
+                          @if(isset($userMessages))
+                          @foreach ($userMessages as $message)
                           <tr>
-                            <td>Club</td>
-                            <td>{{$message->message_tag}}{{$message->message}}</td>
+                            <td>{{$message->club_name}}</td>
+                            <td>{{$message->message}}</td>
+                            <td>{{$message->message_id}}</td>
+                            <td>[Club]</td>
+                           
                           </tr>
                           @endforeach
                           @endif
@@ -129,6 +134,7 @@
                             <th>Receiver</th>
                             <th>Messages</th>
                             <th>Time</th>
+                            <th>Delete</th>
                           </tr>
                           @if(isset($sent_messages))
                           @foreach ($sent_messages as $message)
@@ -357,4 +363,5 @@
             <!-- /.container-fluid-->
           </div>
           <!-- /.content-wrapper-->
+</div>
           @endsection

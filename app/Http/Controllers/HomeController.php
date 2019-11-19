@@ -83,18 +83,11 @@ class HomeController extends Controller
 
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
         $club_list_in = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $userClubID = Auth::user()->club_id;
-
-        $userClubName = DB::table('Club')
-            ->select(DB::raw('name'))
-            ->where('id', $userClubID)
-            ->get();
-
-        $test = (string) $userClubName;
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
-            ->select('message', 'message_id')
-            ->where('club_name', $test)
+            ->select('message', 'message_id','club_name')
+            ->where('club_name', $club_name)
             ->get();
         //$personal_messages = DB::table('user_messages')->join('users','users.id','=','user_messages.sender')->select('message','message_time','users.firstname')->get();
         $personal_messages = DB::table('user_messages')->join('users', 'users.id', '=', 'user_messages.sender')->select('user_messages.id', 'user_messages.sender', 'message', 'message_time', 'message_tag', 'users.firstname', 'users.lastname')->where('user_messages.id', '=', $uid)->get();

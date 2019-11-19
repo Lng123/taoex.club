@@ -53,7 +53,7 @@
                                 <a class="btn btn-outline-danger"	
                                     href="{{ route('adminRemoveMember', ['id'=>$memberDatum['id'],'club_id'=>$club_id]) }}" onclick="return confirm('Are you sure to want to remove this member?')">Remove</a>
                             @endif
-                                <input class="btn btn-outline-primary" type="button"value="Message"/>
+                                <a class="btn btn-outline-primary" href="{{route('openAdminMessage',['id'=>$memberDatum['id']])}}">Message</a>
                             </td>
                             @if($club_owner == $memberDatum['id'])
                                 <td><a class="btn btn-outline-success" style="width:5rem" disabled>Owner</a></td>
