@@ -43,7 +43,34 @@ class MessageController extends Controller
         $receiver_id = $request->id;
         $message = $request ->input('message');
         $sender_id = Auth::user()->id;
-        DB::table('user_messages')->insert(['id'=>$receiver_id,'message'=>$message,'sender'=>$sender_id]);
-        return redirect('home/adminManageUser');
+        DB::table('user_messages')->insert(['id'=>$receiver_id,'message'=>$message,'sender'=>$sender_id,'message_tag'=>'[ADMIN]']);
+        return redirect('home/adminManageUser')->with('status','Message sent successfully');
+    }
+
+    public function sendClubMemberMessage(Request $request) {
+        $receiver_id = $request->id;
+        $message = $request->input('message');
+        $sender_id = Auth::user()->id;
+        $tag = "[Club Owner]";
+        DB::table('user_messages')->insert(['id'=>$receiver_id, 'message'=>$message, 'sender'=>$sender_id, 'message_tag'=>$tag]);
+        return redirect()->route('manageClub');
+    }
+
+    public function replyMessage($uid,$sender_id,$message_time){
+        $init_message = DB::table('user_messages')->where('id','=', $uid)->where('message_time','=', $message_time)->where('sender', '=', $sender_id)->get();
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        $name = DB::table('users')->where('id', $sender_id)->value('firstname');
+        $lname = DB::table('users')->where('id', $sender_id)->value('lastname');
+        $fullname = "{$name} {$lname}";
+        return view('taoex.replyMessage', array('fullname' => $fullname, 'id' => $sender_id, 'list_of_announcements' => $list_of_announcements));
+    }
+
+    public function sendReplyMessage(Request $request) {
+        $receiver_id = $request->id;
+        $message = $request->input('message');
+        $sender_id = Auth::user()->id;
+        $tag = "[Reply]";
+        DB::table('user_messages')->insert(['id'=>$receiver_id, 'message'=>$message, 'sender'=>$sender_id, 'message_tag'=>$tag]);
+        return redirect()->route('home');
     }
 }

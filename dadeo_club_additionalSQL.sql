@@ -60,3 +60,5 @@ ALTER TABLE club ADD COLUMN club_score int DEFAULT 0;
 
 ALTER TABLE club ADD COLUMN season int DEFAULT 2018;
 
+ALTER TABLE user_messages ADD COLUMN message_tag varchar(255) DEFAULT NULL;
+

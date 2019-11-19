@@ -74,12 +74,13 @@
                             <th>Sender</th>
                             <th>Messages</th>
                             <th>Time</th>
+                            <th>Actions</th>
                           </tr>
                           @if(isset($messages))
                           @foreach ($messages as $message)
                           <tr>
                             <td>Club</td>
-                            <td>{{$message->message}}</td>
+                            <td>{{$message->message_tag}}{{$message->message}}</td>
                           </tr>
                           @endforeach
                           @endif
@@ -87,9 +88,18 @@
                           @foreach ($personal_messages as $message)
                           <tr>
                             <td>{{$message->firstname}} {{$message->lastname}}</td>
+                            @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
+                            <td>{{$message->message_tag}} {{$message->message}}</td>
+                            @else
                             <td>{{$message->message}}</td>
+                            @endif
                             <td>{{$message->message_time}}</td>
-                            <td><a href="{{ route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time]) }}"> x </a></td>
+                            <td>
+                              <a href="{{route('deleteMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time])}}"> Delete </a>
+                              @if($message->message_tag=="[Club Owner]" || $message->message_tag=="[Admin]" || $message->message_tag=="[Reply]")
+                              <a href="{{route('replyMessage',['id'=>$message->id,'sender_id'=>$message->sender,'message_time'=>$message->message_time])}}">Reply</a>
+                              @endif
+                            </td>
                           </tr>
                           @endforeach
                           @endif
@@ -116,7 +126,7 @@
                       <table class="table table-striped table-bordered">
                         <thead>
                           <tr data-toggle="collapse" data-target=".contents">
-                            <th>Sender</th>
+                            <th>Receiver</th>
                             <th>Messages</th>
                             <th>Time</th>
                           </tr>

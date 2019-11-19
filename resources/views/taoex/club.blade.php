@@ -55,17 +55,27 @@
 
       <div class="col-md-8" style="max-height: 1000px; overflow:auto;">
       
-      @if(isset($recordSuccess))
+      @if(isset($recordSuccess) and $recordSuccess == 1)
         <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Recorded!</strong>
-            <a class="btn btn-outline-info" href=/home/club>Reload</a>
 
         </div>
-      @endif  
+      @endif
+          @if(isset($updateSuccess) and $updateSuccess == 1)
+        <div class="alert alert-success" role="alert" style="margin-top:20px">
+            <strong>Match Successfully Updated!</strong>
+
+        </div>
+      @endif
+    @if(isset($winnerExist) and $winnerExist == 1)
+        <div class="alert alert-danger" role="alert" style="margin-top:20px">
+            <strong>There already is another winner for the match,<br>Delete their record and try again!</strong>
+
+        </div>
+          @endif
       @if(isset($createSuccess))
         <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Created!</strong>
-            <a class="btn btn-outline-info" href=/home/club>Reload</a>
 
         </div>
       @endif  
@@ -182,7 +192,11 @@
                                 <option value="10">Arition</option>
                               </Select>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                @if ('a' != 'a' )
+                            <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                @else
+                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                                @endif
                           </form>
                         
         </li>
