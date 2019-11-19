@@ -232,7 +232,7 @@ class ClubController extends Controller
         // ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
         // ->where('users.id', '=',$uid);
         $applied_inclub = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
+        ->select('Club.name', 'Club.id', 'Club.club_score', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
         ->join('users', 'Club.owner_id', '=', 'users.id')
         ->leftjoin('club_application', function($join){
             $join->on('Club.id', '=','club_application.club_id');
@@ -243,7 +243,7 @@ class ClubController extends Controller
 
 
         $applied_inclub2 = DB::table('Club')
-        ->select('Club.name', 'Club.id', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName',  DB::raw("'' as status"))
+        ->select('Club.name', 'Club.id', 'Club.club_score', 'Club.owner_id','Club.created_at', 'users.id as user_id','users.firstName', 'users.lastName',  DB::raw("'' as status"))
         ->join('users', 'Club.owner_id', '=', 'users.id')
         ->whereNotIn('Club.id',function($q)use($uid){
             $q->select('Club.id')

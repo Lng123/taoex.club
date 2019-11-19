@@ -249,7 +249,7 @@ class HomeController extends Controller
 
         //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
         $club_list = DB::table('Club')
-            ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.firstName', 'users.lastName')
+            ->select('Club.name', 'Club.id', 'Club.club_score', 'Club.owner_id', 'Club.created_at', 'users.firstName', 'users.lastName')
             ->join('users', 'Club.owner_id', '=', 'users.id')
             ->get();
 
