@@ -34,7 +34,7 @@
         <div class="card-header">
           Match: {{ $match->name }}
           
-          <span class="float-right"><i>Dated: {{$match->endDate}} @if(Auth::user()-> id ==  $owner_id || Auth::user()-> admin == 1) <a href="{{ route('deleteMatch',['id'=>$match->id]) }}"> Delete match {{$match->id}} </a>@endif</i></span>
+          <span class="float-right"><i>Dated: {{$match->endDate}} @if(Auth::user()-> id ==  $owner_id || Auth::user()-> admin == 1) <a href="{{ route('deleteMatch',['id'=>$match->id]) }}" onclick="return confirm('Are you sure?')">   Delete </a>@endif</i></span>
         </div>
         <div class="card-body">
           <div class="table-responsive">
