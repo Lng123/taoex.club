@@ -85,8 +85,9 @@
             <td>
               <a class="btn btn-outline-primary" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
             </td>
-            <td>
+            <td>@if(DB::table('users')->where('id' ,$ranking->id)->select('admin')->value('admin') != 1)
               <a class="btn btn-outline-warning" style="width:5rem" href="{{route('adminBanUser',['id'=>$ranking->id])}}">Ban User</a>
+              @endif
             </td>
           </tr>
           @endforeach

@@ -47,6 +47,7 @@
                   <th>Eliminated</th>
                   <th>Win Bonus</th>
                   <th>Total</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -59,6 +60,7 @@
                   <td>{{ $result->elimination }}</td>
                   <td>{{ $result->winBonus }}</td>
                   <td>{{ $result->total }}</td>
+                  <td> @if(Auth::user()-> id ==  $owner_id || Auth::user()-> admin == 1) <a href="{{ route('deleteMatchRecord',['match_record_id'=>$result->id]) }}" onclick="return confirm('Are you sure?')">   Delete </a>@endif</td>
                 </tr>
                 @endif
                 @endforeach
