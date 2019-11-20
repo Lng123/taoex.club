@@ -43,9 +43,9 @@ class MatchController extends Controller
 		$club_id = Auth::user()->club_id;
 		//if ($asc == 1) { }
 		$matches = $match_table->where('club_id', $club_id)->where('endDate', '>=', $date."-1")->where('endDate', '<=', $date2."-31")->orderBy('endDate', 'desc')->get();
-
+		$owner_id = DB::table('club')->where('id',$club_id)->select('owner_id')->value('owner_id');
 		$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-		return view('taoex.matchHistory', array('results'=>$results, 'matches'=>$matches, $errorMsg));
+		return view('taoex.matchHistory', array('owner_id'=>$owner_id,'results'=>$results, 'matches'=>$matches, $errorMsg));
 	}
 
 	public function all()
@@ -57,7 +57,8 @@ class MatchController extends Controller
     	$uid = Auth::user()->id;
     	$club_id = Auth::user()->club_id;
 		$matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
-    	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-		return view('taoex.matchHistory', array('results'=>$results, 'matches'=>$matches, 'matches'=>$matches));
+		$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
+		$owner_id = DB::table('club')->where('id',$club_id)->select('owner_id')->value('owner_id');
+		return view('taoex.matchHistory', array('owner_id'=>$owner_id,'results'=>$results, 'matches'=>$matches, 'matches'=>$matches));
 	}
 }
