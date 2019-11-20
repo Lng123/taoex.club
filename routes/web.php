@@ -94,6 +94,7 @@ Route::get('/home/matchHistory', 'MatchController@index')->name('matchHistory')-
 Route::post('/home/filterMatch', 'MatchController@filter');
 Route::get('/home/allMatch', 'MatchController@all');
 Route::get('/home/deleteMatch/{match_id}','AdminController@deleteMatch')->name('deleteMatch');
+Route::get('/home/deleteMatchRecord/{match_record_id}','AdminController@deleteMatchRecord')->name('deleteMatchRecord');
 
 //Password Reset Routes
 Route::get('password/reset/{token?}', 'Auth\ResetPasswordController@showResetForm');
