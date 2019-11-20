@@ -64,7 +64,7 @@ class AdminController extends Controller
         $admin_id = Auth::user()->id;
         DB::table('matchresult')->where('match_id','=',$match_id)->delete();
         DB::table('match')->where('id','=',$match_id)->delete();
-        return redirect('/home/History');
+        return redirect('/home/matchHistory');
     }
 
     public function deleteMatchRecord($match_record_id){
