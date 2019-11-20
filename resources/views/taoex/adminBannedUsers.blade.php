@@ -48,7 +48,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label for="message">Ban user {{$ban_id}} - {{$fullname}}:</label>
-                      <input type="text" class="form-control" id="ban_id" name="ban_id" value={{$ban_id}} readonly >
+                      <input type="hidden" class="form-control" id='ban_id' name='ban_id' value={{$ban_id}}>
                       <input type="text" class="form-control" id="message" name="message" placeholder="Enter reason for ban here" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Ban this user</button>

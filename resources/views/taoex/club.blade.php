@@ -81,7 +81,45 @@
         </div>
       @endif  
     
-      
+      <div class="panel-group">
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <button type="button" class="btn btn-secondary" data-toggle="collapse" href="#collapse1" style="width:100%">Club Messages</button>
+                  </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse show">
+                  <ul class="list-group">
+                    <li class="list-group-item" style="overflow:auto">
+                      <table class="table table-striped table-bordered">
+                        <thead>
+                          <tr data-toggle="collapse" data-target=".contents">
+                            <th>Sender</th>
+                            <th>Messages</th>
+                            <th>Time</th>
+                          </tr>
+                          @if(isset($club_messages))
+                          @foreach ($club_messages as $message)
+                          <tr>
+                            <td>{{$message->club_name}}</td>
+                            <td>{{$message->message}}</td>
+                            <td>{{$message->message_id}}</td>
+                           
+                          </tr>
+                          @endforeach
+                          @endif
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                      </table>
+
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="panel-group">
+              <div class="panel panel-primary">
       
       
         <div class="panel-group">
