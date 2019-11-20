@@ -66,20 +66,15 @@ class ClubController extends Controller
 
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
 
-            // copied it over from the previous project teams code, would like to refactor if time permits, a lot of lines just to get the name beause they put the name in the message as a json
+    
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')
-            ->select(DB::raw('name'))
-            ->where('id', $userClubID)
-            ->get();
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
-        $test = (string) $userClubName;
         $club_messages = DB::table('messages')
-        ->select('message', 'message_id','club_name')
-        ->where('club_name', $test)
-        ->get();
-
+            ->select('message', 'message_id','club_name')
+            ->where('club_name', $club_name)
+            ->get();
             return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
         } 
         // else if ($club_id != null && $approved_status == 0) {
@@ -277,18 +272,12 @@ class ClubController extends Controller
 
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')
-        ->select(DB::raw('name'))
-        ->where('id', $userClubID)
-        ->get();
-        
-
-        $test = (String) $userClubName;
+        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
-                            ->select('message', 'message_id')
-                            ->where('club_name', $test)
-                            ->get();
+            ->select('message', 'message_id','club_name')
+            ->where('club_name', $club_name)
+            ->get();
         $clubMembers = $user_table->get();
     
 
@@ -706,5 +695,8 @@ class ClubController extends Controller
         //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
     }
 
+    public function deleteMatch($match_id){
+
+    }
 
 }

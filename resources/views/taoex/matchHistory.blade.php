@@ -33,7 +33,7 @@
       <div class="card mb-2">
         <div class="card-header">
           Match: {{ $match->name }}
-          <span class="float-right"><i>Dated: {{$match->endDate}}</i></span>
+          <span class="float-right"><i>Dated: {{$match->endDate}} <a href="{{ route('deleteMatch',['id'=>$match->id]) }}"> Delete match {{$match->id}} </a></i></span>
         </div>
         <div class="card-body">
           <div class="table-responsive">

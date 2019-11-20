@@ -28,7 +28,7 @@
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label for="message">New message to user: {{$id}} - {{$fullname}}</label>
-                      <input type="text" class="form-control" id='id' name='id' value={{$id}} readonly>
+                      <input type="hidden" class="form-control" id='id' name='id' value={{$id}}>
                       <input type="text" class="form-control" id="message" name="message" placeholder="Enter message here" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Send</button>

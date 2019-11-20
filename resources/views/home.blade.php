@@ -78,17 +78,6 @@
 
                             <th>Actions</th>
                           </tr>
-                          @if(isset($userMessages))
-                          @foreach ($userMessages as $message)
-                          <tr>
-                            <td>{{$message->club_name}}</td>
-                            <td>{{$message->message}}</td>
-                            <td>{{$message->message_id}}</td>
-                            <td>[Club]</td>
-                           
-                          </tr>
-                          @endforeach
-                          @endif
                           @if(isset($personal_messages))
                           @foreach ($personal_messages as $message)
                           <tr>

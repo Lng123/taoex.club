@@ -59,10 +59,10 @@ class AdminController extends Controller
     }
 
     
-    public function deleteMatch(Request $request){
-        $match_id= $request->match_id;
+    public function deleteMatch($match_id){
+        //$match_id= $request->match_id;
         $admin_id = Auth::user()->id;
-        
+        DB::table('matchresult')->where('match_id','=',$match_id)->delete();
         DB::table('match')->where('id','=',$match_id)->delete();
         return redirect('/home');
     }
