@@ -72,10 +72,7 @@
 
         </div>
           @endif
-      @if(isset($createSuccess))
-        <div class="alert alert-success" role="alert" style="margin-top:20px">
-          <strong>Match Successfully Recorded!</strong>
-          <a class="btn btn-outline-info" href=/home/club>Reload </a> </div> @endif @if(isset($createSuccess)) <div class="alert alert-success" role="alert" style="margin-top:20px">
+          @if(isset($createSuccess)) <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Created!</strong>
 
         </div>
