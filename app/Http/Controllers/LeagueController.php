@@ -66,7 +66,7 @@ class LeagueController extends Controller
 
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
 
-            return view('taoex.league', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
+            return view('taoex.league', array('Club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
         } else if ($club_id != null && $approved_status == 0) {
             return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));
         }
@@ -151,7 +151,7 @@ class LeagueController extends Controller
     public function showUpdateClubeForm($club_id)
     {
         $club = Club::findOrFail($club_id);
-        return view('taoex.editClubProfile', compact('club'));
+        return view('taoex.editClubProfile', compact('Club'));
     }
 
     /*
@@ -210,7 +210,7 @@ class LeagueController extends Controller
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         $clubName = $request->clubName;
         if (!isset($clubName)) {
-            return view('home', array('message'=>'Please Enter Your Club Name!', 'nearPlayers'=>$nearPlayers,'club'=>$club, 'color'=>'alert-danger', 'ranking'=>$ranking,'totalScore'=>$totalScore));
+            return view('home', array('message'=>'Please Enter Your Club Name!', 'nearPlayers'=>$nearPlayers,'Club'=>$club, 'color'=>'alert-danger', 'ranking'=>$ranking,'totalScore'=>$totalScore));
         }
         $club->name = $clubName;
         $club->province = $request->province;
@@ -218,7 +218,7 @@ class LeagueController extends Controller
         $checkResult = DB::table('Club')->where('owner_id', $uid)->get();
         $user_table->where('id', $uid)->update(['type'=>1, 'approved_status'=>1, 'club_owner'=>1]);
         if (Auth::user()->club_id !== null) {
-            return view('home', array('message'=>'You can only own one club', 'color'=>'alert-danger','club'=>$club, 'ranking'=>$ranking, 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
+            return view('home', array('message'=>'You can only own one club', 'color'=>'alert-danger','Club'=>$club, 'ranking'=>$ranking, 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
         }
         $club->owner_id = $uid;
         $club->save();
@@ -233,7 +233,7 @@ class LeagueController extends Controller
         //User::updateUserToClubOwner($uid, $club_id);
         #$user_table->where('id', $uid)->update(['type'=>1, 'approved_status'=>1, 'club_id'=>$club_id, 'club_owner'=>1]);
         #$user_table->save();
-        return view('/home', Array('message'=>'Club is successly created!', 'club'=>$club,'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'status'=>Auth::user()->approved_status));
+        return view('/home', Array('message'=>'Club is successly created!', 'Club'=>$club,'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'status'=>Auth::user()->approved_status));
     }
 
     public function invite(Request $request)

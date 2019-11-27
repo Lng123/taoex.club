@@ -27,7 +27,7 @@ class AdminController extends Controller
     }
 
     public function deleteClub($club_id){
-        DB::table('club')->where('id','=', $club_id)->delete();
+        DB::table('Club')->where('id','=', $club_id)->delete();
         return redirect('/home/adminManageClub');
     }   
 
