@@ -450,19 +450,18 @@ class ClubController extends Controller
         return redirect('/home/club');
         //return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
     }
-
+    /**
+     * Executes when the invite button of a player is clicked.
+     * Uses the player id of the player invited and selected club id and inserts a row in the invite table.
+     * Returns playersearch to refresh the status of the invite button.
+     */
     public function invite(Request $request)
     {
-
-        // $status = Auth::user()->approved_status;
         $userid = $request->input('ranking');
         $uid = (int)$userid;
         $club_id = Auth::user()->club_id;
         DB::table('Invite')->insert(['id' => $uid, 'club_id' =>$club_id]);
         return $this->playersearch();
-        //return view('/home', array('message'=>'invitation has been successly sent, please wait for reply!', 'totalScore'=>$totalScore,
-        //                             'color'=>'alert-success', 'status'=>Auth::user()->approved_status));
-
     }
 
     public function playerApply(Request $request)
@@ -597,6 +596,11 @@ class ClubController extends Controller
         //return view ('/home',array('pending_club_applications'=>$pending_applications,'pending_invites'=>$pending_invites,'totalScore'=>$totalScore,'ranking'=>$ranking,'messages'=>$messages));
     }
 
+    /**
+     * Loads the invite page for club that the user is currently in. 
+     * Displays the players in the system with invite buttons. 
+     * Greys out players that are already in the club or invited.
+     */
     public function playersearch() {
         $match_table = new Match;
         $result_table = new MatchResult;

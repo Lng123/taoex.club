@@ -471,7 +471,6 @@ class HomeController extends Controller
 
         $club_id = getClubId($match_id);
         updateCScore($club_id);
-        dd($match_id);
 
         return view('taoex.admin', array('matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers, 'ranking' => $ranking, 'editSuccess' => $editSuccess));
     }
@@ -484,7 +483,6 @@ class HomeController extends Controller
 
         return $club_id;
     }
-
     public function updateCScore($club_id)
     {
         $date = date("Y");
@@ -554,6 +552,5 @@ class HomeController extends Controller
         }
         $total_score = $total_score / $i;
         $club_table->where('id',$club_id)->update(['club_score'=>ranking]);
-        //$club_table->where('id',$club_id)->update(['club_score'=>ranking]);
     }
 }
