@@ -39,8 +39,8 @@
                                 <td>{{ $cl->id }}</td>
                                 <td><a href="{{ route('manageClubMembers',[$cl->id]) }}">{{ $cl->name }}</a><a href='' style="color:grey;"> &#9998;</a></td>
                                 <td>{{ $cl->firstName}}, {{ $cl->lastName}}</td>
-                                <td>{{ $cl->club_score }}</td>
                                 <td>{{ $cl->created_at }}</td>
+                                <td>{{ $cl->club_score }}</td>
 
                                 <!-- @if($club_id == $cl->id)
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	
