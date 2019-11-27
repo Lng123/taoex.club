@@ -148,6 +148,9 @@ class ApplyMatchController extends Controller
         
         } else {
             $existing_match = $match_result->where('player_id', $player_id)->where('match_id', $match_id)->update(['elimination'=>$elimination, 'capture'=>$capture, 'hook'=>$hook, 'winBonus'=>$winBonusR, 'total'=>$total,'place'=>0]);
+                if($current_match[0]->winner_id == $player_id && $winBonus == 0) {
+                    DB::table('Match')->where('id', $match_id)->update(['winner_id'=>NULL]);
+                }
         }
 
             
