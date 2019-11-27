@@ -79,13 +79,15 @@ class ApplyMatchController extends Controller
             return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'createSuccess'=>$createSuccess));
     }
 
-
+    /**
+     * Records a match score for a player.
+     */
     public function record(Request $request)
     {
         $club_table = new Club;
 
         $result_table = new MatchResult;
-	$uid = Auth::user()->id;
+	    $uid = Auth::user()->id;
         $club_id = Auth::user()->club_id;
         $approved_status = Auth::user()->approved_status;
     	$HOK = 5;
@@ -152,7 +154,7 @@ class ApplyMatchController extends Controller
         }
 
             
-            $this->updateCScore($club_id);
+        $this->updateCScore($club_id);
         $this->updateSeason();
     	$user_table = new User;
 
@@ -222,7 +224,9 @@ class ApplyMatchController extends Controller
     	return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'recordSuccess'=>$recordSuccess, 'winnerExist'=>$winnerExist, 'updateSuccess'=>$updateSuccess));
         }
 
-    
+    /**
+     * Updates the club score for that club based off the match results.
+     */
     public function updateCScore($club_id) {
         $date = date("Y");
 
@@ -237,9 +241,7 @@ class ApplyMatchController extends Controller
         
         //Obtain user ID
         $uid = Auth::user()->id;
-        //Obtain club id
-        //$club_id = Auth::user()->club_id;
-        //Obtain status
+
         $approved_status = Auth::user()->approved_status;
         $type = Auth::user()->type;
         $province = Auth::user()->province;
@@ -260,7 +262,6 @@ class ApplyMatchController extends Controller
         $i = 0;
         $total_score = 0;
         $rank = 0;
-        //dd($clubGameCount);
 
         foreach ($clubMembers as $clubMember) {
         	
@@ -268,7 +269,6 @@ class ApplyMatchController extends Controller
         	
         	$won = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->where('winner_id',$clubMember->id)->get()->count();
         	
-            //$score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
             FROM matchresult
@@ -281,12 +281,6 @@ class ApplyMatchController extends Controller
             ORDER BY total DESC
             LIMIT 10) AS score")[0]->tscore;
 
-            // if ($clubGameCount == 0) {
-            //     $rank = ($score/1) * $won;
-            // } else {
-            //     $rank = ($score/$clubGameCount) * $won;
-            // }
-            // number_format($rank, 2, '.', '');
         	$total_score += $score;
         	$memberData[$i]= array('name' => $clubMember->firstName. " " . $clubMember->lastName, 'role' => $clubMember->type, 'games' => $gameCount, 'won' => $won, 'score' => $score, 'rank'=>$rank);
         	$i++;
@@ -297,6 +291,10 @@ class ApplyMatchController extends Controller
 
     }
 
+    /***
+     * Compares the current year with the year in the database. 
+     * If it is different, it updates club score of all clubs.
+     */
     public function updateSeason() {
         $date = date("Y");
         $club_table = new Club;
