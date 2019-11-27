@@ -98,11 +98,11 @@ class HomeController extends Controller
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname', 'users.lastname')->where('Invite.id', $uid)->get();
 
         $pending_applications = DB::table('club_application')
-            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
-            ->join('club', 'club_application.club_id', '=', 'club.id')
+            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'Club.name', 'Club.owner_id')
+            ->join('Club', 'club_application.club_id', '=', 'Club.id')
             ->join('users', 'users.id', '=', 'club_application.user_id')
             ->where('club_application.status', '=', 'applied')
-            ->where('club.owner_id', '=', $uid)
+            ->where('Club.owner_id', '=', $uid)
             ->get();
 
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
@@ -128,7 +128,7 @@ class HomeController extends Controller
         $ranking = $user_table->where('score', '>=', $total_score)->get()->count();
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')
+        $userClubName = DB::table('Club')e
             ->select(DB::raw('name'))
             ->where('id', $userClubID)
             ->get();
@@ -530,9 +530,9 @@ class HomeController extends Controller
 
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
-            FROM matchresult
-            JOIN `match`
-            ON `match`.`id` = matchresult.match_id
+            FROM MatchResult
+            JOIN `Match`
+            ON `Match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'
