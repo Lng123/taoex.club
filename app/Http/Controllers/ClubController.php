@@ -140,9 +140,9 @@ class ClubController extends Controller
             //$score = $match_table->join('MatchResult', 'Match.id', '=', 'MatchResult.match_id')->where('club_id', $club_id)->where('endDate', '>=', $date."-01-1")->where('endDate', '<=', $date."-12-31")->where('player_id', $clubMember->id)->sum('total');
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
-            FROM matchresult
+            FROM MatchResult
             JOIN `match`
-            ON `match`.`id` = matchresult.match_id
+            ON `match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'

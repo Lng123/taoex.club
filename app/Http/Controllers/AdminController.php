@@ -62,7 +62,7 @@ class AdminController extends Controller
     public function deleteMatch($match_id){
         //$match_id= $request->match_id;
         $admin_id = Auth::user()->id;
-        DB::table('matchresult')->where('match_id','=',$match_id)->delete();
+        DB::table('MatchResult')->where('match_id','=',$match_id)->delete();
         DB::table('match')->where('id','=',$match_id)->delete();
         return redirect('/home/matchHistory');
     }
@@ -70,9 +70,9 @@ class AdminController extends Controller
     public function deleteMatchRecord($match_record_id){
       
         $admin_id = Auth::user()->id;
-        $match_id = DB::table('matchresult')->where('id',$match_record_id)->select('match_id')->value('match_id');
-        $deleted_user_record = DB::table('matchresult')->where('id','=',$match_record_id)->select('player_id')->value('player_id');
-        DB::table('matchresult')->where('id','=',$match_record_id)->delete();
+        $match_id = DB::table('MatchResult')->where('id',$match_record_id)->select('match_id')->value('match_id');
+        $deleted_user_record = DB::table('MatchResult')->where('id','=',$match_record_id)->select('player_id')->value('player_id');
+        DB::table('MatchResult')->where('id','=',$match_record_id)->delete();
         $winner_id = DB::table('match')->where('id', $match_id)->select('winner_id')->value('winner_id');
         if($winner_id == $deleted_user_record ){
             DB::table('match')->where('id', $match_id)->update(['winner_id' => NULL]);

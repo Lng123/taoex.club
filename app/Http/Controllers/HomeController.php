@@ -530,9 +530,9 @@ class HomeController extends Controller
 
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
-            FROM matchresult
+            FROM MatchResult
             JOIN `match`
-            ON `match`.`id` = matchresult.match_id
+            ON `match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'
