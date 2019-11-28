@@ -17,7 +17,7 @@
             Club Information
           </div>
           <div class="card-body">
-          if(isset($club))
+          @if(isset($club))
             <div>
               <?php
               $image = App\Utility::get_image_fromTable($club->id, 'Club');
