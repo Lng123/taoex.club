@@ -298,7 +298,7 @@ class ClubController extends Controller
         //Obtain club id
         $club_id = Auth::user()->club_id;
         //User Table
-        //$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+
     	$clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
         //Club Table
         $club_table = new Club;
@@ -467,7 +467,7 @@ class ClubController extends Controller
     public function playerApply(Request $request)
     {   
         
-        //DB::table('club_application')->where('status', 'inClub')->delete();
+        //DB::table(_application')->where('status', 'inClub')->delete();
         
         
         $user_id = Auth::user()->id;
@@ -485,7 +485,7 @@ class ClubController extends Controller
         DB::table('users')->where('id', $uid)->update(['approved_status'=>1]);
 
         $ranking = 0;
-        $club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('Club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
         DB::table('Invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
         DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
@@ -556,13 +556,7 @@ class ClubController extends Controller
 
         $uid = Auth::user()->id;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-        //Finding the club id associated to current club owner THIS QUERY IS MESSED
-        #$club_name = DB::table('Club')
-        #                        ->select(DB::raw('name'))
-        #                        ->where('owner_id', $uid)
-        #                        ->get();
         $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
-        #$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $message = $request->input('message');
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('Club.*')->where('UserClubs.id',$uid)->get();

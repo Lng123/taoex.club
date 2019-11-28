@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -128,7 +128,7 @@ class HomeController extends Controller
         $ranking = $user_table->where('score', '>=', $total_score)->get()->count();
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')e
+        $userClubName = DB::table('Club')
             ->select(DB::raw('name'))
             ->where('id', $userClubID)
             ->get();

@@ -71,7 +71,7 @@ class ClubFilterController extends Controller
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
             FROM MatchResult
-            JOIN `match`
+            JOIN `Match`
             ON `match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
