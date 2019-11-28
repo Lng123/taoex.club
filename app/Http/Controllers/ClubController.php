@@ -69,7 +69,7 @@ class ClubController extends Controller
     
         $userClubID = Auth::user()->club_id;
 
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_name = DB::table('users')->select('name')->join('Club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $club_messages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -141,8 +141,8 @@ class ClubController extends Controller
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
             FROM MatchResult
-            JOIN `match`
-            ON `match`.`id` = MatchResult.match_id
+            JOIN `Match`
+            ON `Match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'
@@ -204,8 +204,8 @@ class ClubController extends Controller
         
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-    	$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
-    	$all_clubs = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->distinct()->get();
+    	$club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('Club.*')->where('UserClubs.id',$uid)->get();
+    	$all_clubs = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('Club.*')->distinct()->get();
     	
        
 	//$clubusers = $clubuser_table->get();
@@ -256,7 +256,7 @@ class ClubController extends Controller
         ->join('users', 'Club.owner_id', '=', 'users.id')
         ->whereNotIn('Club.id',function($q)use($uid){
             $q->select('Club.id')
-            ->from('club')
+            ->from('Club')
             ->join('users', 'Club.owner_id', '=', 'users.id')
             ->leftjoin('club_application', function($join){
                 $join->on('Club.id', '=' ,'club_application.club_id');
@@ -272,7 +272,7 @@ class ClubController extends Controller
 
         $userClubID = Auth::user()->club_id;
 
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -346,12 +346,12 @@ class ClubController extends Controller
     {
         $club_id = Auth::user()->club_id;
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
-        DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
-        $club_name = DB::table('club')->where('id',$club_id)->value('name');
+        DB::table('UserClubs')->where('id', $id)->where('club_id', $club_id)->delete();
+        $club_name = DB::table('Club')->where('id',$club_id)->value('name');
         $name = DB::table('users')->where('id',$id)->value('firstname');
         $lname = DB::table('users')->where('id',$id)->value('lastname');
         $message = "{$name} {$lname} has been kicked from {$club_name}";
-        $club_owner_id = DB::table('club')->where('id',$club_id)->value('owner_id');
+        $club_owner_id = DB::table('Club')->where('id',$club_id)->value('owner_id');
         DB::table('club_application')->where('user_id', $id)->where('club_id', $club_id)->where('status','inClub')->delete();
         DB::table('user_messages')->insert(['id'=>$id,'message'=>$message,'sender'=>$club_owner_id]);
         return redirect()->route('manageClub');
@@ -446,7 +446,7 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $matches = $match_table->where('club_id', $club_d)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
+        DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
         return redirect('/home/club');
         //return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
     }
@@ -487,8 +487,8 @@ class ClubController extends Controller
         $ranking = 0;
         $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
-        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
+        DB::table('Invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
+        DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
         $userClubName = DB::table('Club')
         ->select(DB::raw('name'))
         ->where('id', $userClubID)
@@ -521,14 +521,14 @@ class ClubController extends Controller
         $status = Auth::user()->approved_status;
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         DB::table('users')->where('id', $uid)->update(['approved_status'=>0, 'club_id'=>NULL]);
-        DB::table('invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
+        DB::table('Invite')->where('id','=',$uid)->where('club_id','=',$id)->delete();
         return view('/home', array('color'=>'alert-success', 'message'=>'You have declined the invitation', 'totalScore'=>$totalScore, 'status'=>Auth::user()->approved_status));
     }
 
 
     public function acceptClubApplication($applicant_id, $club_id)
     {
-        DB::table('userclubs')->insert(['id'=>$applicant_id,'club_id'=>$club_id]);
+        DB::table('UserClubs')->insert(['id'=>$applicant_id,'club_id'=>$club_id]);
         DB::table('users')->where('id',$applicant_id)->update(['club_id'=>$club_id]);
         DB::table('club_application')->where('user_id', $applicant_id)->where('club_id', $club_id)->where('status','applied')->update(['status'=>'inClub']);
         return redirect('/home/club');
@@ -536,7 +536,7 @@ class ClubController extends Controller
 
     public function declineClubApplication($applicant_id, $club_id)
     {   
-        $clubinfo = DB::table('club')->select('owner_id','name')->where('id',$club_id)->get();
+        $clubinfo = DB::table('Club')->select('owner_id','name')->where('id',$club_id)->get();
         $applicant = DB::table('users')->select('firstname', 'lastname')->where('id', $applicant_id)->get();
         //Message
         $message = "{$applicant[0]->firstname}.{$applicant[0]->lastname}'s club application to {$clubinfo[0]->name} has been declined.";
@@ -561,11 +561,11 @@ class ClubController extends Controller
         #                        ->select(DB::raw('name'))
         #                        ->where('owner_id', $uid)
         #                        ->get();
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
         #$club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $message = $request->input('message');
         $ranking = 0;
-        $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('Club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
 
         $messages = DB::table('messages')
@@ -577,11 +577,11 @@ class ClubController extends Controller
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname', 'users.lastname')->where('Invite.id', $uid)->get();
 
         $pending_applications = DB::table('club_application')
-            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
-            ->join('club', 'club_application.club_id', '=', 'club.id')
+            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'Club.name', 'Club.owner_id')
+            ->join('Club', 'club_application.club_id', '=', 'Club.id')
             ->join('users', 'users.id', '=', 'club_application.user_id')
             ->where('club_application.status', '=', 'applied')
-            ->where('club.owner_id', '=', $uid)
+            ->where('Club.owner_id', '=', $uid)
             ->get();
 
         #$data = array(
@@ -615,7 +615,7 @@ class ClubController extends Controller
         $clubs = $club_table->join('users', 'owner_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'Club.*')->get();
         
         $allinvites = $user_table->leftJoin('Invite', 'users.id', '=', 'Invite.id')->get();
-        $usersinclubs = DB::table('userclubs')->where('club_id',$club_id)->get();
+        $usersinclubs = DB::table('UserClubs')->where('club_id',$club_id)->get();
 
         foreach($usersinclubs as $cmembers) {
             array_push($club_members, $cmembers->id);
@@ -668,7 +668,7 @@ class ClubController extends Controller
     public function adminRemoveMember($club_id, $id)
     {
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
-        DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
+        DB::table('UserClubs')->where('id', $id)->where('club_id', $club_id)->delete();
         return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
     }
     

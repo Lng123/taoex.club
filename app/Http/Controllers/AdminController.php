@@ -27,7 +27,7 @@ class AdminController extends Controller
     }
 
     public function deleteClub($club_id){
-        DB::table('club')->where('id','=', $club_id)->delete();
+        DB::table('Club')->where('id','=', $club_id)->delete();
         return redirect('/home/adminManageClub');
     }   
 
@@ -63,7 +63,7 @@ class AdminController extends Controller
         //$match_id= $request->match_id;
         $admin_id = Auth::user()->id;
         DB::table('MatchResult')->where('match_id','=',$match_id)->delete();
-        DB::table('match')->where('id','=',$match_id)->delete();
+        DB::table('Match')->where('id','=',$match_id)->delete();
         return redirect('/home/matchHistory');
     }
 
@@ -73,9 +73,9 @@ class AdminController extends Controller
         $match_id = DB::table('MatchResult')->where('id',$match_record_id)->select('match_id')->value('match_id');
         $deleted_user_record = DB::table('MatchResult')->where('id','=',$match_record_id)->select('player_id')->value('player_id');
         DB::table('MatchResult')->where('id','=',$match_record_id)->delete();
-        $winner_id = DB::table('match')->where('id', $match_id)->select('winner_id')->value('winner_id');
+        $winner_id = DB::table('Match')->where('id', $match_id)->select('winner_id')->value('winner_id');
         if($winner_id == $deleted_user_record ){
-            DB::table('match')->where('id', $match_id)->update(['winner_id' => NULL]);
+            DB::table('Match')->where('id', $match_id)->update(['winner_id' => NULL]);
         }
         
         //DB::table('match')->where('id','=',$match_id)->delete();
