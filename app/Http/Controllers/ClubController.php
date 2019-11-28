@@ -69,7 +69,7 @@ class ClubController extends Controller
     
         $userClubID = Auth::user()->club_id;
 
-        $club_name = DB::table('users')->select('name')->join('Club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $club_messages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -247,7 +247,7 @@ class ClubController extends Controller
             $join->on('Club.id', '=','club_application.club_id');
         })
         ->where('club_application.user_id','=',$uid)
-        ->orderBy('club.id');
+        ->orderBy('Club.id');
 
 
 
@@ -262,9 +262,9 @@ class ClubController extends Controller
                 $join->on('Club.id', '=' ,'club_application.club_id');
             })
             ->where('club_application.user_id','=',$uid)
-            ->orderBy('club.id');
+            ->orderBy('Club.id');
         })
-        ->orderBy('club.id');
+        ->orderBy('Club.id');
 
 
         //$club_list = $applied_list->union($inclub_list)->union($allclub_list)->get();
@@ -485,7 +485,7 @@ class ClubController extends Controller
         DB::table('users')->where('id', $uid)->update(['approved_status'=>1]);
 
         $ranking = 0;
-        $club_list = DB::table('UserClubs')->join('club','club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
+        $club_list = DB::table('UserClubs')->join('Club','Club.id','=','UserClubs.club_id')->select('club.*')->where('UserClubs.id',$uid)->get();
         $userClubID = Auth::user()->club_id;
         DB::table('Invite')->where('id','=',$uid)->where('club_id','=',$club_id)->delete();
         DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);

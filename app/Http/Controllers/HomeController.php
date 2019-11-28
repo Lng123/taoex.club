@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -82,8 +82,8 @@ class HomeController extends Controller
         $club = $club_table->where('id', $club_id)->first();
 
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        $club_list_in = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_list_in = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -213,8 +213,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
