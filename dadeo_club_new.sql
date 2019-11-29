@@ -890,7 +890,7 @@ CREATE TABLE `UserClubs` (
   `id` int(10) UNSIGNED NOT NULL,
   `club_id` int(10) UNSIGNED NOT NULL,
    primary key(`id`,`club_id`)
-) 
+) ;
 
 
 INSERT INTO UserClubs(`id`,`club_id`)
@@ -901,14 +901,14 @@ FROM `users`;
 CREATE TABLE `Invite` (
   `id` int(10) UNSIGNED NOT NULL,
   `club_id` int(10) UNSIGNED NOT NULL
-) 
+) ;
 
 CREATE TABLE `user_messages` (
   `id` int(10) UNSIGNED NOT NULL,
   `sender` int(10) UNSIGNED NOT NULL,
   `message` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `message_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP 
-) 
+) ;
 
 CREATE TABLE club_application(
 	application_id int NOT NULL AUTO_INCREMENT,
