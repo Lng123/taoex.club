@@ -128,7 +128,7 @@ class HomeController extends Controller
         $ranking = $user_table->where('score', '>=', $total_score)->get()->count();
         $userClubID = Auth::user()->club_id;
 
-        $userClubName = DB::table('Club')e
+        $userClubName = DB::table('Club')
             ->select(DB::raw('name'))
             ->where('id', $userClubID)
             ->get();
