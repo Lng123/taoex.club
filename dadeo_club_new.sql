@@ -33,6 +33,10 @@ CREATE TABLE `announcements` (
   `time_sent` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+
+
+
+
 --
 -- Dumping data for table `announcements`
 --
@@ -902,6 +906,63 @@ ALTER TABLE `Tournament`
   ADD CONSTRAINT `tournament_club_id_foreign` FOREIGN KEY (`club_id`) REFERENCES `Club` (`id`);
 COMMIT;
 
+CREATE TABLE `UserClubs` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `club_id` int(10) UNSIGNED NOT NULL,
+    primary key(id,club_id)
+) 
+
+
+INSERT INTO UserClubs(id,club_id)
+SELECT id,club_id
+FROM users;
+
+
+CREATE TABLE `Invite` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `club_id` int(10) UNSIGNED NOT NULL
+) 
+
+CREATE TABLE `user_messages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `sender` int(10) UNSIGNED NOT NULL,
+  `message` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `message_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP 
+) 
+
+CREATE TABLE club_application(
+	application_id int NOT NULL AUTO_INCREMENT,
+	user_id int,
+	club_id int,
+	status varchar(255),
+	primary key(application_id)
+);
+
+INSERT INTO club_application(user_id, club_id, status)
+SELECT id, club_id, 'inClub' FROM USERCLUBS;
+
+
+
+CREATE TABLE `banned_users` (
+  `banned_id` int(10) UNSIGNED NOT NULL,
+  `admin_id` int(10) UNSIGNED NOT NULL,
+  `reason` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `ban_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   primary key(`banned_id`)
+);
+
+ALTER TABLE Club ADD COLUMN club_score int DEFAULT 0;
+
+ALTER TABLE Club ADD COLUMN season int DEFAULT 2018;
+
+ALTER TABLE user_messages ADD COLUMN message_tag varchar(255) DEFAULT NULL;
+
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+
