@@ -72,7 +72,7 @@ class ClubFilterController extends Controller
             FROM (SELECT total
             FROM MatchResult
             JOIN `Match`
-            ON `match`.`id` = MatchResult.match_id
+            ON `Match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'
