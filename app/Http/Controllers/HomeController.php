@@ -329,7 +329,7 @@ class HomeController extends Controller
         $remove = $user_table->where('id', $id)->delete();
         $remove_messages = DB::table('user_messages')->where('id',$id)->delete();
         $remove_sent_messages = DB::table('user_messages')->where('sender',$id)->delete();
-        $remove_user_clubs = DB::table('userclubs')->where('id',$id)->delete();
+        $remove_user_clubs = DB::table('UserClubs')->where('id',$id)->delete();
         return redirect('/home/adminManageUser');
     }
 

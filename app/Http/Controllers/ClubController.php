@@ -230,16 +230,6 @@ class ClubController extends Controller
          }
         //Session::put('totalScore', $totalScore);
         $club = $club_table->where('id', $club_id)->first();
-        //$club_list = DB::table('Club')->where('owner_id', $uid)->get();
-
-
-
-        // $u = "";
-        // $minus = DB::table('Club')
-        // ->select('Club.name', 'Club.id', 'Club.owner_id', 'Club.created_at', 'users.id as user_id', 'users.firstName','users.lastName', DB::raw("'$u' as status"))
-        // ->join('users', 'Club.owner_id', '=', 'users.id')
-        // ->join('userclubs', 'Club.id', '=' ,'userclubs.club_id')
-        // ->where('users.id', '=',$uid);
         $applied_inclub = DB::table('Club')
         ->select('Club.name', 'Club.id', 'Club.club_score', 'Club.owner_id','Club.created_at', 'users.id as user_id', 'users.firstName', 'users.lastName', 'club_application.status')
         ->join('users', 'Club.owner_id', '=', 'users.id')
