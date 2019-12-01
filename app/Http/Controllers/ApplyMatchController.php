@@ -56,7 +56,9 @@ class ApplyMatchController extends Controller
 
 
       $club = $club_table->where('id', $club_id)->first();
-            $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
+            $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
+
+            //$clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
             $nearPlayers = $user_table->where('approved_status', 0)->get();
             $allPlayers = $user_table->where('id', '!=', Null)->get();
             $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
