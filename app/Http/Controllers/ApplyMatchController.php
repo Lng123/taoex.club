@@ -66,14 +66,14 @@ class ApplyMatchController extends Controller
 
             $clubOwner = $user_table->where('club_id', $club_id)->where('approved_status', $approved_status)->where('type', 1)->first();
 
-            $numberMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->count();
+            $numberMembers = $clubMembers->count();
             
             $clubGames = $match_table->where('club_id', $club_id)->get();
         
         $club = $club_table->where('id', $club_id)->first();
         
         $allMatches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
- $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
+        $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
         	$total_score = $result_table->where('player_id', $uid)->sum('total');
 
         $createSuccess = 1;
