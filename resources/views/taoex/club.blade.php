@@ -17,6 +17,7 @@
             Club Information
           </div>
           <div class="card-body">
+          @if(isset($club))
             <div>
               <?php
               $image = App\Utility::get_image_fromTable($club->id, 'Club');
@@ -53,7 +54,7 @@
       </div>
 
       <div class="col-md-8" style="max-height: 1000px; overflow:auto;">
-      
+      @endif
       @if(isset($recordSuccess) and $recordSuccess == 1)
         <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Recorded!</strong>
@@ -72,10 +73,7 @@
 
         </div>
           @endif
-      @if(isset($createSuccess))
-        <div class="alert alert-success" role="alert" style="margin-top:20px">
-          <strong>Match Successfully Recorded!</strong>
-          <a class="btn btn-outline-info" href=/home/club>Reload </a> </div> @endif @if(isset($createSuccess)) <div class="alert alert-success" role="alert" style="margin-top:20px">
+          @if(isset($createSuccess)) <div class="alert alert-success" role="alert" style="margin-top:20px">
             <strong>Match Successfully Created!</strong>
 
         </div>
@@ -224,11 +222,6 @@
                                 </div>
                               </div>
                             </div>
-                                @if ('a' != 'a' )
-                            <button type="submit" class="btn btn-primary btn-block">Update</button>
-                                @else
-                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                                @endif
                           </form>
                         
         </li>

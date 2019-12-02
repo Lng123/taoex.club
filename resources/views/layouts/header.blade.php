@@ -110,9 +110,11 @@ $(document).ready(function() {
                             <li>
                                 <a href="{{ route('matchHistory') }}">Match history</a>
                             </li>
+                            @if(Auth::user()->club_id != NULL)
                             <li>
                                 <a href="{{ route('applyNewMatch') }}">Apply for a new match</a>
                             </li>
+                            @endif
                         </ul>
                     </li>
                     @if(Auth::user()->admin == 1)

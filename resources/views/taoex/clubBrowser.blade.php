@@ -39,8 +39,8 @@
                                 <td>{{ $cl->id }}</td>
                                 <td><a href="{{ route('clubFilter',[$cl->id]) }}">{{ $cl->name }}</a></td>
                                 <td>{{ $cl->firstName}} {{ $cl->lastName}}</td>
-                                <td>{{ $cl->club_score }}</td>
                                 <td>{{ $cl->created_at }}</td>
+                                <td>{{ $cl->club_score }}</td>
 
                                 @if($cl->status=='applied')
                                 <td><a class="btn btn-outline-success" style="width:5rem" 	

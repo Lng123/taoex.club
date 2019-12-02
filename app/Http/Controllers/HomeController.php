@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -82,8 +82,8 @@ class HomeController extends Controller
         $club = $club_table->where('id', $club_id)->first();
 
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        $club_list_in = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_list_in = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -98,11 +98,11 @@ class HomeController extends Controller
         $pending_invites = DB::table('Invite')->join('Club', 'Club.id', '=', 'Invite.club_id')->join('users', 'Club.owner_id', '=', 'users.id')->select('Invite.id', 'Invite.club_id', 'Club.name', 'Club.city', 'Club.province', 'users.firstname', 'users.lastname')->where('Invite.id', $uid)->get();
 
         $pending_applications = DB::table('club_application')
-            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'club.name', 'club.owner_id')
-            ->join('club', 'club_application.club_id', '=', 'club.id')
+            ->select('club_application.user_id', 'users.firstname', 'users.lastname', 'users.city', 'users.province', 'club_application.club_id', 'Club.name', 'Club.owner_id')
+            ->join('Club', 'club_application.club_id', '=', 'Club.id')
             ->join('users', 'users.id', '=', 'club_application.user_id')
             ->where('club_application.status', '=', 'applied')
-            ->where('club.owner_id', '=', $uid)
+            ->where('Club.owner_id', '=', $uid)
             ->get();
 
         //$clubuser = $clubuser_table->where('user_id', Auth::user()->id)->first();
@@ -213,8 +213,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -326,10 +326,10 @@ class HomeController extends Controller
         $remove_matchresult = $result_table->where('player_id', $id)->delete();
         $remove_invite = DB::table('Invite')->where('id', $id)->delete();
         $remove_match = $match_table->where('winner_id', $id)->update(['winner_id' => NULL]);
-        $remove = $user_table->where('id', $id)->delete();
         $remove_messages = DB::table('user_messages')->where('id',$id)->delete();
         $remove_sent_messages = DB::table('user_messages')->where('sender',$id)->delete();
-        $remove_user_clubs = DB::table('userclubs')->where('id',$id)->delete();
+        $remove_user_clubs = DB::table('UserClubs')->where('id',$id)->delete();
+        $remove = $user_table->where('id', $id)->delete();
         return redirect('/home/adminManageUser');
     }
 
@@ -471,7 +471,6 @@ class HomeController extends Controller
 
         $club_id = getClubId($match_id);
         updateCScore($club_id);
-        dd($match_id);
 
         return view('taoex.admin', array('matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers, 'ranking' => $ranking, 'editSuccess' => $editSuccess));
     }
@@ -484,7 +483,6 @@ class HomeController extends Controller
 
         return $club_id;
     }
-
     public function updateCScore($club_id)
     {
         $date = date("Y");
@@ -532,9 +530,9 @@ class HomeController extends Controller
 
             $score = DB::select("SELECT SUM(score.total) as tscore
             FROM (SELECT total
-            FROM matchresult
-            JOIN `match`
-            ON `match`.`id` = matchresult.match_id
+            FROM MatchResult
+            JOIN `Match`
+            ON `Match`.`id` = MatchResult.match_id
             WHERE club_id = $club_id
             AND player_id = $clubMember->id
             AND endDate >= '$date-01-1'
@@ -554,6 +552,5 @@ class HomeController extends Controller
         }
         $total_score = $total_score / $i;
         $club_table->where('id',$club_id)->update(['club_score'=>ranking]);
-        //$club_table->where('id',$club_id)->update(['club_score'=>ranking]);
     }
 }
