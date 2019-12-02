@@ -58,7 +58,6 @@ class ApplyMatchController extends Controller
       $club = $club_table->where('id', $club_id)->first();
             $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
 
-            //$clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
             $nearPlayers = $user_table->where('approved_status', 0)->get();
             $allPlayers = $user_table->where('id', '!=', Null)->get();
             $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
@@ -177,10 +176,10 @@ class ApplyMatchController extends Controller
         	$clubMembers = $user_table->get();
     	
     	$club = $club_table->where('id', $club_id)->first();
-    	 $numberMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->count();
             $allPlayers = $user_table->where('id', '!=', Null)->get();
-            $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
-        $allMatches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
+            $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
+            $numberMembers = $clubMembers->count();
+            $allMatches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
             $clubOwner = $user_table->where('club_id', $club_id)->where('approved_status', $approved_status)->where('type', 1)->first();
 	$total_score = $result_table->where('player_id', $uid)->sum('total');
 
@@ -196,7 +195,7 @@ class ApplyMatchController extends Controller
         } else {
             $user_table = new User;
 
-	$total_score = $result_table->where('player_id', $uid)->sum('total');
+	    $total_score = $result_table->where('player_id', $uid)->sum('total');
 
         $ranking = $user_table->where('score','>=', $total_score)->get()->count();
         
@@ -206,16 +205,16 @@ class ApplyMatchController extends Controller
 
 
         $totalScore = DB::table('MatchResult')->where('player_id', $uid)->sum('total');
-	$matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
+	    $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
 
             $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
         	$clubMembers = $user_table->get();
     	
     	$club = $club_table->where('id', $club_id)->first();
-    	 $numberMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->count();
-            $allPlayers = $user_table->where('id', '!=', Null)->get();
-            $clubMembers = $user_table->where('club_id', $club_id)->where('approved_status', 1)->get();
+        $allPlayers = $user_table->where('id', '!=', Null)->get();
+        $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
+        $numberMembers = $clubMembers->count();
         $allMatches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->get();
             $clubOwner = $user_table->where('club_id', $club_id)->where('approved_status', $approved_status)->where('type', 1)->first();
 	$total_score = $result_table->where('player_id', $uid)->sum('total');
