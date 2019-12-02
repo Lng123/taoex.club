@@ -47,7 +47,7 @@ class ClubsController extends Controller
     public function adminRemoveMember($club_id, $id)
     {
         User::where('id', $id)->where('club_id', $club_id)->update(['club_id' => null]);
-        DB::table('userclubs')->where('id', $id)->where('club_id', $club_id)->delete();
+        DB::table('UserClubs')->where('id', $id)->where('club_id', $club_id)->delete();
         return redirect()->route('manageClubMembers', ['club_id'=>$club_id]);
     }
 
