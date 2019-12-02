@@ -326,10 +326,10 @@ class HomeController extends Controller
         $remove_matchresult = $result_table->where('player_id', $id)->delete();
         $remove_invite = DB::table('Invite')->where('id', $id)->delete();
         $remove_match = $match_table->where('winner_id', $id)->update(['winner_id' => NULL]);
-        $remove = $user_table->where('id', $id)->delete();
         $remove_messages = DB::table('user_messages')->where('id',$id)->delete();
         $remove_sent_messages = DB::table('user_messages')->where('sender',$id)->delete();
         $remove_user_clubs = DB::table('UserClubs')->where('id',$id)->delete();
+        $remove = $user_table->where('id', $id)->delete();
         return redirect('/home/adminManageUser');
     }
 

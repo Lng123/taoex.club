@@ -222,11 +222,6 @@
                                 </div>
                               </div>
                             </div>
-                                @if ('a' != 'a' )
-                            <button type="submit" class="btn btn-primary btn-block">Update</button>
-                                @else
-                                <button type="submit" class="btn btn-primary btn-block">Submit</button>
-                                @endif
                           </form>
                         
         </li>
