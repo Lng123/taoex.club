@@ -1,6 +1,8 @@
 # Taoex Club readme
 
 
+# Functionality
+    
 
 # Help
     Laravel MVC - Controller is where all the backend is done, values are then passed into the frontend views (blades) through routing (web.php)
@@ -11,4 +13,4 @@
     
     Gmail was used for sending out the emails for forgot password,  sometimes gmail might lock you out and force you to change password so keep that in mind
     
-    
+
