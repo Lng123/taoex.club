@@ -2,20 +2,13 @@
 
 
 
-## Changed Files for development
-### resources/views/layouts/header.blade.php
-------
- 
-	
-    Changed hrefs in line 73,79,85,97,100 
-    href="{{ route('newClub') }}">Create</a></span></li>
-
-
-### routes/web.php
-
-    Route::get('/home/newclub', 'ClubController@showNewClubForm')->name('newClub')->middleware('auth');
-
-### app/Http/Controllers/Auth/RegisterController.php
-
-	#'g-recaptcha-response' => 'required|string|min:1',
-
+# Help
+    Laravel MVC - Controller is where all the backend is done, values are then passed into the frontend views (blades) through routing (web.php)
+    
+    webhosting on cloudlogin has databases that are CASE SENSITIVE so make sure when making any database queries that you match the case on the webhosted sql server.  Locally if you're using windows and xampp then case sensitivity doesn't matter but once you push work on production then you have to look at case sensitivity.  
+    
+    .env file will need to be changed for live and local
+    
+    Gmail was used for sending out the emails for forgot password,  sometimes gmail might lock you out and force you to change password so keep that in mind
+    
+    
