@@ -37,9 +37,7 @@
               <li class="list-group-item" style="font-weight: bold;">Members: <span style="text-align: right;">{{ $numberMembers }}
                   <a class="btn btn-outline-success" style="width:7rem" href="{{ route('clubFilter',[$club->id]) }}">More Info</a>
                 </span></li>
-              <li class="list-group-item" style="font-weight: bold;">Ranking: <span style="text-align: right;">
-
-                  <a href="/home/ranking">5</a></span></li>
+              <li class="list-group-item" style="font-weight: bold;">Club Score: <span style="text-align: right;">{{$clubScore[0]->club_score}}</span></li>
               @if($club->owner_id == Auth::user()->id)
               <li class="list-group-item" style="font-weight: bold;">
                 <a class="btn btn-outline-secondary" href="{{ route('manageClub') }}">Manage Club</a>

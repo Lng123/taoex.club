@@ -49,7 +49,7 @@ class ClubController extends Controller
             $nearPlayers = $user_table->where('approved_status', 0)->get();
             $allPlayers = $user_table->where('id', '!=', Null)->get();
             $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
-
+            $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
 
             $clubOwner = $clubMembers->where('id', $club->owner_id)->first();
 
@@ -75,7 +75,7 @@ class ClubController extends Controller
             ->select('message', 'message_id','club_name')
             ->where('club_name', $club_name)
             ->get();
-            return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
+            return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'clubScore' => $club_score));
         } 
         // else if ($club_id != null && $approved_status == 0) {
         //     return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));

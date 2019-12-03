@@ -53,7 +53,7 @@ class ApplyMatchController extends Controller
                             ->select('message', 'message_id')
                             ->get();
         $club_table = new Club;
-
+        $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
 
       $club = $club_table->where('id', $club_id)->first();
             $clubMembers = DB::table('UserClubs')->join('users','users.id','=','UserClubs.id')->select('*')->where('UserClubs.club_id', $club_id)->get();
@@ -77,7 +77,7 @@ class ApplyMatchController extends Controller
 
         $createSuccess = 1;
 
-            return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'createSuccess'=>$createSuccess));
+            return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'createSuccess'=>$createSuccess, 'clubScore' => $club_score));
     }
 
     /**
@@ -99,7 +99,7 @@ class ApplyMatchController extends Controller
         $WIN = 6;
         $match_result = new MatchResult;
         $match_table = new Match;
-
+        $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
         $match_id = $request->match_id;
         $player_id = $request->player_id;
         $numberPlayers = $request->numberPlayers;
@@ -222,7 +222,7 @@ class ApplyMatchController extends Controller
             $winnerExist = 1;
             $updateSuccess = 0;
         }
-    	return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'recordSuccess'=>$recordSuccess, 'winnerExist'=>$winnerExist, 'updateSuccess'=>$updateSuccess));
+    	return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'recordSuccess'=>$recordSuccess, 'winnerExist'=>$winnerExist, 'updateSuccess'=>$updateSuccess, 'clubScore' => $club_score));
         }
 
     /**
