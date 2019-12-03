@@ -436,7 +436,7 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $matches = $match_table->where('club_id', $club_d)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
+        DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
         DB::table('club_application')->insert(['user_id'=>$uid, 'club_id'=>$club_id, 'status'=>'inClub']);
         return redirect('/home/club');
         //return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
