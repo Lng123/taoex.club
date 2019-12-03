@@ -43,6 +43,14 @@ class AdminController extends Controller
         return redirect('/home');
     }
 
+    /**
+     * Deletes the given club.  This also deletes any match and match records related
+     * to this club, sets any user's active club_id that shares the given club id into
+     * null from the users table and deletes it from the UserClubs table before
+     * actually deleting the club from the clubs table.
+     *
+     * @return admin club page
+     */
     public function deleteClub($club_id){
         $user_table = new User;
         $match_table = new Match;
