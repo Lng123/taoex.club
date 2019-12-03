@@ -27,9 +27,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
-Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
-Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
-Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
+Route::get('home/adminBannedUsers','AdminController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
+Route::get('/home/admin', 'AdminController@openAdmin')->name('openAdmin');
+Route::post('/home/admin/deleteMatch', 'MatchController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
 
