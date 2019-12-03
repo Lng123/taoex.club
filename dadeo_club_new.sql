@@ -897,6 +897,8 @@ INSERT INTO UserClubs(`id`,`club_id`)
 SELECT `id`,`club_id`
 FROM `users`;
 
+ALTER TABLE `UserClubs`
+  ADD CONSTRAINT `UserClubs_foreign_keys` FOREIGN KEY (`id`) REFERENCES `users` (`id`)
 
 CREATE TABLE `Invite` (
   `id` int(10) UNSIGNED NOT NULL,
