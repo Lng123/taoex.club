@@ -309,26 +309,6 @@ class HomeController extends Controller
         return redirect('/home/adminManageUser');
     }
 
-
-    public function deleteMatch(Request $request)
-    {
-        $matchTarget = $request->matchName;
-        $match_table = new Match;
-        $result_table = new MatchResult;
-        $user_table = new User;
-
-        $matches = $match_table->orderBy('endDate', 'desc')->get();
-
-        $matchID = $match_table->where('name', $matchTarget)->pluck('id');
-        $targetMatchResults = $result_table->where('match_id', $matchID)->delete();
-        $matchID = $match_table->where('name', $matchTarget)->delete();
-        $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $clubMembers = $user_table->get();
-
-        $deleteSuccess = 1;
-        return view('taoex.admin', array('matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers, 'deleteSuccess' => $deleteSuccess));
-    }
-
     public function record(Request $request)
     {
         $result_table = new MatchResult;
