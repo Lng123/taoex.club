@@ -66,7 +66,7 @@
                         </a>
                     </li>
                     <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-                        <a class="nav-link" href="/site/home/league">
+                        <a class="nav-link" href="/home/league">
                             <i class="fa fa-fw fa-table"></i>
                             <span class="nav-link-text">League</span>
                         </a>
