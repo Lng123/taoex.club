@@ -147,14 +147,11 @@ class HomeController extends Controller
 
     public function sendAnnouncement(Request $request)
     {
-
-        $this->validate($request, [
-            'announcement' => 'required'
-        ]);
-
         $announcement = $request->input('announcement');
+        $t =time();
         $data = array(
             'announcement' => $announcement,
+            'time_sent' => date("Y-m-d h:i:s",$t) 
         );
 
         DB::table('announcements')->insert($data);
@@ -163,9 +160,14 @@ class HomeController extends Controller
         return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement));
     }
 
-    public function deleteAnnouncement($announcement, $time_sent)
+    public function openAnnouncement(){
+        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
+        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements));
+    }
+
+    public function deleteAnnouncement(Request $request)
     {
-        DB::table('announcements')->where('announcement', '=', $announcement)->where('time_sent', '=', $time_sent)->delete();
+        DB::table('announcements')->where('announcement', '=', $request->announcement)->where('time_sent', '=', $request->time_sent)->delete();
         return redirect('/home/admin');
     }
 
