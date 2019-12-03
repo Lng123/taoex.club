@@ -27,6 +27,24 @@ class AdminController extends Controller
     }
 
     public function deleteClub($club_id){
+        $user_table = new User;
+        $match_table = new Match;
+        $result_table = new MatchResult;
+        
+        $remove_invite = DB::table('Invite')->where('club_id', $club_id)->delete();
+        $remove_application = DB::table('club_application')->where('club_id', $club_id)->delete();
+        
+        $matches_to_remove = $match_table->where('club_id', $club_id)->get();
+        foreach ($matches_to_remove as $m) {
+            $mid = $m->id;
+            $remove_matchresult = $result_table->where('match_id', $mid)->delete();
+        }
+        $remove_match = $match_table->where('club_id', $club_id)->delete();
+        
+        $remove_cid_user = $user_table->where('club_id', $club_id)->update(['club_id' => NULL]);
+        
+        $remove_user_clubs = DB::table('UserClubs')->where('club_id',$club_id)->delete();
+        
         DB::table('Club')->where('id','=', $club_id)->delete();
         return redirect('/home/adminManageClub');
     }   
