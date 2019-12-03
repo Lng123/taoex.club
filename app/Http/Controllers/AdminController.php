@@ -21,6 +21,23 @@ class AdminController extends Controller
         return view('taoex.policy');
     }
 
+    
+    public function deleteUserAdmin($id)
+    {
+        $user_table = new User;
+        $match_table = new Match;
+        $result_table = new MatchResult;
+
+        $remove_matchresult = $result_table->where('player_id', $id)->delete();
+        $remove_invite = DB::table('Invite')->where('id', $id)->delete();
+        $remove_match = $match_table->where('winner_id', $id)->update(['winner_id' => NULL]);
+        $remove_messages = DB::table('user_messages')->where('id',$id)->delete();
+        $remove_sent_messages = DB::table('user_messages')->where('sender',$id)->delete();
+        $remove_user_clubs = DB::table('UserClubs')->where('id',$id)->delete();
+        $remove = $user_table->where('id', $id)->delete();
+        return redirect('/home/adminManageUser');
+    }
+
     public function sendMessage($uid,$message,$sender_id){
         DB::table('user_messages')->insert(['id'=>$uid,'message'=>$message,'sender'=>$sender_id]);
         return redirect('/home');
