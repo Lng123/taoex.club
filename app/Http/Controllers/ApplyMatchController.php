@@ -99,7 +99,6 @@ class ApplyMatchController extends Controller
         $WIN = 6;
         $match_result = new MatchResult;
         $match_table = new Match;
-        $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
         $match_id = $request->match_id;
         $player_id = $request->player_id;
         $numberPlayers = $request->numberPlayers;
@@ -157,6 +156,7 @@ class ApplyMatchController extends Controller
             
         $this->updateCScore($club_id);
         $this->updateSeason();
+        $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
     	$user_table = new User;
 
 	$total_score = $result_table->where('player_id', $uid)->sum('total');
