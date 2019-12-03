@@ -19,7 +19,15 @@ class ApplyMatchController extends Controller
     {
     	return view('taoex.applyNewMatch');
     }
-
+    
+    /**
+     * Records a match for a chosen player and a record success flag is set.  If there 
+     * is already a record existing for that player and match, the record is updated
+     * instead and a update success flag is set.  If a winner that is not the given
+     * player already exists for the match, record fails and winner exists flag is set.
+     *
+     * @return /club
+     */
     public function apply(Request $request)
     {
     	$name = $request->name;
