@@ -209,7 +209,7 @@
                                             <option value="0">Not a winner</option>
                                             <option value="6">Winner</option>
                                             <option value="5">Liberation</option>
-                                            <option value="10">Arition</option>
+                                            <option value="10">Attrition</option>
                                           </Select>
                                         </div>
                                         <button type="submit" class="btn btn-primary btn-block">Submit</button>

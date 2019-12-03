@@ -116,7 +116,7 @@ class ApplyMatchController extends Controller
         $capture = $request->capture;
         $hook = $request->hook;
         $winBonus = $request->winBonus;
-        if (($current_match[0]->winner_id == $player_id || $current_match[0]->winner_id == NULL)&&($winBonus == 5 || $winBonus == 6 || $winBonus == 7) || $winBonus == 0) {
+        if (($current_match[0]->winner_id == $player_id || $current_match[0]->winner_id == NULL)&&($winBonus == 5 || $winBonus == 6 || $winBonus == 10) || $winBonus == 0) {
         if ($winBonus == 0) {
             $total = $HOK * $hook + $capture * $CAP + $elimination * $ELI;
             $winBonusR = 0;
@@ -230,6 +230,7 @@ class ApplyMatchController extends Controller
             $winnerExist = 1;
             $updateSuccess = 0;
         }
+        
     	return view('taoex.club', array('club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'recordSuccess'=>$recordSuccess, 'winnerExist'=>$winnerExist, 'updateSuccess'=>$updateSuccess, 'clubScore' => $club_score));
         }
 
