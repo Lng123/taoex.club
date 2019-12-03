@@ -51,8 +51,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -82,8 +82,8 @@ class HomeController extends Controller
         $club = $club_table->where('id', $club_id)->first();
 
         $club_list = DB::table('Club')->where('owner_id', $uid)->get();
-        $club_list_in = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $club_name = DB::table('users')->select('name')->join('club','club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
+        $club_list_in = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $club_name = DB::table('users')->select('name')->join('Club','Club.id', '=','users.club_id')->where('users.id',$uid)->value('name');
 
         $userMessages = DB::table('messages')
             ->select('message', 'message_id','club_name')
@@ -111,6 +111,12 @@ class HomeController extends Controller
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
         return view('home', array('sent_messages' => $sent_messages, 'list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites, 'pending_club_applications' => $pending_applications, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
     }
+    
+    /**
+     * Changes the active club that is used in the club section of the website.
+     *
+     * @return /home
+     */
     public function changeActiveClub($club_id)
     {
         $match_table = new Match;
@@ -144,30 +150,6 @@ class HomeController extends Controller
         return redirect('/home');
     }
 
-
-    public function sendAnnouncement(Request $request)
-    {
-
-        $this->validate($request, [
-            'announcement' => 'required'
-        ]);
-
-        $announcement = $request->input('announcement');
-        $data = array(
-            'announcement' => $announcement,
-        );
-
-        DB::table('announcements')->insert($data);
-
-        $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
-        return view('taoex.adminAnnouncement', array('list_of_announcements' => $list_of_announcements, 'announcement' => $announcement));
-    }
-
-    public function deleteAnnouncement($announcement, $time_sent)
-    {
-        DB::table('announcements')->where('announcement', '=', $announcement)->where('time_sent', '=', $time_sent)->delete();
-        return redirect('/home/admin');
-    }
 
     public function openAdmin()
     {
@@ -213,8 +195,8 @@ class HomeController extends Controller
 
         $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
         $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $club_list = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->where('UserClubs.id', $uid)->get();
-        $all_clubs = DB::table('UserClubs')->join('club', 'club.id', '=', 'UserClubs.club_id')->select('club.*')->distinct()->get();
+        $club_list = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->where('UserClubs.id', $uid)->get();
+        $all_clubs = DB::table('UserClubs')->join('Club', 'Club.id', '=', 'UserClubs.club_id')->select('Club.*')->distinct()->get();
 
 
         //$clubusers = $clubuser_table->get();
@@ -285,6 +267,11 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Edits the first and last name of the given user.
+     *
+     * @return admin user page
+     */
     public function editName(Request $request)
     {
         $user_table = new User;
@@ -317,6 +304,15 @@ class HomeController extends Controller
         //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
     }
 
+    /**
+     * Removes the user from the users table of the database.  Also deletes any
+     * match records that is related to the user from the match_results table and
+     * deletes any related entries from the UserClubs table.  Should
+     * not be called when the user is a owner of a club in order to avoid situations
+     * where there is no owner for a club.
+     *
+     * @return admin user page
+     */
     public function deleteUserAdmin($id)
     {
         $user_table = new User;
@@ -326,31 +322,11 @@ class HomeController extends Controller
         $remove_matchresult = $result_table->where('player_id', $id)->delete();
         $remove_invite = DB::table('Invite')->where('id', $id)->delete();
         $remove_match = $match_table->where('winner_id', $id)->update(['winner_id' => NULL]);
-        $remove = $user_table->where('id', $id)->delete();
         $remove_messages = DB::table('user_messages')->where('id',$id)->delete();
         $remove_sent_messages = DB::table('user_messages')->where('sender',$id)->delete();
-        $remove_user_clubs = DB::table('userclubs')->where('id',$id)->delete();
+        $remove_user_clubs = DB::table('UserClubs')->where('id',$id)->delete();
+        $remove = $user_table->where('id', $id)->delete();
         return redirect('/home/adminManageUser');
-    }
-
-
-    public function deleteMatch(Request $request)
-    {
-        $matchTarget = $request->matchName;
-        $match_table = new Match;
-        $result_table = new MatchResult;
-        $user_table = new User;
-
-        $matches = $match_table->orderBy('endDate', 'desc')->get();
-
-        $matchID = $match_table->where('name', $matchTarget)->pluck('id');
-        $targetMatchResults = $result_table->where('match_id', $matchID)->delete();
-        $matchID = $match_table->where('name', $matchTarget)->delete();
-        $results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        $clubMembers = $user_table->get();
-
-        $deleteSuccess = 1;
-        return view('taoex.admin', array('matches' => $matches, 'results' => $results, 'clubMembers' => $clubMembers, 'deleteSuccess' => $deleteSuccess));
     }
 
     public function record(Request $request)

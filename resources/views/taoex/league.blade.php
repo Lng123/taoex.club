@@ -1,22 +1,25 @@
 @extends('layouts.header')
 @section('content')
-<div class="content-wrapper" style="background-color:#d7d9e9">
+<div class="content-wrapper">
   <div class="container-fluid">
     <!-- Breadcrumbs-->
-    <ol class="breadcrumb" style="background-color:white; margin-top:10px">
+
+    <ol class="breadcrumb">
       <li class="breadcrumb-item">
-        <a href="#">Taoex</a>
+        <a href="/home">Dashboard</a>
       </li>
       <li class="breadcrumb-item active">League</li>
-      <!-- user card -->
-      <br>
-      <div class="h3">Welcome, <span class="color-primary">{{ strtoupper(Auth::user()->firstName) }} {{ strtoupper(Auth::user()->lastName) }} </span></div>
-      <div class="h5">League section is currently under developement. Please contact administrator for more detail.<div>
     </ol>
-
-
-    
+    <div class="card">
+      <div class="card-header h3">To start a League</div>
+      <div class="card-body">
+        <div class="card-text h5">
+          Please send a request for territory availability & pricing to leagues@taoex.club
+        </div>
       </div>
-          <!-- /.content-wrapper-->
     </div>
-          @endsection
+    <!-- /.container-fluid-->
+  </div>
+  <!-- /.content-wrapper-->
+</div>
+@endsection

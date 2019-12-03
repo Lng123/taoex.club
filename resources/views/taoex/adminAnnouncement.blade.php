@@ -59,6 +59,7 @@
                       <tr data-toggle="collapse" data-target=".contents">
                         <th>Messages</th>
                         <th>Time</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     @if(isset($list_of_announcements))
@@ -67,7 +68,14 @@
                     <tr>
                       <td>{{$ann->announcement}}</td>
                       <td>{{$ann->time_sent}}</td>
-                      <td><a href="{{ route('deleteAnnouncement',['announcement'=>$ann->announcement,'time_sent'=>$ann->time_sent]) }}"> x </a></td>
+                      <td><form method="POST" action="{{ action('HomeController@deleteAnnouncement') }}">
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                      <input type="hidden" class="form-control" id="announcement" name="announcement" placeholder="Enter announcement here" value="{{$ann->announcement}}">
+                      <input type="hidden" class="form-control" id="time_sent" name="time_sent" placeholder="Enter announcement here" value="{{$ann->time_sent}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Delete</button>
+                  </form></td>
                       @endforeach
                       @endif
                     </tr>

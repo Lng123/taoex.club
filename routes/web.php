@@ -27,14 +27,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
 Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
-Route::get('home/adminBannedUsers','HomeController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
-Route::get('/home/admin', 'HomeController@openAdmin')->name('openAdmin');
-Route::post('/home/admin/deleteMatch', 'HomeController@deleteMatch');
+Route::get('home/adminBannedUsers','AdminController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
+Route::get('/home/admin', 'AdminController@openAdmin')->name('openAdmin');
+Route::post('/home/admin/deleteMatch', 'MatchController@deleteMatch');
 Route::post('/home/admin/addMatch', 'HomeController@record');
 Route::post('/home/admin/editResult', 'HomeController@editMatch');
 
 //Delete User Admin
-Route::get('/deleteuseradmin/{id}', 'HomeController@deleteUserAdmin')->name('deleteUserAdmin');
+Route::get('/deleteuseradmin/{id}', 'AdminController@deleteUserAdmin')->name('deleteUserAdmin');
 
 //Rank
 Route::get('/home/userRank', 'UserRankController@index');
@@ -125,11 +125,12 @@ Route::post('updateClubMembers', 'Auth\ClubsController@updateClubMembers')->name
 
 
 //Announcement controls
-Route::get('/home/adminSendMessage/{id}','HomeController@openAdminMessage')->name('openAdminMessage');
+Route::get('/home/adminSendMessage/{id}','AdminController@openAdminMessage')->name('openAdminMessage');
 Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser');
 Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('adminBanUser');
-Route::get('home/{announcement}/{time_sent}', 'HomeController@deleteAnnouncement')->name('deleteAnnouncement');
-Route::post('/home/admin/sendAnnouncement', 'HomeController@sendAnnouncement')->name('openAnnouncement');
+Route::post('/home/admin/sendAnnouncement', 'AdminController@sendAnnouncement')->name('sendAnnouncement');
+Route::get('/home/admin/announcements', 'AdminController@openAnnouncement')->name('openAnnouncement');
+Route::post('/home/admin/deleteAnnouncement', 'AdminController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admitSubmitBan/', 'AdminController@submitUserBan');
