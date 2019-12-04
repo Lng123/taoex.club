@@ -24,8 +24,8 @@ Route::get('/home/ranking', 'RankingController@index');
 Route::get('/home/policy', 'PolicyController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
-Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
-Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
+Route::get('/home/adminManageClub', 'AdminController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
+Route::get('/home/adminManageUser', 'AdminController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
 Route::get('home/adminBannedUsers','AdminController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
 Route::get('/home/admin', 'AdminController@openAdmin')->name('openAdmin');
@@ -130,7 +130,7 @@ Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser')
 Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('adminBanUser');
-Route::post('/home/admin/sendAnnouncement', 'AdminController@sendAnnouncement')->name('sendAnnouncement');
 Route::get('/home/admin/announcements', 'AdminController@openAnnouncement')->name('openAnnouncement');
+Route::post('/home/admin/sendAnnouncement', 'AdminController@sendAnnouncement')->name('sendAnnouncement');
 Route::post('/home/admin/deleteAnnouncement', 'AdminController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admitSubmitBan/', 'AdminController@submitUserBan');

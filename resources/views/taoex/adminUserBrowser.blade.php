@@ -33,7 +33,7 @@
     </div>
     @if (session('status'))
     <div class="alert alert-success">
-        {{ session('status') }}
+      {{ session('status') }}
     </div>
     @endif
     <div class="card-body" style="overflow:auto">
@@ -93,14 +93,6 @@
           @endforeach
         </tbody>
       </table>
-      <!--<span style="float:right">
-
-                               <a class="btn btn-outline-info" style="float:left;margin-right:3px" href="/home/applyNewMatch">Create a Match</a>
-
-                        	<a class="btn btn-outline-info" style="float:right" href=/home/allMatch>more...</a>
-                        
-
-                </span>-->
     </div>
   </div>
 </div>

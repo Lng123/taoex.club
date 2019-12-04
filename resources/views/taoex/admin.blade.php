@@ -24,7 +24,7 @@
             <div id="collapse2" class="panel-collapse collapse show">
               <ul class="list-group">
                 <li class="list-group-item" style="overflow:auto">
-                  <form method="POST" action="{{ action('HomeController@sendAnnouncement') }}">
+                  <form method="POST" action="{{ action('AdminController@sendAnnouncement') }}">
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label for="message">New message for announcement board:</label>
@@ -66,14 +66,16 @@
                       <td>{{$ann->announcement}}</td>
                       <td>{{$ann->time_sent}}</td>
                       <td><a href="{{ route('deleteAnnouncement',['announcement'=>$ann->announcement,'time_sent'=>$ann->time_sent]) }}"> x </a></td>
-                      <td><form method="POST" action="{{ action('HomeController@deleteAnnouncement') }}">
-                    {{ csrf_field() }}
-                    <div class="form-group">
-                      <input type="hidden" class="form-control" id="announcement" name="announcement" placeholder="Enter announcement here" value={{$ann->announcement}}>
-                      <input type="hidden" class="form-control" id="time_sent" name="time_sent" placeholder="Enter announcement here" value={{$ann->time_sent}}>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Send</button>
-                  </form></td>
+                      <td>
+                        <form method="POST" action="{{ action('AdminController@deleteAnnouncement') }}">
+                          {{ csrf_field() }}
+                          <div class="form-group">
+                            <input type="hidden" class="form-control" id="announcement" name="announcement" placeholder="Enter announcement here" value={{$ann->announcement}}>
+                            <input type="hidden" class="form-control" id="time_sent" name="time_sent" placeholder="Enter announcement here" value={{$ann->time_sent}}>
+                          </div>
+                          <button type="submit" class="btn btn-primary btn-block">Send</button>
+                        </form>
+                      </td>
                       @endforeach
                       @endif
                     </tr>
@@ -85,12 +87,6 @@
             </div>
           </div>
         </div>
-
-
-
-
-
-
         @if(isset($recordSuccess))
         <div class="alert alert-success" role="alert" style="margin-top:20px">
           <strong>Match Recorded!</strong>
@@ -223,22 +219,14 @@
                                               </div>
                                             </div>
                                           </div>
-
-
-
                                         </li>
                                       </ul>
                                     </div>
                                   </div>
-
                                 </div>
-
-
-
-
                               </td>
                               <td width=10%>
-                                <form method="POST" action="{{action('HomeController@openAdmin')}}">
+                                <form method="POST" action="{{action('AdminController@openAdmin')}}">
                                   {{ csrf_field() }}
                                   <button type="submit" class="btn btn-outline-info" data-toggle="collapse" href="#<?php echo $string = str_replace(' ', '', $match->name) ?>"><i class="fa fa-fw fa-pencil"></i></button>
                                   <input type="text" class="form-control" id="matchName" name="matchName" value="{{$match->name}}" style="display:none">

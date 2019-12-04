@@ -38,7 +38,9 @@ class MessageController extends Controller
         DB::table('user_messages')->insert(['id'=>$uid,'message'=>$message,'sender'=>$sender_id]);
         return redirect('/home');
     }
-
+    /**
+     * Sends an administrator message directly to a user, tagged with [Admin]
+     */
     public function sendAdminMessage(Request $request){
         $receiver_id = $request->id;
         $message = $request ->input('message');
@@ -47,6 +49,9 @@ class MessageController extends Controller
         return redirect('home/adminManageUser')->with('status','Message sent successfully');
     }
 
+    /**
+     * Sends a admin message through clubs to a user 
+     */
     public function sendClubMemberMessage(Request $request) {
         $receiver_id = $request->id;
         $message = $request->input('message');
@@ -55,7 +60,9 @@ class MessageController extends Controller
         DB::table('user_messages')->insert(['id'=>$receiver_id, 'message'=>$message, 'sender'=>$sender_id, 'message_tag'=>$tag]);
         return redirect()->route('manageClub');
     }
-
+    /**
+     * Replies to a send message with the tag reply
+     */
     public function replyMessage($uid,$sender_id,$message_time){
         $init_message = DB::table('user_messages')->where('id','=', $uid)->where('message_time','=', $message_time)->where('sender', '=', $sender_id)->get();
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
