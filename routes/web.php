@@ -24,8 +24,8 @@ Route::get('/home/ranking', 'RankingController@index');
 Route::get('/home/policy', 'PolicyController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 //Open admin
-Route::get('/home/adminManageClub', 'HomeController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
-Route::get('/home/adminManageUser', 'HomeController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
+Route::get('/home/adminManageClub', 'AdminController@openClubAdmin')->name('openClubAdmin')->middleware('is_admin');
+Route::get('/home/adminManageUser', 'AdminController@openUserAdmin')->name('openUserAdmin')->middleware('is_admin');
 Route::post('/home/adminManageUser', 'HomeController@editName')->name('editName');
 Route::get('home/adminBannedUsers','AdminController@openBannedUsers')->name('openBannedUsers')->middleware('is_admin');
 Route::get('/home/admin', 'AdminController@openAdmin')->name('openAdmin');
