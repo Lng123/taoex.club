@@ -163,7 +163,6 @@ class ApplyMatchController extends Controller
 
             $this->updateCScore($club_id);
             $this->updateSeason();
-            $club_score = $club_table->join('users', 'Club.id', '=', 'users.club_id')->select("club_score")->where('users.id', $uid)->get();
             $user_table = new User;
 
             $total_score = $result_table->where('player_id', $uid)->sum('total');
@@ -229,7 +228,7 @@ class ApplyMatchController extends Controller
             $winnerExist = 1;
             $updateSuccess = 0;
         }
-
+        $club_score = $club_table->join('users', 'Club.id', '=', 'users.club_id')->select("club_score")->where('users.id', $uid)->get();
         return view('taoex.club', array('club' => $club, 'clubMembers' => $clubMembers, 'matches' => $matches, 'allPlayers' => $allPlayers, 'numberMembers' => $numberMembers, 'allMatches' => $allMatches, 'clubOwner' => $clubOwner, 'totalScore' => $totalScore, 'recordSuccess' => $recordSuccess, 'winnerExist' => $winnerExist, 'updateSuccess' => $updateSuccess, 'clubScore' => $club_score));
     }
 
