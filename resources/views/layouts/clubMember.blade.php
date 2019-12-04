@@ -1,5 +1,7 @@
 <script>
    $(document).ready(function() {
+     var year = new Date().getFullYear();
+     document.getElementById("year").setAttribute("max", year);
     $('#member').DataTable()( {
      aaSorting: [[0, 'asc']]
 });
@@ -12,7 +14,7 @@
       <div class="form-group">
         <small><b>Rankings for the Year of:</b></small>
         <input type="number" id="year" name="year"
-                                        min="1990" max="2019" value={{$date}} />
+                                        min="1990" max="" value={{$date}} />
         <input type="hidden" name ="club_id" value={{$club_id}} >
         <span class="validity"></span>   
         <input type="submit" class="btn btn-primary">
