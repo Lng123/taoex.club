@@ -12,7 +12,7 @@
       <div class="form-group">
         <small><b>Rankings for the Year of:</b></small>
         <input type="number" id="year" name="year"
-                                        min="1990" max="2019" value={{$date}} />
+                                        min="1990" max={{$date}} value={{$date}} />
         <input type="hidden" name ="club_id" value={{$club_id}} >
         <span class="validity"></span>   
         <input type="submit" class="btn btn-primary">
