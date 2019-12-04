@@ -78,9 +78,9 @@
             </td>
             <td><big><i>{{ $ranking->score}}</i></big></td>
             @if(($clubs->where('owner_id', $ranking->id))->count() == 0)
-            <td style="width:100px"><a class="btn btn-outline-danger" style="width:5rem" onclick="return confirm('Are you sure you want to remove this member?')" href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a></td>
+            <td style="width:100px"> @if(DB::table('users')->where('id' ,$ranking->id)->select('admin')->value('admin') != 1)<a class="btn btn-outline-danger" style="width:5rem" onclick="return confirm('Are you sure you want to remove this member?')" href="{{ route('deleteUserAdmin', [$ranking->id]) }}">Remove</a>@endif</td>
             @else
-            <td style="width:100px"><a class="btn btn-outline-danger" style="width:5rem" onclick="return alert('This user owns one or more clubs.  Please re-assign the Club Owner for these club(s) from the Admin Club page first.')">Remove</a></td>
+            <td style="width:100px"> @if(DB::table('users')->where('id' ,$ranking->id)->select('admin')->value('admin') != 1)<a class="btn btn-outline-danger" style="width:5rem" onclick="return alert('This user owns one or more clubs.  Please re-assign the Club Owner for these club(s) from the Admin Club page first.')">Remove</a>@endif</td>
             @endif
             <td>
               <a class="btn btn-outline-primary" style="width:5rem" href="{{route('openAdminMessage',['id'=>$ranking->id])}}">Message</a>
