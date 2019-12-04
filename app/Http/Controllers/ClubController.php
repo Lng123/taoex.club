@@ -88,7 +88,9 @@ class ClubController extends Controller
         }
 
     }
-    
+    /**
+     * Displays the club members with their scores for the selected year.
+     */
     public function clubMemberRanking(Request $request)
     {
     	
