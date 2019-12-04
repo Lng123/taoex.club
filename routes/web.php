@@ -130,7 +130,7 @@ Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('banUser')
 Route::get('/home/adminUnbanUser/{id}','AdminController@unbanUser')->name('unbanUser');
 Route::post('/home/adminSendMessage/', 'MessageController@sendAdminMessage');
 Route::get('/home/adminBanUser/{id}','AdminController@banUser')->name('adminBanUser');
-Route::post('/home/admin/sendAnnouncement', 'AdminController@sendAnnouncement')->name('sendAnnouncement');
 Route::get('/home/admin/announcements', 'AdminController@openAnnouncement')->name('openAnnouncement');
+Route::post('/home/admin/sendAnnouncement', 'AdminController@sendAnnouncement')->name('sendAnnouncement');
 Route::post('/home/admin/deleteAnnouncement', 'AdminController@deleteAnnouncement')->name('deleteAnnouncement');
 Route::post('/home/admitSubmitBan/', 'AdminController@submitUserBan');

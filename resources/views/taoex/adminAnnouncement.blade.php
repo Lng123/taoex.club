@@ -26,7 +26,7 @@
             <div id="collapse2" class="panel-collapse collapse show">
               <ul class="list-group">
                 <li class="list-group-item" style="overflow:auto">
-                  <form method="POST" action="{{ action('HomeController@sendAnnouncement') }}">
+                  <form method="POST" action="{{ action('AdminController@sendAnnouncement') }}">
                     {{ csrf_field() }}
                     <div class="form-group">
                       <label for="message">New message for announcement board:</label>
@@ -69,7 +69,7 @@
                       <td>{{$ann->announcement}}</td>
                       <td>{{$ann->time_sent}}</td>
                       <td>
-                        <form method="POST" action="{{ action('HomeController@deleteAnnouncement') }}">
+                        <form method="POST" action="{{ action('AdminController@deleteAnnouncement') }}">
                           {{ csrf_field() }}
                           <div class="form-group">
                             <input type="hidden" class="form-control" id="announcement" name="announcement" placeholder="Enter announcement here" value="{{$ann->announcement}}">
