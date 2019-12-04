@@ -111,6 +111,12 @@ class HomeController extends Controller
         $list_of_announcements = DB::table('announcements')->select('announcements.*')->get();
         return view('home', array('sent_messages' => $sent_messages, 'list_of_announcements' => $list_of_announcements, 'club_list_in' => $club_list_in, 'personal_messages' => $personal_messages, 'pending_invites' => $pending_invites, 'pending_club_applications' => $pending_applications, 'club_list' => $club_list, 'club' => $club,  'club_id' => $club_id, 'status' => $status, 'matches' => $matches, 'totalScore' => $total_score, 'ranking' => $ranking, 'userMessages' => $userMessages, 'results' => $results, 'clubMembers' => $clubMembers));
     }
+    
+    /**
+     * Changes the active club that is used in the club section of the website.
+     *
+     * @return /home
+     */
     public function changeActiveClub($club_id)
     {
         $match_table = new Match;
@@ -261,6 +267,11 @@ class HomeController extends Controller
         ]);
     }
 
+    /**
+     * Edits the first and last name of the given user.
+     *
+     * @return admin user page
+     */
     public function editName(Request $request)
     {
         $user_table = new User;
@@ -293,6 +304,15 @@ class HomeController extends Controller
         //return view('taoex.adminSendMessage', array('id'=>$id,'sender'=>$sender));
     }
 
+    /**
+     * Removes the user from the users table of the database.  Also deletes any
+     * match records that is related to the user from the match_results table and
+     * deletes any related entries from the UserClubs table.  Should
+     * not be called when the user is a owner of a club in order to avoid situations
+     * where there is no owner for a club.
+     *
+     * @return admin user page
+     */
     public function deleteUserAdmin($id)
     {
         $user_table = new User;

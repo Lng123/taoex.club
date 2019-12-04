@@ -49,7 +49,7 @@ class ClubController extends Controller
             $nearPlayers = $user_table->where('approved_status', 0)->get();
             $allPlayers = $user_table->where('id', '!=', Null)->get();
             $matches = $match_table->where('club_id', $club_id)->orderBy('endDate', 'desc')->take(3)->get();
-
+            $club_score = $club_table->join('users','Club.id' ,'=','users.club_id' )->select("club_score")->where('users.id',$uid)->get();
 
             $clubOwner = $clubMembers->where('id', $club->owner_id)->first();
 
@@ -75,7 +75,7 @@ class ClubController extends Controller
             ->select('message', 'message_id','club_name')
             ->where('club_name', $club_name)
             ->get();
-            return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore));
+            return view('taoex.club', array('club_messages'=>$club_messages, 'club'=>$club, 'clubMembers'=>$clubMembers, 'matches'=>$matches, 'allPlayers'=>$allPlayers, 'numberMembers'=>$numberMembers, 'allMatches'=>$allMatches, 'clubOwner'=>$clubOwner, 'totalScore'=>$totalScore, 'clubScore' => $club_score));
         } 
         // else if ($club_id != null && $approved_status == 0) {
         //     return view('/home', array('message'=>'Wait for Club ownner approving.', 'totalScore'=>$totalScore, 'color'=>'alert-warning', 'status'=>$status));
@@ -88,7 +88,9 @@ class ClubController extends Controller
         }
 
     }
-    
+    /**
+     * Displays the club members with their scores for the selected year.
+     */
     public function clubMemberRanking(Request $request)
     {
     	
@@ -436,7 +438,7 @@ class ClubController extends Controller
         $result_table = new MatchResult;
         $matches = $match_table->where('club_id', $club_d)->orderBy('endDate', 'desc')->take(3)->get();
     	$results = $result_table->join('users', 'player_id', '=', 'users.id')->select('users.firstName', 'users.lastName', 'MatchResult.*')->get();
-        DB::table('userclubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
+        DB::table('UserClubs')->insert(['id'=>$uid,'club_id'=>$club_id]);
         DB::table('club_application')->insert(['user_id'=>$uid, 'club_id'=>$club_id, 'status'=>'inClub']);
         return redirect('/home/club');
         //return view('/home', Array('message'=>'Club is successly created!', 'totalScore'=>$totalScore, 'ranking'=>$ranking,'color'=>'alert-success', 'club_id'=>$club_id, 'club_name'=>$clubName, 'uid'=>$uid, 'club'=>$club, 'club_list'=>$club_list, 'status'=>Auth::user()->approved_status, 'matches'=>$matches));
