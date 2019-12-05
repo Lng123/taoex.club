@@ -47,12 +47,6 @@ class AdminController extends Controller
         return redirect('/home/adminManageUser');
     }
 
-    public function sendMessage($uid, $message, $sender_id)
-    {
-        DB::table('user_messages')->insert(['id' => $uid, 'message' => $message, 'sender' => $sender_id]);
-        return redirect('/home');
-    }
-
     /**
      * Deletes the given club.  This also deletes any match and match records related
      * to this club, sets any user's active club_id that shares the given club id into
